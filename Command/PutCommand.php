@@ -8,6 +8,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Pheanstalk\Pheanstalk;
+
 class PutCommand extends ContainerAwareCommand
 {
     /**
@@ -37,15 +39,15 @@ class PutCommand extends ContainerAwareCommand
         $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
         
         if (null == $priority) {
-            $priority = \Pheanstalk::DEFAULT_PRIORITY;
+            $priority = Pheanstalk::DEFAULT_PRIORITY;
         }
         
         if (null == $delay) {
-            $delay = \Pheanstalk::DEFAULT_DELAY;
+            $delay = Pheanstalk::DEFAULT_DELAY;
         }
         
         if (null == $ttr) {
-            $ttr = \Pheanstalk::DEFAULT_TTR;
+            $ttr = Pheanstalk::DEFAULT_TTR;
         }
         
         $pheanstalk->useTube ($tube);

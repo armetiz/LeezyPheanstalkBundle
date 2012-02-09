@@ -30,7 +30,7 @@ class LeezyPheanstalkExtension extends Extension
         $port = $config["port"];
         $timeout = $config["timeout"];
         
-        $pheanstalkDef = new Definition("Pheanstalk", array ($server, $port, $timeout));
+        $pheanstalkDef = new Definition("Pheanstalk\Pheanstalk", array ($server, $port, $timeout));
         
         $container->setDefinition("leezy.pheanstalk", $pheanstalkDef);
     }

@@ -8,6 +8,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Pheanstalk\Exception;
+
 class DeleteJobCommand extends ContainerAwareCommand
 {
     /**
@@ -33,7 +35,7 @@ class DeleteJobCommand extends ContainerAwareCommand
             
             $output->writeln('Job <info>' . $jobId . '</info> deleted.');
         }
-        catch (\Pheanstalk_Exception $ex) {
+        catch (Exception $ex) {
             $output->writeln('Job not found');
         }
         

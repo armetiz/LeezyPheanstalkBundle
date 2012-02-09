@@ -146,7 +146,6 @@ Add the following lines in your `deps` file:
 [Pheanstalk]
     git=https://github.com/pda/pheanstalk.git
     target=/pheanstalk
-    version=v1.1.0
 ```
 
 Now, run the vendors script to download the bundle:
@@ -157,7 +156,7 @@ $ php bin/vendors install
 
 ### Step 2: Configure the Autoloader
 
-Add the `Leezy` namespace to your autoloader:
+Add the `Leezy` and `Pheanstalk` namespaces to your autoloader:
 
 ``` php
 <?php
@@ -165,22 +164,10 @@ Add the `Leezy` namespace to your autoloader:
 
 $loader->registerNamespaces(array(
     // ...
+    'Pheanstalk'       => __DIR__.'/../vendor/pheanstalk/classes',
     'Leezy' => __DIR__.'/../vendor/bundles',
 ));
 ```
-
-Add the `Pheanstalk` prefixe to your autoloader:
-
-``` php
-<?php
-// app/autoload.php
-
-$loader->registerPrefixes(array(
-    // ...
-    'Pheanstalk'       => __DIR__.'/../vendor/pheanstalk/classes',
-));
-```
-
 
 ### Step 3: Enable the bundle
 

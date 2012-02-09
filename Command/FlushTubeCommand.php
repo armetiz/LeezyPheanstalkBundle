@@ -8,6 +8,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Pheanstalk\Exception;
+
 class FlushTubeCommand extends ContainerAwareCommand
 {
     /**
@@ -36,7 +38,7 @@ class FlushTubeCommand extends ContainerAwareCommand
                 $numJobDelete++;
             }
         }
-        catch (\Pheanstalk_Exception $ex) {
+        catch (Exception $ex) {
             
         }
         
@@ -47,7 +49,7 @@ class FlushTubeCommand extends ContainerAwareCommand
                 $numJobDelete++;
             }
         }
-        catch (\Pheanstalk_Exception $ex) {
+        catch (Exception $ex) {
             
         }
         
@@ -58,7 +60,7 @@ class FlushTubeCommand extends ContainerAwareCommand
                 $numJobDelete++;
             }
         }
-        catch (\Pheanstalk_Exception $ex) {
+        catch (Exception $ex) {
             
         }
 
