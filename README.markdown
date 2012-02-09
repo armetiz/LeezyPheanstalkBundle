@@ -3,6 +3,44 @@
 The LeezyPheanstalkBundle is a Symfony2 integration for [pheanstalk](https://github.com/pda/pheanstalk).
 It provides a command line interface for manage the Beanstalkd server & a simple pheanstalk integration for use in your Symfony 2 application.
 
+## Usage example
+
+```php
+<?php
+
+namespace Acme\DemoBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class DashboardController extends Controller {
+
+    public function indexAction() {
+        $pheanstalk = $this->get("leezy.pheanstalk");
+
+        // ----------------------------------------
+        // producer (queues jobs)
+
+        $pheanstalk
+          ->useTube('testtube')
+          ->put("job payload goes here\n");
+
+        // ----------------------------------------
+        // worker (performs jobs)
+
+        $job = $pheanstalk
+          ->watch('testtube')
+          ->ignore('default')
+          ->reserve();
+
+        echo $job->getData();
+
+        $pheanstalk->delete($job);
+    }
+
+}
+?>
+```
+
 ## LeezyPheanstalkBundle Command Line Tools
 
 The LeezyPheanstalkBundle provides a number of command line utilities. 
