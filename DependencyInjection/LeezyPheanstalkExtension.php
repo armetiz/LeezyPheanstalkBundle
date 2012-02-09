@@ -26,12 +26,25 @@ class LeezyPheanstalkExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         
-        $server = $config["server"];
-        $port = $config["port"];
-        $timeout = $config["timeout"];
+        if (!$config["enabled"])
+            return;
         
-        $pheanstalkDef = new Definition("Pheanstalk\Pheanstalk", array ($server, $port, $timeout));
-        
-        $container->setDefinition("leezy.pheanstalk", $pheanstalkDef);
+        foreach ($config["connection"] as $name => $connection) {
+            $server = $connection["server"];
+            $port = $connection["port"];
+            $timeout = $connection["timeout"];
+            $ignoreDefault = $connection["ignore_default"];
+            
+            $pheanstalkDef = new Definition("Pheanstalk\Pheanstalk", array ($server, $port, $timeout));
+            $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkDef);
+            
+            if ($ignoreDefault) {
+                $pheanstalkDef->addMethodCall("ignore", array("default"));
+            }
+            
+            if ("default" === $name) {
+                $container->setAlias("leezy.pheanstalk", "leezy.pheanstalk.default");
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 ## LeezyPheanstalkBundle
 
 The LeezyPheanstalkBundle is a Symfony2 integration for [pheanstalk](https://github.com/pda/pheanstalk).
-It provides a command line interface for manage the Beanstalkd server & a simple pheanstalk integration for use in your Symfony 2 application.
+It provides a command line interface for manage the Beanstalkd server & a pheanstalk integration for use in your Symfony 2 application.
 
 ## Usage example
 
@@ -12,7 +12,7 @@ namespace Acme\DemoBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class DashboardController extends Controller {
+class HomeController extends Controller {
 
     public function indexAction() {
         $pheanstalk = $this->get("leezy.pheanstalk");
@@ -75,10 +75,22 @@ $ php app/console leezy:pheanstalk:delete-job 42
 $ php app/console leezy:pheanstalk:flush-tube your-tube
 ```
 
+**Note:**
+
+```
+When you flush a tube, it will be remove from the beanstalkd server.
+```
+
 ### List available tubes.
 
 ``` bash
 $ php app/console leezy:pheanstalk:list-tube
+```
+
+**Note:**
+
+```
+Tubes that are display contains at least one job.
 ```
 
 ### Pause a tube.
@@ -171,7 +183,7 @@ $loader->registerNamespaces(array(
 
 ### Step 3: Enable the bundle
 
-Finally, enable the bundle in the kernel:
+Enable the bundle in the kernel:
 
 ``` php
 <?php
@@ -188,10 +200,71 @@ public function registerBundles()
 
 ### Step 4: Configure your application's config.yml
 
+Finally, add the following to your config.yml
+
 ``` yaml
-# app/config/security.yml
+# app/config/config.yml
 leezy_pheanstalk:
-    server: beanstalkd.domain.tld
-    port: 11300
-    timeout: 60
+    enabled: true
+    connection:
+        default:
+            server: beanstalkd.domain.tld
+            port: 11300
+            timeout: 60
+        secondary:
+            server: beanstalkd-2.domain.tld
+            ignore_default: true
+```
+
+## Configuration
+This bundle can be configured, and this is the list of what you can do :
+- Create many connection. Note that each connection is a Pheanstalk instance.
+- Define specific server / host for each connection.
+- Define specific port for each connection. This option is optional and default value is 11300.
+- Define specific timeout for each connection. Timeout refere to the connection timeout. This option is optional and default value is 60.
+- Ignore the "default" tube. When testing or watch for example, many people ignored "default" tube for consumer. So, now it can be automatic. This option is optional and default value is false.
+- Disable this bundle. This options is optional and default value is true. 
+
+**Note:**
+
+```
+You can retreive each connection using the container with "leezy.pheanstalk.[connection_name]".
+
+When you define a "default" connection. You can have a direct access to it with "leezy.pheanstalk".
+```
+
+``` php
+<?php
+
+namespace Acme\DemoBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class HomeController extends Controller {
+
+    public function indexAction() {
+        $pheanstalkDefault = $this->get("leezy.pheanstalk");
+        $pheanstalkSecondary = $this->get("leezy.pheanstalk.secondary");
+
+        // ----------------------------------------
+        // producer (queues jobs) on beanstalk.domain.tld
+
+        $pheanstalkDefault
+          ->useTube('testtube')
+          ->put("job payload goes here\n");
+
+        // ----------------------------------------
+        // worker (performs jobs) on beanstalk-2.domain.tld
+
+        $job = $pheanstalkSecondary
+          ->watch('testtube')
+          ->reserve();
+
+        echo $job->getData();
+
+        $pheanstalkSecondary->delete($job);
+    }
+
+}
+?>
 ```
