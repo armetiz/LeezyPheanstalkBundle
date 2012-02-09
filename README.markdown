@@ -207,13 +207,14 @@ Finally, add the following to your config.yml
 leezy_pheanstalk:
     enabled: true
     connection:
-        default:
+        primary:
             server: beanstalkd.domain.tld
             port: 11300
             timeout: 60
+            ignore_default_tube: true
         secondary:
             server: beanstalkd-2.domain.tld
-            ignore_default: true
+            default: true
 ```
 
 ## Configuration
@@ -243,8 +244,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class HomeController extends Controller {
 
     public function indexAction() {
-        $pheanstalkDefault = $this->get("leezy.pheanstalk");
-        $pheanstalkSecondary = $this->get("leezy.pheanstalk.secondary");
+        $pheanstalkPrimary = $this->get("leezy.pheanstalk.primary");
+        $pheanstalkSecondary = $this->get("leezy.pheanstalk");
 
         // ----------------------------------------
         // producer (queues jobs) on beanstalk.domain.tld
