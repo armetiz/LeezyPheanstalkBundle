@@ -17,9 +17,10 @@ class PauseTubeCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:pause-tube')
-            ->setDescription('Temporarily prevent jobs being reserved from the given tube.')
             ->addArgument('tube', InputArgument::REQUIRED, 'The tube to pause')
             ->addArgument('delay', InputArgument::REQUIRED, 'Seconds before jobs may be reserved from this queue.')
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->setDescription('Temporarily prevent jobs being reserved from the given tube.')
         ;
     }
 
@@ -27,10 +28,22 @@ class PauseTubeCommand extends ContainerAwareCommand
     {
         $tube = $input->getArgument('tube');
         $delay = $input->getArgument('delay');
+        $connectionName = $input->getArgument('connection');
         
-        $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
-        $pheanstalk->pauseTube ($tube, $delay);
+        $connectionFinder = new ConnectionFinder ($this->getContainer());
+        $pheanstalk = $connectionFinder->getConnection($connectionName);
         
-        $output->writeln('Tube <info>' . $tube . '</info> have been paused for <info>' . $delay . '</info> seconds.');
+        if (null == $pheanstalk) {
+            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+            return;
+        }
+        
+        try {
+            $pheanstalk->pauseTube ($tube, $delay);
+            $output->writeln('Tube <info>' . $tube . '</info> have been paused for <info>' . $delay . '</info> seconds.');
+        }
+        catch (Exception $ex) {
+            $output->writeln('<error>Can pause the tube.</error>');
+        }
     }
 }

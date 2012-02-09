@@ -17,16 +17,25 @@ class PeekCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:peek')
-            ->setDescription('Inspect a job in the system, regardless of what tube it is in.')
             ->addArgument('job', InputArgument::REQUIRED, 'The job to peek.')
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->setDescription('Inspect a job in the system, regardless of what tube it is in.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $jobId = $input->getArgument('job');
+        $connectionName = $input->getArgument('connection');
         
-        $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
+        $connectionFinder = new ConnectionFinder ($this->getContainer());
+        $pheanstalk = $connectionFinder->getConnection($connectionName);
+        
+        if (null == $pheanstalk) {
+            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+            return;
+        }
+        
         $job = $pheanstalk->peek ($jobId);
         
         if ($job) {

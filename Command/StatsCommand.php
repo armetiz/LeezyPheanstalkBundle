@@ -17,21 +17,31 @@ class StatsCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:stats')
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
             ->setDescription('Gives statistical information about the beanstalkd system as a whole.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
+        $connectionName = $input->getArgument('connection');
+        
+        $connectionFinder = new ConnectionFinder ($this->getContainer());
+        $pheanstalk = $connectionFinder->getConnection($connectionName);
+        
+        if (null == $pheanstalk) {
+            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+            return;
+        }
+        
         $stats = $pheanstalk->stats();
         
         if (count($stats) === 0 ) {
-            $output->writeln('<info>no stats.</info>');
+            $output->writeln('<info>0 stats.</info>');
         }
         
         foreach ($stats as $key => $information) {
-            $output->writeln('<info>' . $key . '</info> : ' . $information);
+            $output->writeln('- <info>' . $key . '</info> : ' . $information);
         }
     }
 }

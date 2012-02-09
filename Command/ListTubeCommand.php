@@ -17,21 +17,31 @@ class ListTubeCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:list-tube')
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
             ->setDescription('The names of all tubes on the server.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
+        $connectionName = $input->getArgument('connection');
+        
+        $connectionFinder = new ConnectionFinder ($this->getContainer());
+        $pheanstalk = $connectionFinder->getConnection($connectionName);
+        
+        if (null == $pheanstalk) {
+            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+            return;
+        }
+        
         $tubes = $pheanstalk->listTubes();
         
         if (count($tubes) === 0 ) {
-            $output->writeln('<info>no tube defined.</info>');
+            $output->writeln('<info>0</info> tube defined.');
         }
         
         foreach ($tubes as $tube) {
-            $output->writeln('<info>' . $tube . '</info>');
+            $output->writeln('- <info>' . $tube . '</info>');
         }
     }
 }

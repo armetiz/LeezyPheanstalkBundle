@@ -20,6 +20,7 @@ class DeleteJobCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:delete-job')
             ->addArgument('job', InputArgument::REQUIRED, 'Jod id to delete.')
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
             ->setDescription('Delete the specified job if it exists.')
         ;
     }
@@ -27,8 +28,16 @@ class DeleteJobCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $jobId = $input->getArgument('job');
+        $connectionName = $input->getArgument('connection');
         
-        $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
+        $connectionFinder = new ConnectionFinder ($this->getContainer());
+        $pheanstalk = $connectionFinder->getConnection($connectionName);
+        
+        if (null == $pheanstalk) {
+            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+            return;
+        }
+        
         try {
             $job = $pheanstalk->peek($jobId);
             $pheanstalk->delete($job);

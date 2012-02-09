@@ -20,6 +20,7 @@ class FlushTubeCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:flush-tube')
             ->addArgument('tube', InputArgument::REQUIRED, 'Tube.')
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
             ->setDescription('Delete all job in a specific tube.')
         ;
     }
@@ -27,8 +28,16 @@ class FlushTubeCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $tube = $input->getArgument('tube');
+        $connectionName = $input->getArgument('connection');
         
-        $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
+        $connectionFinder = new ConnectionFinder ($this->getContainer());
+        $pheanstalk = $connectionFinder->getConnection($connectionName);
+        
+        if (null == $pheanstalk) {
+            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+            return;
+        }
+        
         $numJobDelete = 0;
         
         try {

@@ -18,6 +18,7 @@ class StatsJobCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:stats-job')
             ->addArgument('job', InputArgument::REQUIRED, 'Jod id to get stats.')
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
             ->setDescription('Gives statistical information about the specified job if it exists.')
         ;
     }
@@ -25,17 +26,25 @@ class StatsJobCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $jobId = $input->getArgument('job');
+        $connectionName = $input->getArgument('connection');
         
-        $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
+        $connectionFinder = new ConnectionFinder ($this->getContainer());
+        $pheanstalk = $connectionFinder->getConnection($connectionName);
+        
+        if (null == $pheanstalk) {
+            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+            return;
+        }
+        
         $job = $pheanstalk->peek($jobId);
         $stats = $pheanstalk->statsJob($job);
         
         if (count($stats) === 0 ) {
-            $output->writeln('<info>no stats.</info>');
+            $output->writeln('<info>0 stats.</info>');
         }
         
         foreach ($stats as $key => $information) {
-            $output->writeln('<info>' . $key . '</info> : ' . $information);
+            $output->writeln('- <info>' . $key . '</info> : ' . $information);
         }
     }
 }

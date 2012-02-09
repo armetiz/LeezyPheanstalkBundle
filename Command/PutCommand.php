@@ -19,12 +19,13 @@ class PutCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:put')
-            ->setDescription('Puts a job on the queue.')
             ->addArgument('tube', InputArgument::REQUIRED, 'Tube to put job.')
             ->addArgument('data', InputArgument::REQUIRED, 'The job data.')
             ->addArgument('priority', InputArgument::OPTIONAL, 'From 0 (most urgent) to 0xFFFFFFFF (least urgent).')
             ->addArgument('delay', InputArgument::OPTIONAL, 'Seconds to wait before job becomes ready.')
             ->addArgument('ttr', InputArgument::OPTIONAL, 'Time To Run: seconds a job can be reserved for.')
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->setDescription('Puts a job on the queue.')
         ;
     }
 
@@ -35,8 +36,15 @@ class PutCommand extends ContainerAwareCommand
         $priority = $input->getArgument('priority');
         $delay = $input->getArgument('delay');
         $ttr = $input->getArgument('ttr');
+        $connectionName = $input->getArgument('connection');
         
-        $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
+        $connectionFinder = new ConnectionFinder ($this->getContainer());
+        $pheanstalk = $connectionFinder->getConnection($connectionName);
+        
+        if (null == $pheanstalk) {
+            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+            return;
+        }
         
         if (null == $priority) {
             $priority = Pheanstalk::DEFAULT_PRIORITY;

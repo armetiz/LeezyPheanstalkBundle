@@ -30,11 +30,11 @@ class StatsTubeCommand extends ContainerAwareCommand
         $stats = $pheanstalk->statsTube($tube);
         
         if (count($stats) === 0 ) {
-            $output->writeln('<info>no stats.</info>');
+            $output->writeln('<info>0 stats.</info>');
         }
         
         foreach ($stats as $key => $information) {
-            $output->writeln('<info>' . $key . '</info> : ' . $information);
+            $output->writeln('- <info>' . $key . '</info> : ' . $information);
         }
     }
 }
