@@ -29,9 +29,15 @@ class DeleteJobCommand extends ContainerAwareCommand
         $jobId = $input->getArgument('job');
         
         $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
-        $job = $pheanstalk->peek($jobId);
-        $pheanstalk->delete($job);
+        try {
+            $job = $pheanstalk->peek($jobId);
+            $pheanstalk->delete($job);
+            
+            $output->writeln('Job <info>' . $jobId . '</info> deleted.');
+        }
+        catch (\Pheanstalk_Exception $ex) {
+            $output->writeln('Job not found');
+        }
         
-        $output->writeln('Job <info>' . $jobId . '</info> deleted.');
     }
 }
