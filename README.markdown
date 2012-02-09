@@ -1,22 +1,83 @@
 ## LeezyPheanstalkBundle
 
-The LeezyPheanstalkBundle is a Symfony2 integration for [pheanstalk](https://github.com/pda/pheanstalk)
-It provides a command line interface for manage the Beanstalkd server.
+The LeezyPheanstalkBundle is a Symfony2 integration for [pheanstalk](https://github.com/pda/pheanstalk).
+It provides a command line interface for manage the Beanstalkd server & a simple pheanstalk integration for use in your Symfony 2 application.
 
-Features include:
+## LeezyPheanstalkBundle Command Line Tools
 
-- Delete a job.
-- Flush a tube.
-- List available tubes.
-- Pause a tube.
-- Peek a job and get associated datas.
-- Put a new job in a tube.
-- Get statistics about beanstalkd server.
-- Get statistics about a job.
-- Get statistics about a tube.
+The LeezyPheanstalkBundle provides a number of command line utilities. 
+Commands are available for the following tasks:
 
-How to
--------------
+1. Delete a job.
+2. Flush a tube.
+3. List available tubes.
+4. Pause a tube.
+5. Peek a job and get associated data.
+6. Put a new job in a tube.
+7. Get statistics about beanstalkd server.
+8. Get statistics about a job.
+9. Get statistics about a tube.
+
+**Note:**
+
+```
+You must have correctly installed and configured the LeezyPheanstalkBundle before using 
+these commands.
+```
+
+### Delete a job
+
+``` bash
+$ php app/console leezy:pheanstalk:delete-job 42
+```
+
+### Flush a tube.
+
+``` bash
+$ php app/console leezy:pheanstalk:flush-tube your-tube
+```
+
+### List available tubes.
+
+``` bash
+$ php app/console leezy:pheanstalk:list-tube
+```
+
+### Pause a tube.
+
+``` bash
+$ php app/console leezy:pheanstalk:pause-tube your-tube
+```
+
+### Peek a job and get associated data.
+
+``` bash
+$ php app/console leezy:pheanstalk:peek 42
+```
+
+### Put a new job in a tube.
+
+``` bash
+$ php app/console leezy:pheanstalk:put your-tube "Hello world - I am a job"
+```
+
+### Get statistics about beanstalkd server.
+
+``` bash
+$ php app/console leezy:pheanstalk:stats
+```
+
+### Get statistics about a job.
+
+``` bash
+$ php app/console leezy:pheanstalk:stats-job 42
+```
+
+### Get statistics about a tube.
+
+``` bash
+$ php app/console leezy:pheanstalk:stats-tube your-tube
+```
 
 ## Installation
 
