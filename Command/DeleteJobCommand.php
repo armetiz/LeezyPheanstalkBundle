@@ -17,7 +17,6 @@ class DeleteJobCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:delete-job')
-            ->addArgument('tube', InputArgument::REQUIRED, 'Tube.')
             ->addArgument('job', InputArgument::REQUIRED, 'Jod id to delete.')
             ->setDescription('Delete the specified job if it exists.')
         ;
@@ -25,7 +24,6 @@ class DeleteJobCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tube = $input->getArgument('tube');
         $jobId = $input->getArgument('job');
         
         $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");

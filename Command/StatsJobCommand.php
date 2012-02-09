@@ -17,7 +17,6 @@ class StatsJobCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:stats-job')
-            ->addArgument('tube', InputArgument::REQUIRED, 'Tube to get stats.')
             ->addArgument('job', InputArgument::REQUIRED, 'Jod id to get stats.')
             ->setDescription('Gives statistical information about the specified job if it exists.')
         ;
@@ -25,7 +24,6 @@ class StatsJobCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tube = $input->getArgument('tube');
         $jobId = $input->getArgument('job');
         
         $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
