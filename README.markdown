@@ -212,7 +212,6 @@ leezy_pheanstalk:
             server: beanstalkd.domain.tld
             port: 11300
             timeout: 60
-            ignore_default_tube: true
         secondary:
             server: beanstalkd-2.domain.tld
             default: true
@@ -224,7 +223,6 @@ This bundle can be configured, and this is the list of what you can do :
 - Define specific server / host for each connection.
 - Define specific port for each connection. This option is optional and default value is 11300.
 - Define specific timeout for each connection. Timeout refere to the connection timeout. This option is optional and default value is 60.
-- Ignore the "default" tube. When testing or watch for example, many people ignored "default" tube for consumer. So, now it can be automatic. This option is optional and default value is false.
 - Disable this bundle. This options is optional and default value is true. 
 
 **Note:**
@@ -260,6 +258,7 @@ class HomeController extends Controller {
 
         $job = $pheanstalkSecondary
           ->watch('testtube')
+          ->ignore('default')
           ->reserve();
 
         echo $job->getData();

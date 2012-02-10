@@ -33,15 +33,10 @@ class LeezyPheanstalkExtension extends Extension
             $server = $connection["server"];
             $port = $connection["port"];
             $timeout = $connection["timeout"];
-            $ignoreDefault = $connection["ignore_default_tube"];
             $isDefault = $connection["default"];
             
             $pheanstalkDef = new Definition("Pheanstalk\Pheanstalk", array ($server, $port, $timeout));
             $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkDef);
-            
-            if ($ignoreDefault) {
-                $pheanstalkDef->addMethodCall("ignore", array("default"));
-            }
             
             if ($isDefault) {
                 $container->setAlias("leezy.pheanstalk", "leezy.pheanstalk." . $name);
