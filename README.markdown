@@ -153,7 +153,7 @@ Add the following lines in your `deps` file:
 
 ```
 [LeezyPheanstalkBundle]
-    git=git://github.com/pda/pheanstalk.git
+    git=git://github.com/armetiz/LeezyPheanstalkBundle
     target=bundles/Leezy/PheanstalkBundle
 
 [Pheanstalk]
@@ -194,7 +194,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Leezy\PheanstalkBundle\PheanstalkBundle(),
+        new Leezy\PheanstalkBundle\LeezyPheanstalkBundle(),
     );
 }
 ```
