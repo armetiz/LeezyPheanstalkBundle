@@ -2,7 +2,7 @@
 
 The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a command line interface 
 for manage the [Beanstalkd workqueue](http://kr.github.com/beanstalkd/) server & 
-a [pheanstalk](https://github.com/pda/pheanstalk) integration.
+a [pheanstalk](https://github.com/mrpoundsign/pheanstalk) integration.
 
 ## Usage example
 
@@ -157,7 +157,7 @@ Add the following lines in your `deps` file:
     target=bundles/Leezy/PheanstalkBundle
 
 [Pheanstalk]
-    git=https://github.com/pda/pheanstalk.git
+    git=https://github.com/mrpoundsign/pheanstalk.git
     target=/pheanstalk
 ```
 
