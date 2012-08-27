@@ -79,7 +79,7 @@ $ php app/console leezy:pheanstalk:flush-tube your-tube
 **Note:**
 
 ```
-When you flush a tube, it will be remove from the beanstalkd server.
+When you flush a tube, it will be removed from the beanstalkd server.
 ```
 
 ### List available tubes.
