@@ -1,0 +1,19 @@
+{
+    "description": "The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a command line interface for manage the Beanstalkd workqueue server & a pheanstalk integration.",
+    "keywords": ["symfony2"],
+    "type": "symfony-bundle",
+    "license": "BSD",
+    "authors": [{
+        "name" : "Thomas Tourlourat",
+        "email" : "thomas@tourlourat.com",
+        "homepage": "http://www.armetiz.info"
+    }],
+     "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.0.*",
+        "mrpoundsign/pheanstalk-5.3": "1.*"
+    }
+}
