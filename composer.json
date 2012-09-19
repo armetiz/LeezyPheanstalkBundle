@@ -18,5 +18,10 @@
     "autoload": {
         "psr-0": { "Leezy\\PheanstalkBundle": "" }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
     "target-dir": "Leezy/PheanstalkBundle"
 }
