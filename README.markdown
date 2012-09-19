@@ -134,55 +134,31 @@ $ php app/console leezy:pheanstalk:stats-tube your-tube
 
 Installation is a quick 4 step process:
 
-1. Download LeezyPheanstalkBundle
-2. Configure the Autoloader
-3. Enable the Bundle
-4. Configure your application's config.yml
+1. Download LeezyPheanstalkBundle using composer
+2. Enable the Bundle
+3. Configure your application's config.yml
 
 ### Step 1: Download LeezyPheanstalkBundle
 
-Ultimately, the LeezyPheanstalkBundle files should be downloaded to the
-`vendor/bundles/Leezy/PheanstalkBundle` directory.
+Add LeezyPheanstalkBundle in your composer.json:
 
-This can be done in several ways, depending on your preference. The first
-method is the standard Symfony2 method.
-
-**Using the vendors script**
-
-Add the following lines in your `deps` file:
-
-```
-[LeezyPheanstalkBundle]
-    git=git://github.com/armetiz/LeezyPheanstalkBundle
-    target=bundles/Leezy/PheanstalkBundle
-
-[Pheanstalk]
-    git=https://github.com/mrpoundsign/pheanstalk.git
-    target=/pheanstalk
+```js
+{
+    "require": {
+        "leezy/pheanstalk-bundle": "*"
+    }
+}
 ```
 
-Now, run the vendors script to download the bundle:
+Now tell composer to download the bundle by running the command:
 
 ``` bash
-$ php bin/vendors install
+$ php composer.phar update leezy/pheanstalk-bundle
 ```
 
-### Step 2: Configure the Autoloader
+Composer will install the bundle to your project's `vendor/leezy` directory.
 
-Add the `Leezy` and `Pheanstalk` namespaces to your autoloader:
-
-``` php
-<?php
-// app/autoload.php
-
-$loader->registerNamespaces(array(
-    // ...
-    'Pheanstalk'       => __DIR__.'/../vendor/pheanstalk/classes',
-    'Leezy' => __DIR__.'/../vendor/bundles',
-));
-```
-
-### Step 3: Enable the bundle
+### Step 2: Enable the bundle
 
 Enable the bundle in the kernel:
 
@@ -199,7 +175,7 @@ public function registerBundles()
 }
 ```
 
-### Step 4: Configure your application's config.yml
+### Step 3: Configure your application's config.yml
 
 Finally, add the following to your config.yml
 
