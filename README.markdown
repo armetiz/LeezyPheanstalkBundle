@@ -145,7 +145,7 @@ Add LeezyPheanstalkBundle in your composer.json:
 ```js
 {
     "require": {
-        "leezy/pheanstalk-bundle": "*"
+        "leezy/pheanstalk-bundle": "1.*"
     }
 }
 ```
