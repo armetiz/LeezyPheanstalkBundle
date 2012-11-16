@@ -5,10 +5,9 @@ namespace Leezy\PheanstalkBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Pheanstalk\Exception;
+use \Pheanstalk_Exception_ConnectionException;
 
 class FlushTubeCommand extends ContainerAwareCommand
 {
@@ -47,7 +46,7 @@ class FlushTubeCommand extends ContainerAwareCommand
                 $numJobDelete++;
             }
         }
-        catch (Exception $ex) {
+        catch (Pheanstalk_Exception_ConnectionException $ex) {
             
         }
         
@@ -58,7 +57,7 @@ class FlushTubeCommand extends ContainerAwareCommand
                 $numJobDelete++;
             }
         }
-        catch (Exception $ex) {
+        catch (Pheanstalk_Exception_ConnectionException $ex) {
             
         }
         
@@ -69,7 +68,7 @@ class FlushTubeCommand extends ContainerAwareCommand
                 $numJobDelete++;
             }
         }
-        catch (Exception $ex) {
+        catch (Pheanstalk_Exception_ConnectionException $ex) {
             
         }
 
