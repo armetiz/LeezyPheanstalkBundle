@@ -1,5 +1,8 @@
 ## LeezyPheanstalkBundle
 
+[![project status](http://stillmaintained.com/armetiz/LeezyPheanstalkBundle.png)](http://stillmaintained.com/armetiz/LeezyPheanstalkBundle)
+[![Build Status](https://secure.travis-ci.org/armetiz/LeezyPheanstalkBundle.png)](http://travis-ci.org/armetiz/LeezyPheanstalkBundle)
+
 The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a command line interface 
 for manage the [Beanstalkd workqueue](http://kr.github.com/beanstalkd/) server & 
 a [pheanstalk](https://github.com/mrpoundsign/pheanstalk) integration.
