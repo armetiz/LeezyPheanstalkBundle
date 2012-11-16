@@ -5,7 +5,7 @@
 
 The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a command line interface 
 for manage the [Beanstalkd workqueue](http://kr.github.com/beanstalkd/) server & 
-a [pheanstalk](https://github.com/mrpoundsign/pheanstalk) integration.
+a [pheanstalk](https://github.com/pda/pheanstalk) integration.
 
 ## Usage example
 
