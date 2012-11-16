@@ -1,6 +1,12 @@
-==1.0.1==
+== 1.0.2 ==
+* Add Unit Test
+* Throw exception when more than one connection have the default flag
+* Switch dependency from 'mrpoundsign/pheanstalk-5.3' to 'pda/pheanstalk'
+* Add TravisCI configuration
+
+== 1.0.1 ==
 * Fix dependency to pheanstalk-5.3. #4
 
-==1.0.0==
+== 1.0.0 ==
 * Update README to be composer compliant.
 * First stable tag version.
