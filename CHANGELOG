@@ -1,3 +1,7 @@
+== 1.0.3 ==
+* Update code to pda/pheanstalk which is a PHP5.2 implementation.
+* BC still ok.
+
 == 1.0.2 ==
 * Add Unit Test
 * Throw exception when more than one connection have the default flag
