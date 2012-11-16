@@ -8,6 +8,8 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Definition;
 
+use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
+
 /**
  * This is the class that loads and manages your bundle configuration
  *
@@ -29,6 +31,8 @@ class LeezyPheanstalkExtension extends Extension
         if (!$config["enabled"])
             return;
         
+        $defaultConnectionName = null;
+        
         foreach ($config["connection"] as $name => $connection) {
             $server = $connection["server"];
             $port = $connection["port"];
@@ -39,6 +43,11 @@ class LeezyPheanstalkExtension extends Extension
             $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkDef);
             
             if ($isDefault) {
+                if (null !== $defaultConnectionName) {
+                    throw new PheanstalkException(printf("Default connection already defined. '%s' & '%s'", $defaultConnectionName, $name));
+                }
+                
+                $defaultConnectionName = $name;
                 $container->setAlias("leezy.pheanstalk", "leezy.pheanstalk." . $name);
             }
         }

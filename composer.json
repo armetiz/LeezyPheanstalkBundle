@@ -13,7 +13,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": ">=2.0",
-        "mrpoundsign/pheanstalk-5.3": "*"
+        "pda/pheanstalk": "dev-master"
     },
     "autoload": {
         "psr-0": { "Leezy\\PheanstalkBundle": "" }
