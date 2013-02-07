@@ -39,7 +39,7 @@ class LeezyPheanstalkExtension extends Extension
             $timeout = $connection["timeout"];
             $isDefault = $connection["default"];
             
-            $pheanstalkDef = new Definition("Pheanstalk", array ($server, $port, $timeout));
+            $pheanstalkDef = new Definition("Pheanstalk_Pheanstalk", array ($server, $port, $timeout));
             $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkDef);
             
             if ($isDefault) {
