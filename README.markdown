@@ -198,7 +198,7 @@ leezy_pheanstalk:
 
 ## Configuration
 This bundle can be configured, and this is the list of what you can do :
-- Create many connection. Note that each connection is a Pheanstalk instance.
+- Create many connection. Note that each connection is a Pheanstalk_Pheanstalk instance.
 - Define specific server / host for each connection.
 - Define specific port for each connection. This option is optional and default value is 11300.
 - Define specific timeout for each connection. Timeout refere to the connection timeout. This option is optional and default value is 60.

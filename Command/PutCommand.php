@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use \Pheanstalk;
+use \Pheanstalk_Pheanstalk as Pheanstalk;
 
 class PutCommand extends ContainerAwareCommand
 {
