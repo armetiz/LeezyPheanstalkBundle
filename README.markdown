@@ -153,9 +153,12 @@ Add LeezyPheanstalkBundle in your composer.json:
 }
 ```
 
+**Note:**
+```
     This bundle have a dependency to [pda/pheanstalk](https://github.com/pda/pheanstalk).
     Beware that [pda/pheanstalk](https://github.com/pda/pheanstalk) is only available through composer as an unstable version.
     The minimum-stability property of composer could lead to some problem. See this [issue](https://github.com/armetiz/LeezyPheanstalkBundle/issues/8#issuecomment-13480695)
+```
 
 Now tell composer to download the bundle by running the command:
 
@@ -209,11 +212,9 @@ This bundle can be configured, and this is the list of what you can do :
 - Disable this bundle. This options is optional and default value is true. 
 
 **Note:**
-
 ```
-You can retreive each connection using the container with "leezy.pheanstalk.[connection_name]".
-
-When you define a "default" connection. You can have a direct access to it with "leezy.pheanstalk".
+    You can retreive each connection using the container with "leezy.pheanstalk.[connection_name]".
+    When you define a "default" connection. You can have a direct access to it with "leezy.pheanstalk".
 ```
 
 ``` php
