@@ -153,6 +153,10 @@ Add LeezyPheanstalkBundle in your composer.json:
 }
 ```
 
+    This bundle have a dependency to [pda/pheanstalk](https://github.com/pda/pheanstalk).
+    Beware that [pda/pheanstalk](https://github.com/pda/pheanstalk) is only available through composer as an unstable version.
+    The minimum-stability property of composer could lead to some problem. See this [issue](https://github.com/armetiz/LeezyPheanstalkBundle/issues/8#issuecomment-13480695)
+
 Now tell composer to download the bundle by running the command:
 
 ``` bash
