@@ -1,3 +1,6 @@
+== 1.x ==
+* Remove useless Tests/Fixtures/Entity/FakeMedia.php
+
 == 1.0.4 ==
 * Update to PSR-0 : https://github.com/pda/pheanstalk/commit/412ab5b7469538ab613efd8fb91b4adc84bf599f
 * Add warning about composer minimum-stability due to : https://github.com/armetiz/LeezyPheanstalkBundle/issues/8
