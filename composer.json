@@ -11,8 +11,7 @@
         "homepage": "http://www.armetiz.info"
     }],
     "require": {
-        "php": ">=5.3.3",
-        "symfony/symfony": ">=2.0",
+        "symfony/framework-bundle": ">=2.0",
         "pda/pheanstalk": "dev-master"
     },
     "autoload": {
