@@ -253,6 +253,16 @@ class HomeController extends Controller {
         echo $job->getData();
 
         $pheanstalkSecondary->delete($job);
+
+        // ----------------------------------------
+        // on each defined connections
+        $pheanstalkConnectionLocator = $this->get("leezy.pheanstalk.connection_locator");
+
+        foreach($pheanstalkConnectionLocator->getConnections() as $connection) {
+            $pheanstalkDefault
+                ->useTube('boardcast')
+                ->put("job payload goes here\n");
+        }
     }
 
 }

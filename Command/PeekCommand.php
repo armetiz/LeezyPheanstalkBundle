@@ -27,8 +27,8 @@ class PeekCommand extends ContainerAwareCommand
         $jobId = $input->getArgument('job');
         $connectionName = $input->getArgument('connection');
         
-        $connectionFinder = new ConnectionFinder ($this->getContainer());
-        $pheanstalk = $connectionFinder->getConnection($connectionName);
+        $connectionLocator = $this->getContainer()->get('leezy.pheanstalk.connection_locator');
+        $pheanstalk = $connectionLocator->getConnection($connectionName);
         
         if (null == $pheanstalk) {
             $output->writeln('Connection not found : <error>' . $connectionName . '</error>');

@@ -17,6 +17,7 @@ class StatsTubeCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:stats-tube')
             ->addArgument('tube', InputArgument::REQUIRED, 'Tube to get stats.')
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
             ->setDescription('Gives statistical information about the specified tube if it exists.')
         ;
     }
@@ -24,8 +25,11 @@ class StatsTubeCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $tube = $input->getArgument('tube');
+        $connectionName = $input->getArgument('connection');
         
-        $pheanstalk = $this->getContainer()->get("leezy.pheanstalk");
+        $connectionLocator = $this->getContainer()->get('leezy.pheanstalk.connection_locator');
+        $pheanstalk = $connectionLocator->getConnection($connectionName);
+        
         $stats = $pheanstalk->statsTube($tube);
         
         if (count($stats) === 0 ) {

@@ -33,6 +33,9 @@ class LeezyPheanstalkExtension extends Extension
         
         $defaultConnectionName = null;
         
+        $connectionLocatorDef = new Definition("Leezy\PheanstalkBundle\ConnectionLocator");
+        $container->setDefinition("leezy.pheanstalk.connection_locator", $connectionLocatorDef);
+        
         foreach ($config["connection"] as $name => $connection) {
             $server = $connection["server"];
             $port = $connection["port"];
@@ -42,6 +45,8 @@ class LeezyPheanstalkExtension extends Extension
             $pheanstalkDef = new Definition("Pheanstalk_Pheanstalk", array ($server, $port, $timeout));
             $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkDef);
             
+            $connectionLocatorDef->addMethodCall("addConnection", array($name, $pheanstalkDef));
+            
             if ($isDefault) {
                 if (null !== $defaultConnectionName) {
                     throw new PheanstalkException(sprintf("Default connection already defined. '%s' & '%s'", $defaultConnectionName, $name));
@@ -49,6 +54,8 @@ class LeezyPheanstalkExtension extends Extension
                 
                 $defaultConnectionName = $name;
                 $container->setAlias("leezy.pheanstalk", "leezy.pheanstalk." . $name);
+                
+                $connectionLocatorDef->addMethodCall("addConnection", array('default', $pheanstalkDef));
             }
         }
     }

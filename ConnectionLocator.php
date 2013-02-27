@@ -1,30 +1,46 @@
 <?php
 
-namespace Leezy\PheanstalkBundle\Command;
+namespace Leezy\PheanstalkBundle;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-class ConnectionFinder
+class ConnectionLocator
 {
-    private $container;
+    private $connections;
     
-    public function __construct(ContainerInterface $container) {
-        $this->container = $container;
+    public function __construct()
+    {
+        $this->connections = array();
     }
     
+    /**
+     * @return array
+     */
+    public function getConnections ()
+    {
+        return $this->connections;
+    }
+    
+    /**
+     * @param string $name
+     * 
+     * @return \Pheanstalk_Connection $connection
+     */
     public function getConnection ($name) {
-        if ("default" == $name) {
-            
-            $serviceName = "leezy.pheanstalk";
+        if (array_key_exists($name, $this->connections)) {
+            return $this->connections[$name];
         }
         else {
-            $serviceName = "leezy.pheanstalk." . $name;
-        }
-        
-        if (!$this->container->has($serviceName)) {
             return null;
         }
-        
-        return $this->container->get($serviceName);
+    }
+    
+    /**
+     * @param string $name
+     * @param \Pheanstalk_Connection $connection
+     * 
+     * @return \Leezy\PheanstalkBundle\ConnectionLocator
+     */
+    public function addConnection($name, \Pheanstalk_Pheanstalk $connection)
+    {
+        $this->connections[$name] = $connection;
     }
 }
