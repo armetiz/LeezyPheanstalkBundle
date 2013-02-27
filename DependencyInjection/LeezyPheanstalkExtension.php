@@ -58,5 +58,16 @@ class LeezyPheanstalkExtension extends Extension
                 $connectionLocatorDef->addMethodCall("addConnection", array('default', $pheanstalkDef));
             }
         }
+
+        // Setup the data collector service for Symfony profiler
+        $dataCollectorDef = new Definition("Leezy\PheanstalkBundle\Profiler\DataCollector\PheanstalkDataCollector", array(
+            $container->getDefinition('leezy.pheanstalk.connection_locator')
+        ));
+
+        $dataCollectorDef->addTag('data_collector', array(
+            'template' => 'LeezyPheanstalkBundle:Profiler:pheanstalk',
+            'id' => 'pheanstalk',
+        ));
+        $container->setDefinition("leezy.data_collector.pheanstalk", $dataCollectorDef);
     }
 }
