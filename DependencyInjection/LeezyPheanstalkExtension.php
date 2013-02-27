@@ -44,7 +44,7 @@ class LeezyPheanstalkExtension extends Extension
             
             if ($isDefault) {
                 if (null !== $defaultConnectionName) {
-                    throw new PheanstalkException(printf("Default connection already defined. '%s' & '%s'", $defaultConnectionName, $name));
+                    throw new PheanstalkException(sprintf("Default connection already defined. '%s' & '%s'", $defaultConnectionName, $name));
                 }
                 
                 $defaultConnectionName = $name;
