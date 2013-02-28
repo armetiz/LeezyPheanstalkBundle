@@ -82,11 +82,8 @@ class LeezyPheanstalkExtension extends Extension
 
         // Add each connection to this service
         foreach ($container->findTaggedServiceIds('pheanstalk_connection') as $service_id => $args) {
-            $connectionLocatorDef->addMethodCall('addConnection', array($args[0]['name'], new Reference($service_id)));
-
-            if (isset($args[0]['default']) && true === $args[0]['default']) {
-                $connectionLocatorDef->addMethodCall('addConnection', array('default', new Reference($service_id)));
-            }
+            $is_default = isset($args[0]['default']) && true === $args[0]['default'] ? true : false;
+            $connectionLocatorDef->addMethodCall('addConnection', array($args[0]['name'], new Reference($service_id), $is_default));
         }
     }
 
@@ -99,7 +96,7 @@ class LeezyPheanstalkExtension extends Extension
     public function configureProfiler(ContainerBuilder $container, array $config)
     {
         // Setup the data collector service for Symfony profiler
-        $dataCollectorDef = new Definition('Leezy\PheanstalkBundle\Profiler\DataCollector\PheanstalkDataCollector');
+        $dataCollectorDef = new Definition('Leezy\PheanstalkBundle\DataCollector\PheanstalkDataCollector');
         $dataCollectorDef->setPublic(false);
         $dataCollectorDef->addTag('data_collector', array('id' => 'pheanstalk', 'template' => 'LeezyPheanstalkBundle:Profiler:pheanstalk'));
         $dataCollectorDef->addArgument(new Reference('leezy.pheanstalk.connection_locator'));
