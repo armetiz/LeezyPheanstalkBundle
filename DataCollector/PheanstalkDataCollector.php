@@ -35,6 +35,7 @@ class PheanstalkDataCollector extends DataCollector
         // Collect the information
         foreach ($this->connectionLocator->getConnectionsInfo() as $name => $connection) {
             $connectionStats = $connection['resource']->stats();
+            $arrayCopy = $connectionStats->getArrayCopy();
 
             // Get information about this connection
             $this->data['connections'][] = array(
@@ -43,10 +44,11 @@ class PheanstalkDataCollector extends DataCollector
                 'port' => $connection['port'],
                 'timeout' => $connection['timeout'],
                 'default' => $connection['default'],
-                'stats' => $connectionStats->getArrayCopy()
+                'stats' => $arrayCopy
             );
 
-            $this->data['jobCount'] += $connectionStats->getArrayCopy()['current-jobs-ready'];
+            // Increment the number of jobs
+            $this->data['jobCount'] += $arrayCopy['current-jobs-ready'];
 
             // Get information about the tubes of this connection
             $tubes = $connection['resource']->listTubes();
