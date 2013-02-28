@@ -23,7 +23,7 @@ class PutCommand extends ContainerAwareCommand
             ->addArgument('priority', InputArgument::OPTIONAL, 'From 0 (most urgent) to 0xFFFFFFFF (least urgent).')
             ->addArgument('delay', InputArgument::OPTIONAL, 'Seconds to wait before job becomes ready.')
             ->addArgument('ttr', InputArgument::OPTIONAL, 'Time To Run: seconds a job can be reserved for.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.')
             ->setDescription('Puts a job on the queue.')
         ;
     }

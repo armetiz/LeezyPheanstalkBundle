@@ -16,7 +16,7 @@ class ListTubeCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:list-tube')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.')
             ->setDescription('The names of all tubes on the server.')
         ;
     }
