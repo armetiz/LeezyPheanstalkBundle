@@ -29,7 +29,7 @@ class ConnectionLocator
      * @return \Pheanstalk_Connection $connection
      */
     public function getConnection($name = null) {
-        $name = null !== $name ?: $this->default;
+        $name = null !== $name ? $name : $this->default;
 
         if (array_key_exists($name, $this->connections)) {
             return $this->connections[$name];
