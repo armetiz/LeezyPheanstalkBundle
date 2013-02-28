@@ -5,9 +5,16 @@ namespace Leezy\PheanstalkBundle\DataCollector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Pheanstalk_Pheanstalk;
 
 use Leezy\PheanstalkBundle\ConnectionLocator;
 
+/**
+ * This is the data collector for LeezyPheanstalkBundle
+ *
+ * @see http://symfony.com/doc/current/cookbook/profiler/data_collector.html
+ * @author Maxime Aoustin <max44410@gmail.com>
+ */
 class PheanstalkDataCollector extends DataCollector
 {
     protected $connectionLocator;
@@ -82,7 +89,13 @@ class PheanstalkDataCollector extends DataCollector
         return 'pheanstalk';
     }
 
-    private function fetchJobs($connection, $tubeName) {
+    /**
+     * Get the next job ready and buried in the specified tube and connection
+     *
+     * @param \Pheanstalk_Pheanstalk $connection
+     * @param $tubeName
+     */
+    private function fetchJobs(Pheanstalk_Pheanstalk $connection, $tubeName) {
         try {
             $nextJobReady = $connection->peekReady($tubeName);
             $this->data['jobs'][$tubeName]['ready'] = array(
