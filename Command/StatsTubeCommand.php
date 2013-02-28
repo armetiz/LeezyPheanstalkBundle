@@ -17,7 +17,7 @@ class StatsTubeCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:stats-tube')
             ->addArgument('tube', InputArgument::REQUIRED, 'Tube to get stats.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', null)
             ->setDescription('Gives statistical information about the specified tube if it exists.')
         ;
     }

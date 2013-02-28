@@ -17,7 +17,7 @@ class PeekCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:peek')
             ->addArgument('job', InputArgument::REQUIRED, 'The job to peek.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', null)
             ->setDescription('Inspect a job in the system, regardless of what tube it is in.')
         ;
     }

@@ -16,7 +16,7 @@ class StatsCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:stats')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', null)
             ->setDescription('Gives statistical information about the beanstalkd system as a whole.')
         ;
     }
