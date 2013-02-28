@@ -2,6 +2,8 @@
 
 namespace Leezy\PheanstalkBundle;
 
+use Pheanstalk_Pheanstalk;
+
 class ConnectionLocator
 {
     private $connections;
@@ -24,7 +26,9 @@ class ConnectionLocator
      * 
      * @return \Pheanstalk_Connection $connection
      */
-    public function getConnection ($name) {
+    public function getConnection ($name=null) {
+        $name = null === $name ? 'default' : $name;
+
         if (array_key_exists($name, $this->connections)) {
             return $this->connections[$name];
         }
@@ -35,11 +39,9 @@ class ConnectionLocator
     
     /**
      * @param string $name
-     * @param \Pheanstalk_Connection $connection
-     * 
-     * @return \Leezy\PheanstalkBundle\ConnectionLocator
+     * @param Pheanstalk_Pheanstalk $connection
      */
-    public function addConnection($name, \Pheanstalk_Pheanstalk $connection)
+    public function addConnection($name, Pheanstalk_Pheanstalk $connection)
     {
         $this->connections[$name] = $connection;
     }
