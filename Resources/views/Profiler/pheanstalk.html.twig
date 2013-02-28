@@ -37,17 +37,17 @@
 {% endblock %}
 
 {% block panel %}
-    <h2>Connections</h2>
-    {% set data = collector.connections %}
-    {{ block('table_connection') }}
+    <h2>Jobs</h2>
+    {% set data = collector.jobs %}
+    {{ block('table_jobs') }}
 
     <h2>Tubes</h2>
     {% set data = collector.tubes %}
     {{ block('table_tube') }}
 
-    <h2>Jobs</h2>
-    {% set data = collector.jobs %}
-    {{ block('table_jobs') }}
+    <h2>Connections</h2>
+    {% set data = collector.connections %}
+    {{ block('table_connection') }}
 
     {{ block('javascript') }}
 {% endblock %}
@@ -61,6 +61,18 @@
                 </th>
             </tr>
             <tbody>
+                <tr>
+                    <th>Host</th>
+                    <td>{{ row.host }}</td>
+                </tr>
+                <tr>
+                    <th>Port</th>
+                    <td>{{ row.port }}</td>
+                </tr>
+                <tr>
+                    <th>Timeout</th>
+                    <td>{{ row.timeout }}</td>
+                </tr>
                 {% for stat, data in row.stats %}
                 <tr>
                     <th style="width: 150px">{{ stat }}</th>

@@ -18,35 +18,42 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('leezy_pheanstalk');
+        $rootNode = $treeBuilder->root('leezy_pheanstalk')->children();
 
         $rootNode
-            ->children()
-                ->booleanNode("enabled")->defaultTrue()->end()
-                ->arrayNode("connection")
-                    ->requiresAtLeastOneElement()
-                    ->useAttributeAsKey('name')
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode("server")
-                                ->isRequired()
-                                ->cannotBeEmpty()
-                            ->end()
-                            ->scalarNode("port")
-                                ->cannotBeEmpty()
-                                ->defaultValue("11300")
-                            ->end()
-                            ->scalarNode("timeout")
-                                ->cannotBeEmpty()
-                                ->defaultValue("60")
-                            ->end()
-                            ->booleanNode("default")
-                                ->defaultFalse()
-                            ->end()
+            ->arrayNode('profiler')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('enabled')->defaultValue('%kernel.debug%')->end()
+                    ->scalarNode('template')->defaultValue('LeezyPheanstalkBundle:Profiler:pheanstalk.html.twig')->end()
+                ->end()
+            ->end()
+
+            ->booleanNode("enabled")->defaultTrue()->end()
+            ->arrayNode("connection")
+                ->requiresAtLeastOneElement()
+                ->useAttributeAsKey('name')
+                ->prototype('array')
+                    ->children()
+                        ->scalarNode("server")
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->scalarNode("port")
+                            ->cannotBeEmpty()
+                            ->defaultValue("11300")
+                        ->end()
+                        ->scalarNode("timeout")
+                            ->cannotBeEmpty()
+                            ->defaultValue("60")
+                        ->end()
+                        ->booleanNode("default")
+                            ->defaultFalse()
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }

@@ -26,29 +26,32 @@ class PheanstalkDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         // Collect the information
-        foreach ($this->connectionLocator->getConnections() as $name => $connection) {
-            $connection_stats = $connection['resource']->stats();
+        foreach ($this->connectionLocator->getConnectionsInfo() as $name => $connection) {
+            $connectionStats = $connection['resource']->stats();
 
             // Get information about this connection
             $this->data['connections'][] = array(
                 'name' => $name,
+                'host' => $connection['host'],
+                'port' => $connection['port'],
+                'timeout' => $connection['timeout'],
                 'default' => $connection['default'],
-                'stats' => $connection_stats->getArrayCopy()
+                'stats' => $connectionStats->getArrayCopy()
             );
 
-            $this->data['jobCount'] += $connection_stats->getArrayCopy()['current-jobs-ready'];
+            $this->data['jobCount'] += $connectionStats->getArrayCopy()['current-jobs-ready'];
 
             // Get information about the tubes of this connection
             $tubes = $connection['resource']->listTubes();
-            foreach ($tubes as $tube_name) {
+            foreach ($tubes as $tubeName) {
 
                 // Fetch next ready job and next buried job for this tube
-                $this->fetchJobs($connection['resource'], $tube_name);
+                $this->fetchJobs($connection['resource'], $tubeName);
 
                 $this->data['tubes'][] = array(
                     'connection' => $name,
-                    'name' => $tube_name,
-                    'stats' => $connection['resource']->statsTube($tube_name)->getArrayCopy(),
+                    'name' => $tubeName,
+                    'stats' => $connection['resource']->statsTube($tubeName)->getArrayCopy(),
                 );
             }
         }
@@ -79,20 +82,20 @@ class PheanstalkDataCollector extends DataCollector
         return 'pheanstalk';
     }
 
-    private function fetchJobs($cnx, $tube_name) {
+    private function fetchJobs($connection, $tubeName) {
         try {
-            $next_ready_job = $cnx->peekReady($tube_name);
-            $this->data['jobs'][$tube_name]['ready'] = array(
-                'id' => $next_ready_job->getId(),
-                'data' => $next_ready_job->getData(),
+            $nextJobReady = $connection->peekReady($tubeName);
+            $this->data['jobs'][$tubeName]['ready'] = array(
+                'id' => $nextJobReady->getId(),
+                'data' => $nextJobReady->getData(),
             );
         }catch (\Pheanstalk_Exception_ServerException $e){}
 
         try {
-            $next_ready_job = $cnx->peekBuried($tube_name);
-            $this->data['jobs'][$tube_name]['buried'] = array(
-                'id' => $next_ready_job->getId(),
-                'data' => $next_ready_job->getData(),
+            $nextJobBuried = $connection->peekBuried($tubeName);
+            $this->data['jobs'][$tubeName]['buried'] = array(
+                'id' => $nextJobBuried->getId(),
+                'data' => $nextJobBuried->getData(),
             );
         }catch (\Pheanstalk_Exception_ServerException $e){}
     }

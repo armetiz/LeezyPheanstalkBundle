@@ -7,6 +7,7 @@ use Pheanstalk_Pheanstalk;
 class ConnectionLocator
 {
     private $connections;
+    private $info;
     private $default;
     
     public function __construct()
@@ -17,7 +18,7 @@ class ConnectionLocator
     /**
      * @return array
      */
-    public function getConnections ()
+    public function getConnections()
     {
         return $this->connections;
     }
@@ -27,26 +28,35 @@ class ConnectionLocator
      * 
      * @return \Pheanstalk_Connection $connection
      */
-    public function getConnection ($name=null) {
-        $name = null === $name ? $this->default : $name;
+    public function getConnection($name = null) {
+        $name = null !== $name ?: $this->default;
 
         if (array_key_exists($name, $this->connections)) {
-            return $this->connections[$name]['resource'];
+            return $this->connections[$name];
         }
-        else {
-            return null;
-        }
+
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConnectionsInfo()
+    {
+        return $this->info;
     }
     
     /**
      * @param string $name
      * @param Pheanstalk_Pheanstalk $connection
-     * @param bool $is_default
+     * @param array $info
      */
-    public function addConnection($name, Pheanstalk_Pheanstalk $connection, $is_default = false)
+    public function addConnection($name, Pheanstalk_Pheanstalk $connection, array $info)
     {
-        $this->connections[$name] = array('resource' => $connection, 'default' => $is_default);
-        if (true === $is_default) {
+        $this->connections[$name] = $connection;
+        $this->info[$name] = array_merge($info, array('resource' => $connection));
+
+        if (true === $info['default']) {
             $this->default = $name;
         }
     }
