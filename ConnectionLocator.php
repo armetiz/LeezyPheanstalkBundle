@@ -51,12 +51,21 @@ class ConnectionLocator
      * @param Pheanstalk_Pheanstalk $connection
      * @param array $info
      */
-    public function addConnection($name, Pheanstalk_Pheanstalk $connection, array $info)
+    public function addConnection($name, Pheanstalk_Pheanstalk $connection, array $info = array())
     {
         $this->connections[$name] = $connection;
-        $this->info[$name] = array_merge($info, array('resource' => $connection));
 
-        if (true === $info['default']) {
+        // Gather connection information
+        $this->info[$name] = array(
+            'host' => isset($info['host']) ? $info['host'] : null,
+            'port' => isset($info['port']) ? $info['port'] : null,
+            'timeout' => isset($info['timeout']) ? $info['timeout'] : null,
+            'default' => isset($info['default']) ? $info['default'] : false,
+            'resource' => $connection,
+        );
+
+        // Set the default connection name
+        if (true === $this->info[$name]['default']) {
             $this->default = $name;
         }
     }
