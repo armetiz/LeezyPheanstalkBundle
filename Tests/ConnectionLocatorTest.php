@@ -19,7 +19,7 @@ class ConnectionLocatorTest extends \PHPUnit_Framework_TestCase {
         $connectionLocator = new ConnectionLocator();
         $connectionLocator->addConnection('default', $connection);
         
-        $this->assertEquals($connection, $connectionLocator->getConnection('default'));
+        $this->assertEquals($connection, $connectionLocator->getConnection(null));
     }
     
     public function testGetNoDefinedConnection()
