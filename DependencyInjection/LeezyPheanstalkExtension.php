@@ -7,6 +7,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
 
@@ -30,44 +31,78 @@ class LeezyPheanstalkExtension extends Extension
         
         if (!$config["enabled"])
             return;
-        
+
+        $this->configureConnection($container, $config);
+        $this->configureConnectionLocator($container, $config);
+        $this->configureProfiler($container, $config);
+    }
+
+    /**
+     * Configures the Connections
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param array $config
+     * @throws \Leezy\PheanstalkBundle\Exceptions\PheanstalkException
+     */
+    public function configureConnection(ContainerBuilder $container, array $config)
+    {
         $defaultConnectionName = null;
-        
-        $connectionLocatorDef = new Definition("Leezy\PheanstalkBundle\ConnectionLocator");
-        $container->setDefinition("leezy.pheanstalk.connection_locator", $connectionLocatorDef);
-        
+
         foreach ($config["connection"] as $name => $connection) {
-            $server = $connection["server"];
-            $port = $connection["port"];
-            $timeout = $connection["timeout"];
+            $args = array($connection["server"], $connection["port"], $connection["timeout"]);
             $isDefault = $connection["default"];
-            
-            $pheanstalkDef = new Definition("Pheanstalk_Pheanstalk", array ($server, $port, $timeout));
+
+            $pheanstalkDef = new Definition("Pheanstalk_Pheanstalk", $args);
+            $pheanstalkDef->addTag('pheanstalk_connection', array('name' => $name));
             $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkDef);
-            
-            $connectionLocatorDef->addMethodCall("addConnection", array($name, $pheanstalkDef));
-            
+
             if ($isDefault) {
                 if (null !== $defaultConnectionName) {
                     throw new PheanstalkException(sprintf("Default connection already defined. '%s' & '%s'", $defaultConnectionName, $name));
                 }
-                
+
                 $defaultConnectionName = $name;
                 $container->setAlias("leezy.pheanstalk", "leezy.pheanstalk." . $name);
-                
-                $connectionLocatorDef->addMethodCall("addConnection", array('default', $pheanstalkDef));
+                $pheanstalkDef->clearTag('pheanstalk_connection');
+                $pheanstalkDef->addTag('pheanstalk_connection', array('default' => true, 'name' => $name));
             }
         }
+    }
 
+    /**
+     * Configures the Connection locator
+     *
+     * @param ContainerBuilder $container Container
+     * @param array            $config    Configuration
+     */
+    public function configureConnectionLocator(ContainerBuilder $container, array $config)
+    {
+        $connectionLocatorDef = new Definition("Leezy\PheanstalkBundle\ConnectionLocator");
+        $container->setDefinition("leezy.pheanstalk.connection_locator", $connectionLocatorDef);
+
+        // Add each connection to this service
+        foreach ($container->findTaggedServiceIds('pheanstalk_connection') as $service_id => $args) {
+            $connectionLocatorDef->addMethodCall('addConnection', array($args[0]['name'], new Reference($service_id)));
+
+            if (isset($args[0]['default']) && true === $args[0]['default']) {
+                $connectionLocatorDef->addMethodCall('addConnection', array('default', new Reference($service_id)));
+            }
+        }
+    }
+
+    /**
+     * Configures the profiler data collector
+     *
+     * @param ContainerBuilder $container Container
+     * @param array            $config    Configuration
+     */
+    public function configureProfiler(ContainerBuilder $container, array $config)
+    {
         // Setup the data collector service for Symfony profiler
-        $dataCollectorDef = new Definition("Leezy\PheanstalkBundle\Profiler\DataCollector\PheanstalkDataCollector", array(
-            $container->getDefinition('leezy.pheanstalk.connection_locator')
-        ));
-
-        $dataCollectorDef->addTag('data_collector', array(
-            'template' => 'LeezyPheanstalkBundle:Profiler:pheanstalk',
-            'id' => 'pheanstalk',
-        ));
+        $dataCollectorDef = new Definition('Leezy\PheanstalkBundle\Profiler\DataCollector\PheanstalkDataCollector');
+        $dataCollectorDef->setPublic(false);
+        $dataCollectorDef->addTag('data_collector', array('id' => 'pheanstalk', 'template' => 'LeezyPheanstalkBundle:Profiler:pheanstalk'));
+        $dataCollectorDef->addArgument(new Reference('leezy.pheanstalk.connection_locator'));
         $container->setDefinition("leezy.data_collector.pheanstalk", $dataCollectorDef);
     }
 }
