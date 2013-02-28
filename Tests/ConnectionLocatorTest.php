@@ -17,7 +17,7 @@ class ConnectionLocatorTest extends \PHPUnit_Framework_TestCase {
         $connection = new \Pheanstalk_Pheanstalk('localhost', '11300');
         
         $connectionLocator = new ConnectionLocator();
-        $connectionLocator->addConnection('default', $connection);
+        $connectionLocator->addConnection('myConnection', $connection, array('default' => true));
         
         $this->assertEquals($connection, $connectionLocator->getConnection());
     }
