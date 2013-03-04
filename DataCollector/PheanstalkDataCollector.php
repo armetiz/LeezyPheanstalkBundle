@@ -53,16 +53,16 @@ class PheanstalkDataCollector extends DataCollector
             $this->data['jobCount'] += $connectionStatistics['current-jobs-ready'];
 
             // Get information about the tubes of this connection
-            $tubes = $connection['resource']->listTubes();
+            $tubes = $connection->listTubes();
             foreach ($tubes as $tubeName) {
 
                 // Fetch next ready job and next buried job for this tube
-                $this->fetchJobs($connection['resource'], $tubeName);
+                $this->fetchJobs($connection, $tubeName);
 
                 $this->data['tubes'][] = array(
                     'connection' => $name,
                     'name' => $tubeName,
-                    'stats' => $connection['resource']->statsTube($tubeName)->getArrayCopy(),
+                    'stats' => $connection->statsTube($tubeName)->getArrayCopy(),
                 );
             }
         }
