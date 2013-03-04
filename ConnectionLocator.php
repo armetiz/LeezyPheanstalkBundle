@@ -7,7 +7,6 @@ use Pheanstalk_Pheanstalk;
 class ConnectionLocator
 {
     private $connections;
-    private $info;
     private $default;
     
     public function __construct()
@@ -41,9 +40,9 @@ class ConnectionLocator
     /**
      * @return array
      */
-    public function getConnectionsInfo()
+    public function getDefaultConnection()
     {
-        return $this->info;
+        return $this->getConnection();
     }
     
     /**
@@ -51,21 +50,16 @@ class ConnectionLocator
      * @param Pheanstalk_Pheanstalk $connection
      * @param array $info
      */
-    public function addConnection($name, Pheanstalk_Pheanstalk $connection, array $info = array())
+    public function addConnection($name, Pheanstalk_Pheanstalk $connection, $default = false)
     {
+        if(!is_bool($default)) {
+            throw new \InvalidArgumentException('Default parameter have to be a boolean');
+        }
+        
         $this->connections[$name] = $connection;
 
-        // Gather connection information
-        $this->info[$name] = array(
-            'host' => isset($info['host']) ? $info['host'] : null,
-            'port' => isset($info['port']) ? $info['port'] : null,
-            'timeout' => isset($info['timeout']) ? $info['timeout'] : null,
-            'default' => isset($info['default']) ? $info['default'] : false,
-            'resource' => $connection,
-        );
-
         // Set the default connection name
-        if (true === $this->info[$name]['default']) {
+        if ($default) {
             $this->default = $name;
         }
     }

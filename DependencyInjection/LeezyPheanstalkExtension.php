@@ -29,13 +29,15 @@ class LeezyPheanstalkExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         
-        if (!$config['enabled'])
+        if (!$config['enabled']) {
             return;
+        }
 
         $this->configureConnections($container, $config);
 
-        if ($config['profiler']['enabled'])
+        if ($config['profiler']['enabled']) {
             $this->configureProfiler($container, $config);
+        }
     }
 
     /**
@@ -68,13 +70,8 @@ class LeezyPheanstalkExtension extends Extension
             // Register the connection in the connection locator
             $connectionLocatorDef->addMethodCall('addConnection', array(
                 $name,
-                new Reference('leezy.pheanstalk.' . $name),
-                array(
-                    'host' => $connection['server'],
-                    'port' => $connection['port'],
-                    'timeout' => $connection['timeout'],
-                    'default' => $isDefault,
-                )
+                $container->getDefinition("leezy.pheanstalk." . $name),
+                $isDefault
             ));
 
             if ($isDefault) {
