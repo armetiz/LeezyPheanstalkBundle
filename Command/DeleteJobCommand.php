@@ -19,7 +19,7 @@ class DeleteJobCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:delete-job')
             ->addArgument('job', InputArgument::REQUIRED, 'Jod id to delete.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.')
             ->setDescription('Delete the specified job if it exists.')
         ;
     }

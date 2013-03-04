@@ -17,7 +17,7 @@ class StatsJobCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:stats-job')
             ->addArgument('job', InputArgument::REQUIRED, 'Jod id to get stats.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.')
             ->setDescription('Gives statistical information about the specified job if it exists.')
         ;
     }

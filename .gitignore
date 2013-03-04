@@ -16,3 +16,5 @@ composer.phar
 composer.lock
 
 *.swp
+.DS_Store
+.idea

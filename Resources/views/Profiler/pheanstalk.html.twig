@@ -1,0 +1,124 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% block toolbar %}
+    <div class="sf-toolbar-block">
+        <div class="sf-toolbar-icon">
+            <a href="{{ path('_profiler', { 'token': token, 'panel': name }) }}">
+                <span style="width:0px; height: 28px; vertical-align: middle;"></span>
+                <span class="sf-toolbar-status">{{ collector.jobCount }}</span> Jobs
+            </a>
+        </div>
+        <div class="sf-toolbar-info">
+            <div class="sf-toolbar-info-piece">
+                <b>Connections</b>
+                <span>{{ collector.connections|length }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Tubes</b>
+                <span>{{ collector.tubes|length }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Jobs</b>
+                <span>{{ collector.jobCount }}</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcCAYAAAB/E6/TAAABLUlEQVR42u3TP0vDQBiA8UK/gDiLzi0IhU4OEunk5OQUAhGSOBUCzqWfIKSzX8DRySF0URCcMjWLIJjFD9Cpk/D6HITecEPUuzhIAz8CIdyTP/f2iqI4qaqqDx8l5Ic2uIeP/bquezCokOAFF+oCN3t4gPzSEjc4NEPaCldQbzjELTYW0RJzHDchwwem+ons6ZBpLSJ7nueJC22h0V+FzmwWV0ee59vQNV67CGVZJmEYbkNjfpY6X6I0Qo4/3RMmTdDDspuQVsJvgkP3IdMbIkIjLPBoadG2646iKJI0Ta2wxm6OdnP0/Tk6DYJgHcfxpw21RtscDTDDnaVZ26474GkkSRIrrPEv5sgMTfHe+cA2O6wPH6vOBpYQNALneHb96XTEDI6dzpEZ0VzO0Rf3pP5LMLI4tAAAAABJRU5ErkJggg==" alt=""></span>
+        <strong>Pheanstalk</strong>
+        <span class="count">
+            <span>{{ collector.connections|length }}</span>
+            <span>{{ collector.jobCount }} Jb</span>
+        </span>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Jobs</h2>
+    {% set data = collector.jobs %}
+    {{ block('table_jobs') }}
+
+    <h2>Tubes</h2>
+    {% set data = collector.tubes %}
+    {{ block('table_tube') }}
+
+    <h2>Connections</h2>
+    {% set data = collector.connections %}
+    {{ block('table_connection') }}
+
+    {{ block('javascript') }}
+{% endblock %}
+
+{% block table_connection %}
+    <table>
+        {% for row in data %}
+            <tr>
+                <th colspan="2" style="text-align: center;vertical-align: middle;padding: 5px 0">
+                    {{ row.name }} {% if row.default %}(default){% endif %}
+                </th>
+            </tr>
+            <tbody>
+                <tr>
+                    <th>Host</th>
+                    <td>{{ row.host }}</td>
+                </tr>
+                <tr>
+                    <th>Port</th>
+                    <td>{{ row.port }}</td>
+                </tr>
+                <tr>
+                    <th>Timeout</th>
+                    <td>{{ row.timeout }}</td>
+                </tr>
+                {% for stat, data in row.stats %}
+                <tr>
+                    <th style="width: 150px">{{ stat }}</th>
+                    <td>{{ data }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block table_tube %}
+    <table>
+        {% for row in data %}
+            <tr>
+                <th colspan="2" style="text-align: center;vertical-align: middle;padding: 5px 0">
+                    {{ row.name }} ({{ row.connection }})
+                </th>
+            </tr>
+            <tbody>
+                {% for stat, data in row.stats %}
+                    <tr>
+                        <th style="width: 150px">{{ stat }}</th>
+                        <td>{{ data }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block table_jobs %}
+    {% for tube, types in data %}
+        <table>
+            <th colspan="2" style="text-align: center;vertical-align: middle;padding: 5px 0">
+                {{ tube }}
+            </th>
+            {% for job_type, job in types %}
+                <tr>
+                    <th rowspan="2">Next {{ job_type }}</th>
+                    <td>Job ID: {{ job.id }}</td>
+                </tr>
+                <tr>
+                    <td>Data: {{ job.data }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+{% endblock %}

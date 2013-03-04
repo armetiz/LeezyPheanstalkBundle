@@ -19,7 +19,7 @@ class FlushTubeCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:flush-tube')
             ->addArgument('tube', InputArgument::REQUIRED, 'Tube.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.')
             ->setDescription('Delete all job in a specific tube.')
         ;
     }

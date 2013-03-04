@@ -18,7 +18,7 @@ class PauseTubeCommand extends ContainerAwareCommand
             ->setName('leezy:pheanstalk:pause-tube')
             ->addArgument('tube', InputArgument::REQUIRED, 'The tube to pause')
             ->addArgument('delay', InputArgument::REQUIRED, 'Seconds before jobs may be reserved from this queue.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.', "default")
+            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.')
             ->setDescription('Temporarily prevent jobs being reserved from the given tube.')
         ;
     }
