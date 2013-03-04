@@ -12,16 +12,6 @@ class ConnectionLocatorTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotNull($connectionLocator->getConnections());
     }
     
-    public function testGetDefaultConnection()
-    {
-        $connection = new \Pheanstalk_Pheanstalk('localhost', '11300');
-        
-        $connectionLocator = new ConnectionLocator();
-        $connectionLocator->addConnection('myConnection', $connection, array('default' => true));
-        
-        $this->assertEquals($connection, $connectionLocator->getConnection());
-    }
-    
     public function testGetNoDefinedConnection()
     {
         $connection = new \Pheanstalk_Pheanstalk('localhost', '11300');
@@ -30,5 +20,20 @@ class ConnectionLocatorTest extends \PHPUnit_Framework_TestCase {
         $connectionLocator->addConnection('default', $connection);
         
         $this->assertNull($connectionLocator->getConnection('john.doe'));
+    }
+    
+    public function testGetDefaultConnection()
+    {
+        $connectionA = new \Pheanstalk_Pheanstalk('localhost', '11300');
+        $connectionB = new \Pheanstalk_Pheanstalk('localhost', '11300');
+        
+        $connectionLocator = new ConnectionLocator();
+        $connectionLocator->addConnection('default', $connectionA, true);
+        $connectionLocator->addConnection('foo', $connectionB);
+        
+        $this->assertEquals($connectionA, $connectionLocator->getConnection('default'));
+        $this->assertEquals($connectionB, $connectionLocator->getConnection('foo'));
+        $this->assertEquals($connectionA, $connectionLocator->getConnection());
+        $this->assertEquals($connectionA, $connectionLocator->getDefaultConnection());
     }
 }
