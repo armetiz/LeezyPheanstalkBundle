@@ -1,4 +1,8 @@
-== 1.x ==
+== 1.2.0 ==
+* Add profilter integration, thanks @Maxwell2022
+* Add ConnectionLocator
+
+== 1.1.0 ==
 * Remove useless Tests/Fixtures/Entity/FakeMedia.php
 * Update composer to use symfony/framework-bundle instead of symfony/symfony
 * Remove requirement PHP >= 5.3.3. Use the PHP requirement of symfony/framework-bundle
