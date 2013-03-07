@@ -36,18 +36,27 @@ class PheanstalkDataCollector extends DataCollector
         
         // Collect the information
         foreach ($this->connectionLocator->getConnections() as $name => $connection) {
-            $connectionInformations = $connection->getConnection();
+            // Get information about this connection
+            $this->data['connections'][$name] = array(
+                'name' => $name,
+                'host' => $connection->getConnection()->getHost(),
+                'port' => $connection->getConnection()->getPort(),
+                'timeout' => $connection->getConnection()->getConnectTimeout(),
+                'default' => $defaultConnection === $connection,
+                'stats' => array(),
+                'listening' => $connection->getConnection()->isServiceListening(),
+            );
+            
+            //If connection is not listening, there is a connection problem.
+            //Skip next steps which require an established connection
+            if (!$connection->getConnection()->isServiceListening()) {
+                continue;
+            }
+            
             $connectionStatistics = $connection->stats()->getArrayCopy();
             
             // Get information about this connection
-            $this->data['connections'][] = array(
-                'name' => $name,
-                'host' => $connectionInformations->getHost(),
-                'port' => $connectionInformations->getPort(),
-                'timeout' => $connectionInformations->getConnectTimeout(),
-                'default' => $defaultConnection === $connection,
-                'stats' => $connectionStatistics
-            );
+            $this->data['connections'][$name]['stats'] = $connectionStatistics;
 
             // Increment the number of jobs
             $this->data['jobCount'] += $connectionStatistics['current-jobs-ready'];

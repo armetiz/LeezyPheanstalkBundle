@@ -37,18 +37,18 @@
 {% endblock %}
 
 {% block panel %}
-    <h2>Jobs</h2>
-    {% set data = collector.jobs %}
-    {{ block('table_jobs') }}
+    <h2>Connections</h2>
+    {% set data = collector.connections %}
+    {{ block('table_connection') }}
 
     <h2>Tubes</h2>
     {% set data = collector.tubes %}
     {{ block('table_tube') }}
 
-    <h2>Connections</h2>
-    {% set data = collector.connections %}
-    {{ block('table_connection') }}
-
+    <h2>Jobs</h2>
+    {% set data = collector.jobs %}
+    {{ block('table_jobs') }}
+    
     {{ block('javascript') }}
 {% endblock %}
 
@@ -62,16 +62,24 @@
             </tr>
             <tbody>
                 <tr>
-                    <th>Host</th>
+                    <th>host</th>
                     <td>{{ row.host }}</td>
                 </tr>
                 <tr>
-                    <th>Port</th>
+                    <th>port</th>
                     <td>{{ row.port }}</td>
                 </tr>
                 <tr>
-                    <th>Timeout</th>
+                    <th>timeout</th>
                     <td>{{ row.timeout }}</td>
+                </tr>
+                <tr>
+                    <th>listening</th>
+                    <td>{{ row.listening ? 'yes' : 'no' }}</td>
+                </tr>
+                <tr>
+                    <th>default</th>
+                    <td>{{ row.default ? 'yes' : 'no' }}</td>
                 </tr>
                 {% for stat, data in row.stats %}
                 <tr>
@@ -89,10 +97,14 @@
         {% for row in data %}
             <tr>
                 <th colspan="2" style="text-align: center;vertical-align: middle;padding: 5px 0">
-                    {{ row.name }} ({{ row.connection }})
+                    {{ row.name }} tube on '{{ row.connection }}' connection
                 </th>
             </tr>
             <tbody>
+                <tr>
+                    <th style="width: 150px">connection</th>
+                    <td>{{ row.connection }}</td>
+                </tr>
                 {% for stat, data in row.stats %}
                     <tr>
                         <th style="width: 150px">{{ stat }}</th>
