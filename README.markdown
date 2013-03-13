@@ -1,5 +1,7 @@
 ## LeezyPheanstalkBundle
 
+**This branch is under development**. Require many test to be push into master.
+
 [![project status](http://stillmaintained.com/armetiz/LeezyPheanstalkBundle.png)](http://stillmaintained.com/armetiz/LeezyPheanstalkBundle)
 [![Build Status](https://secure.travis-ci.org/armetiz/LeezyPheanstalkBundle.png)](http://travis-ci.org/armetiz/LeezyPheanstalkBundle)
 
