@@ -97,8 +97,7 @@ class PheanstalkProxy implements ProxyInterface {
      */
     public function pauseTube($tube, $delay)
     {
-        $this->getPheanstalk()->pauseTube($tube, $delay);
-        return $this;
+        return $this->getPheanstalk()->pauseTube($tube, $delay);
     }
 
     /**
