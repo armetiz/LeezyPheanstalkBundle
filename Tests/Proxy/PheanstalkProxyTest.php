@@ -85,7 +85,7 @@ class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase {
                 ->method($name);
         
         $pheanstalkProxy->setPheanstalk($pheanstalkMock);
-        $pheanstalkProxy->setDispatch($dispatchMock);
+        $pheanstalkProxy->setDispatcher($dispatchMock);
         
         call_user_func_array(array($pheanstalkProxy, $name), $value);
     }

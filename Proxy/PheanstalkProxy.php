@@ -350,7 +350,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface {
     /**
      * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
-    public function getDispatch()
+    public function getDispatcher()
     {
         return $this->dispatcher;
     }
@@ -359,7 +359,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface {
      * 
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatch
      */
-    public function setDispatch(EventDispatcherInterface $dispatch)
+    public function setDispatcher(EventDispatcherInterface $dispatch)
     {
         $this->dispatcher = $dispatch;
     }
