@@ -272,6 +272,10 @@ class HomeController extends Controller {
 ?>
 ```
 
+## Events
+
+On each pheanstalk command, an event is dispatched.
+
 ## Extra Part - A simple Beanstalkd Manager
 
 This is an extra part about how to use PheanstalkBundle CLI really quickly.
