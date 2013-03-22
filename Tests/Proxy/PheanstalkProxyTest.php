@@ -80,10 +80,12 @@ class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase {
         
         $pheanstalkProxy = new PheanstalkProxy();
         $pheanstalkMock = $this->getMock('Pheanstalk_PheanstalkInterface');
+        $dispatchMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $pheanstalkMock->expects($this->atLeastOnce())
                 ->method($name);
         
         $pheanstalkProxy->setPheanstalk($pheanstalkMock);
+        $pheanstalkProxy->setDispatch($dispatchMock);
         
         call_user_func_array(array($pheanstalkProxy, $name), $value);
     }

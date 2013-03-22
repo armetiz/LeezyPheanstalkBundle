@@ -9,6 +9,10 @@
 
     <services>
         <!-- repository -->
-        <service id="leezy.pheanstalk.proxy.default" class="%leezy.pheanstalk.proxy.class%" />
+        <service id="leezy.pheanstalk.proxy.default" class="%leezy.pheanstalk.proxy.class%">
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher" on-invalid="ignore"/>
+            </call>
+        </service>
     </services>
 </container>

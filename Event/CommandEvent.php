@@ -4,7 +4,7 @@ namespace Leezy\PheanstalkBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event as EventBase;
 
-use Leezy\PheanstalkBundle\Proxy\PheanstalkInterface;
+use Pheanstalk_PheanstalkInterface;
 
 class CommandEvent extends EventBase
 {
@@ -24,6 +24,7 @@ class CommandEvent extends EventBase
     const PUT_IN_TUBE = "leezy.pheanstalk.event.put_in_tube";
     const RELEASE = "leezy.pheanstalk.event.release";
     const RESERVE = "leezy.pheanstalk.event.reserve";
+    const RESERVE_FROM_TUBE = "leezy.pheanstalk.event.reserve_from_tube";
     const STATS = "leezy.pheanstalk.event.stats";
     const STATS_TUBE = "leezy.pheanstalk.event.stats_tube";
     const STATS_JOB = "leezy.pheanstalk.event.stats_job";
@@ -33,10 +34,12 @@ class CommandEvent extends EventBase
     const WATCH_ONLY = "leezy.pheanstalk.event.watch_only";
     
     private $pheanstalk;
+    private $payload;
     
-    public function __construct(PheanstalkInterface $pheanstalk)
+    public function __construct(Pheanstalk_PheanstalkInterface $pheanstalk, array $payload = array())
     {
         $this->pheanstalk = $pheanstalk;
+        $this->payload = $payload;
     }
 
     /**
@@ -45,5 +48,13 @@ class CommandEvent extends EventBase
     public function getPheanstalk()
     {
         return $this->pheanstalk;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getPayload()
+    {
+        return $this->payload;
     }
 }
