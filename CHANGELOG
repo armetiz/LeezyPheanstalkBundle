@@ -1,3 +1,7 @@
+== 1.3.0 WIP ==
+* Add PheanstalkProxy
+* Allow user to define custom PheanstalkProxy
+
 == 1.2.0 ==
 * Add profilter integration, thanks @Maxwell2022
 * Add ConnectionLocator

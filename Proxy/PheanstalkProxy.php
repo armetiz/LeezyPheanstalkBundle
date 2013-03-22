@@ -5,7 +5,7 @@ namespace Leezy\PheanstalkBundle\Proxy;
 use Pheanstalk_PheanstalkInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class PheanstalkProxy implements ProxyInterface {
+class PheanstalkProxy implements PheanstalkProxyInterface {
     /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
@@ -47,8 +47,7 @@ class PheanstalkProxy implements ProxyInterface {
      */
     public function delete($job)
     {
-        $this->getPheanstalk()->delete($job);
-        return $this;
+        return $this->getPheanstalk()->delete($job);
     }
 
     /**
@@ -274,5 +273,7 @@ class PheanstalkProxy implements ProxyInterface {
     public function setPheanstalk(Pheanstalk_PheanstalkInterface $pheanstalk)
     {
         $this->pheanstalk = $pheanstalk;
+        
+        return $this;
     }
 }

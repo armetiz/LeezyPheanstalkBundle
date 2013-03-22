@@ -5,7 +5,7 @@ namespace Leezy\PheanstalkBundle\DataCollector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Pheanstalk_Pheanstalk;
+use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
 
 use Leezy\PheanstalkBundle\ConnectionLocator;
 
@@ -108,7 +108,7 @@ class PheanstalkDataCollector extends DataCollector
      * @param \Pheanstalk_Pheanstalk $connection
      * @param $tubeName
      */
-    private function fetchJobs(Pheanstalk_Pheanstalk $connection, $tubeName) {
+    private function fetchJobs(PheanstalkProxyInterface $connection, $tubeName) {
         try {
             $nextJobReady = $connection->peekReady($tubeName);
             $this->data['jobs'][$tubeName]['ready'] = array(

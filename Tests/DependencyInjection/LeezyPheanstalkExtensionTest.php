@@ -3,6 +3,7 @@
 namespace Leezy\PheanstalkBundle\Tests\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 use Leezy\PheanstalkBundle\DependencyInjection\LeezyPheanstalkExtension;
 use Leezy\PheanstalkBundle\LeezyPheanstalkBundle;
@@ -139,5 +140,49 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->container->compile();
 
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.connection_locator'));
+    }
+    
+    /**
+     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     */
+    public function testConnectionProxyCustomTypeNotDefined()
+    {
+        $config = array(
+            "leezy_pheanstalk" => array (
+                "enabled" => true,
+                "connection" => array (
+                    "primary" => array (
+                        "server" => "beanstalkd.domain.tld",
+                        "port" => 11300,
+                        "timeout" => 60,
+                        "proxy" => "acme.pheanstalk.connection_proxy"
+                    )
+                )
+            )
+        );
+        $this->extension->load($config, $this->container);
+        $this->container->compile();
+    }
+    
+    public function testConnectionProxyCustomType()
+    {
+        $config = array(
+            "leezy_pheanstalk" => array (
+                "enabled" => true,
+                "connection" => array (
+                    "primary" => array (
+                        "server" => "beanstalkd.domain.tld",
+                        "port" => 11300,
+                        "timeout" => 60,
+                        "proxy" => "acme.pheanstalk.connection_proxy"
+                    )
+                )
+            )
+        );
+        
+        $this->container->setDefinition('acme.pheanstalk.connection_proxy', new Definition('Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface'));
+        
+        $this->extension->load($config, $this->container);
+        $this->container->compile();
     }
 }

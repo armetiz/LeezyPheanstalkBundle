@@ -202,6 +202,7 @@ leezy_pheanstalk:
         secondary:
             server: beanstalkd-2.domain.tld
             default: true
+            proxy: acme.pheanstalk.connection
 ```
 
 ### Step 4: Enjoy the CLI

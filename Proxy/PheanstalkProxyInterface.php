@@ -4,7 +4,7 @@ namespace Leezy\PheanstalkBundle\Proxy;
 
 use Pheanstalk_PheanstalkInterface;
 
-interface ProxyInterface extends Pheanstalk_PheanstalkInterface {
+interface PheanstalkProxyInterface extends Pheanstalk_PheanstalkInterface {
     /**
      * @return \Pheanstalk_PheanstalkInterface
      */

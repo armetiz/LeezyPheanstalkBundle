@@ -29,7 +29,8 @@ class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase {
     
     public function testInterfaces()
     {
-        $this->assertInstanceOf('Leezy\PheanstalkBundle\Proxy\ProxyInterface', $this->pheanstalkProxy);
+        $this->assertInstanceOf('Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface', $this->pheanstalkProxy);
+        $this->assertInstanceOf('Pheanstalk_PheanstalkInterface', $this->pheanstalkProxy);
     }
     
     public function testProxyValue()

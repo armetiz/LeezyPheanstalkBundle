@@ -2,7 +2,7 @@
 
 namespace Leezy\PheanstalkBundle;
 
-use Pheanstalk_Pheanstalk;
+use Pheanstalk_PheanstalkInterface;
 
 class ConnectionLocator
 {
@@ -25,7 +25,7 @@ class ConnectionLocator
     /**
      * @param string $name
      * 
-     * @return \Pheanstalk_Connection $connection
+     * @return \Pheanstalk_PheanstalkInterface
      */
     public function getConnection($name = null) {
         $name = null !== $name ? $name : $this->default;
@@ -47,16 +47,16 @@ class ConnectionLocator
     
     /**
      * @param string $name
-     * @param Pheanstalk_Pheanstalk $connection
-     * @param array $info
+     * @param \Pheanstalk_PheanstalkInterface $pheanstalk
+     * @param boolean $default
      */
-    public function addConnection($name, Pheanstalk_Pheanstalk $connection, $default = false)
+    public function addConnection($name, Pheanstalk_PheanstalkInterface $pheanstalk, $default = false)
     {
         if(!is_bool($default)) {
             throw new \InvalidArgumentException('Default parameter have to be a boolean');
         }
         
-        $this->connections[$name] = $connection;
+        $this->connections[$name] = $pheanstalk;
 
         // Set the default connection name
         if ($default) {
