@@ -79,4 +79,4 @@ This bundle is under the MIT license. [See the complete license](https://github.
 Author - [Thomas Tourlourat](http://www.armetiz.info)
 
 Contributor :
-* (Maxwell2022)[https://github.com/Maxwell2022] : Symfony2 Profiler integration
+* [Maxwell2022](https://github.com/Maxwell2022) : Symfony2 Profiler integration
