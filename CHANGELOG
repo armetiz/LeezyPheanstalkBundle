@@ -7,6 +7,8 @@
 * Event integration
 * BC : Use 'pheanstalk' name instead of 'connection' to avoid confusion
 * Add more security on CLI
+* Logger integration
+* Add documentation on custom proxy
 
 == 1.2.0 ==
 * Add profilter integration, thanks @Maxwell2022

@@ -22,6 +22,7 @@ The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a [pheanstalk](http
 * [Configuration](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/2-configuration.md)
 * [CLI Usage](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/3-cli.md)
 * [Events](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/4-events.md)
+* [Custom proxy](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/5-custom-proxy.md)
 * [Extra - Beanstalk Manager](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/extra-beanstalk-manager.md)
 
 ## Usage example
