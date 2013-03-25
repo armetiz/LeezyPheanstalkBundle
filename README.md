@@ -1,6 +1,7 @@
 ## LeezyPheanstalkBundle
 
 **This branch is under development**.
+
 **BC : Use 'pheanstalk' name instead of 'connection' to avoid confusion**
 
 
