@@ -78,6 +78,7 @@ class FlushTubeCommand extends ContainerAwareCommand
 
         }
 
+        $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
         $output->writeln('Job deleted : <info>' . $numJobDelete . '</info>.');
     }
 }

@@ -47,8 +47,13 @@ class StatsCommand extends ContainerAwareCommand
         $stats = $pheanstalk->stats();
 
         if (count($stats) === 0 ) {
+            $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
             $output->writeln('<info>0 stats.</info>');
+            
+            return;
         }
+        
+        $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
 
         foreach ($stats as $key => $information) {
             $output->writeln('- <info>' . $key . '</info> : ' . $information);

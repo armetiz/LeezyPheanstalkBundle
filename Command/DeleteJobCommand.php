@@ -52,8 +52,10 @@ class DeleteJobCommand extends ContainerAwareCommand
             $job = $pheanstalk->peek($jobId);
             $pheanstalk->delete($job);
 
+            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln('Job <info>' . $jobId . '</info> deleted.');
         } catch (Pheanstalk_Exception_CommandException $ex) {
+            $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
             $output->writeln('Job not found');
         }
 

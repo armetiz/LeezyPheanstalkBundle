@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Pheanstalk_Exception_CommandException;
+
 class PeekCommand extends ContainerAwareCommand
 {
     /**
@@ -46,12 +48,15 @@ class PeekCommand extends ContainerAwareCommand
             return;
         }
 
-        $job = $pheanstalk->peek ($jobId);
+        try {
+            $job = $pheanstalk->peek ($jobId);
 
-        if ($job) {
+            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln('Job id : <info>' . $job->getId() . '</info>');
             $output->writeln('Data : <info>' . $job->getData() . '</info>');
-        } else {
+        }
+        catch (Pheanstalk_Exception_CommandException $ex) {
+            $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
             $output->writeln('No valid job found');
         }
     }

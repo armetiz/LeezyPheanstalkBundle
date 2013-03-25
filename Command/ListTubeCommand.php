@@ -47,15 +47,16 @@ class ListTubeCommand extends ContainerAwareCommand
         $tubes = $pheanstalk->listTubes();
 
         if (count($tubes) === 0 ) {
-            $output->writeln('<info>0</info> tube defined.');
+            $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
+            $output->writeln('<error>0</error> tube defined.');
 
             return;
         }
 
-        $output->writeln('Tubes:');
+        $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
 
         foreach ($tubes as $tube) {
-            $output->writeln('- <info>' . $tube . '</info>');
+            $output->writeln('- ' . $tube);
         }
     }
 }

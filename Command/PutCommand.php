@@ -71,6 +71,7 @@ class PutCommand extends ContainerAwareCommand
         $pheanstalk->useTube ($tube);
         $jobId = $pheanstalk->put ($data, $priority, $delay, $ttr);
 
+        $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
         $output->writeln('New job on tube <info>' . $tube . '</info> with id <info>' . $jobId . '</info>.');
     }
 }

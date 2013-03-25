@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Pheanstalk_Exception_ServerException;
+
 class StatsTubeCommand extends ContainerAwareCommand
 {
     /**
@@ -46,14 +48,24 @@ class StatsTubeCommand extends ContainerAwareCommand
             return;
         }
 
-        $stats = $pheanstalk->statsTube($tube);
+        try {
+            $stats = $pheanstalk->statsTube($tube);
+            
+            if (count($stats) === 0 ) {
+                $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
+                $output->writeln('<info>0 stats.</info>');
+            }
+            else {
+                $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
 
-        if (count($stats) === 0 ) {
-            $output->writeln('<info>0 stats.</info>');
+                foreach ($stats as $key => $information) {
+                    $output->writeln('- <info>' . $key . '</info> : ' . $information);
+                }
+            }
         }
-
-        foreach ($stats as $key => $information) {
-            $output->writeln('- <info>' . $key . '</info> : ' . $information);
+        catch (Pheanstalk_Exception_ServerException $ex) {
+            $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
+            $output->writeln('Tube not found');
         }
     }
 }
