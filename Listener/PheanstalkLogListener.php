@@ -13,12 +13,12 @@ class PheanstalkLogListener implements EventSubscriberInterface
      * @var \Symfony\Bridge\Monolog\Logger
      */
     protected $logger;
-    
+
     public static function getSubscribedEvents()
     {
-        $listenEvents = array(     
+        $listenEvents = array(
             CommandEvent::BURY => 'onCommand',
-            CommandEvent::DELETE => 'onCommand', 
+            CommandEvent::DELETE => 'onCommand',
             CommandEvent::IGNORE => 'onCommand',
             CommandEvent::KICK => 'onCommand',
             CommandEvent::LIST_TUBE_USED => 'onCommand',
@@ -42,40 +42,40 @@ class PheanstalkLogListener implements EventSubscriberInterface
             CommandEvent::WATCH => 'onCommand',
             CommandEvent::WATCH_ONLY => 'onCommand',
         );
-        
+
         return $listenEvents;
     }
-    
+
     /**
-     * 
+     *
      * @param \Leezy\PheanstalkBundle\Event\CommandEvent $eventArgs
      */
     public function onCommand(CommandEvent $event)
     {
-        if(!$this->getLogger()) {
+        if (!$this->getLogger()) {
             return;
         }
-        
+
         $pheanstalk = $event->getPheanstalk();
         $connection = $pheanstalk->getConnection();
-        
-        if(!$connection->isServiceListening()) {
+
+        if (!$connection->isServiceListening()) {
             $this->getLogger()->warning('Pheanstalk connection isn\'t linstening');
         }
-        
-        $pheanstalkName = 'unknown';        
-        if($pheanstalk instanceof PheanstalkProxyInterface) {
+
+        $pheanstalkName = 'unknown';
+        if ($pheanstalk instanceof PheanstalkProxyInterface) {
             $pheanstalkName = $pheanstalk->getName();
         }
-        
+
         $nameExploded = explode(".", $event->getName());
-        
+
         $this->getLogger()->info('Pheanstalk command: ' . $nameExploded[count($nameExploded) - 1], array (
             'payload' => $event->getPayload(),
             'pheanstalk' => $pheanstalkName,
         ));
     }
-    
+
     /**
      * @return \Symfony\Bridge\Monolog\Logger
      */
@@ -83,9 +83,9 @@ class PheanstalkLogListener implements EventSubscriberInterface
     {
         return $this->logger;
     }
-    
+
     /**
-     * 
+     *
      * @param \Symfony\Bridge\Monolog\Logger $logger
      */
     public function setLogger($logger)

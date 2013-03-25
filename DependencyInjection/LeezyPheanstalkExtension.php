@@ -26,7 +26,7 @@ class LeezyPheanstalkExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-        
+
         if (!$config['enabled']) {
             return;
         }
@@ -41,8 +41,8 @@ class LeezyPheanstalkExtension extends Extension
     /**
      * Configures the Connections and Connection Locator
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param array $config
+     * @param  \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param  array                                                   $config
      * @throws \Leezy\PheanstalkBundle\Exceptions\PheanstalkException
      */
     public function configureConnections(ContainerBuilder $container, array $config)
@@ -66,7 +66,7 @@ class LeezyPheanstalkExtension extends Extension
         $dataCollectorDef->setPublic(false);
         $dataCollectorDef->addTag('data_collector', array('id' => 'pheanstalk', 'template' => $config['profiler']['template']));
         $dataCollectorDef->addArgument(new Reference('leezy.pheanstalk.pheanstalk_locator'));
-        
+
         $container->setDefinition("leezy.pheanstalk.data_collector", $dataCollectorDef);
     }
 }

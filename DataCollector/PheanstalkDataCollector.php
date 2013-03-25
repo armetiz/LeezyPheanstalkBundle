@@ -33,7 +33,7 @@ class PheanstalkDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $defaultPheanstalk = $this->pheanstalkLocator->getDefaultPheanstalk();
-        
+
         // Collect the information
         foreach ($this->pheanstalkLocator->getPheanstalks() as $name => $pheanstalk) {
             // Get information about this connection
@@ -46,15 +46,15 @@ class PheanstalkDataCollector extends DataCollector
                 'stats' => array(),
                 'listening' => $pheanstalk->getConnection()->isServiceListening(),
             );
-            
+
             //If connection is not listening, there is a connection problem.
             //Skip next steps which require an established connection
             if (!$pheanstalk->getConnection()->isServiceListening()) {
                 continue;
             }
-            
+
             $pheanstalkStatistics = $pheanstalk->stats()->getArrayCopy();
-            
+
             // Get information about this connection
             $this->data['pheanstalks'][$name]['stats'] = $pheanstalkStatistics;
 
@@ -108,14 +108,15 @@ class PheanstalkDataCollector extends DataCollector
      * @param \Pheanstalk_Pheanstalk $pheanstalk
      * @param $tubeName
      */
-    private function fetchJobs(PheanstalkProxyInterface $pheanstalk, $tubeName) {
+    private function fetchJobs(PheanstalkProxyInterface $pheanstalk, $tubeName)
+    {
         try {
             $nextJobReady = $pheanstalk->peekReady($tubeName);
             $this->data['jobs'][$tubeName]['ready'] = array(
                 'id' => $nextJobReady->getId(),
                 'data' => $nextJobReady->getData(),
             );
-        }catch (\Pheanstalk_Exception_ServerException $e){}
+        } catch (\Pheanstalk_Exception_ServerException $e) {}
 
         try {
             $nextJobBuried = $pheanstalk->peekBuried($tubeName);
@@ -123,6 +124,6 @@ class PheanstalkDataCollector extends DataCollector
                 'id' => $nextJobBuried->getId(),
                 'data' => $nextJobBuried->getData(),
             );
-        }catch (\Pheanstalk_Exception_ServerException $e){}
+        } catch (\Pheanstalk_Exception_ServerException $e) {}
     }
 }

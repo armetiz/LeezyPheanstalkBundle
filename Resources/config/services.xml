@@ -15,7 +15,7 @@
                 <argument type="service" id="event_dispatcher" on-invalid="ignore"/>
             </call>
         </service>
-        
+
         <!-- listener -->
         <service id="leezy.pheanstalk.listener.log" class="%leezy.pheanstalk.listener.log.class%">
             <call method="setLogger">

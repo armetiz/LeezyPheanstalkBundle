@@ -28,33 +28,34 @@ class DeleteJobCommand extends ContainerAwareCommand
     {
         $jobId = $input->getArgument('job');
         $pheanstalkName = $input->getArgument('pheanstalk');
-        
+
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
         $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
-        if(null === $pheanstalkName) {
+
+        if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
             $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
+
         try {
             $job = $pheanstalk->peek($jobId);
             $pheanstalk->delete($job);
-            
+
             $output->writeln('Job <info>' . $jobId . '</info> deleted.');
-        }
-        catch (Pheanstalk_Exception_CommandException $ex) {
+        } catch (Pheanstalk_Exception_CommandException $ex) {
             $output->writeln('Job not found');
         }
-        
+
     }
 }

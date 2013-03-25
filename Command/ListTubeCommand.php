@@ -24,33 +24,36 @@ class ListTubeCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $pheanstalkName = $input->getArgument('pheanstalk');
-        
+
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
         $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
-        if(null === $pheanstalkName) {
+
+        if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
             $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
+
         $tubes = $pheanstalk->listTubes();
-        
+
         if (count($tubes) === 0 ) {
             $output->writeln('<info>0</info> tube defined.');
+
             return;
         }
-        
+
         $output->writeln('Tubes:');
-        
+
         foreach ($tubes as $tube) {
             $output->writeln('- <info>' . $tube . '</info>');
         }

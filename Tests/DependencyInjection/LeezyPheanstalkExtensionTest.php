@@ -8,7 +8,8 @@ use Symfony\Component\DependencyInjection\Definition;
 use Leezy\PheanstalkBundle\DependencyInjection\LeezyPheanstalkExtension;
 use Leezy\PheanstalkBundle\LeezyPheanstalkBundle;
 
-class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
+class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
+{
     private $container;
     private $extension;
 
@@ -16,7 +17,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
     {
         $this->container = new ContainerBuilder();
         $this->extension = new LeezyPheanstalkExtension();
-        
+
         $bundle = new LeezyPheanstalkBundle();
         $bundle->build($this->container); // Attach all default factories
     }
@@ -25,7 +26,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
     {
         unset($this->container, $this->extension);
     }
-    
+
     public function testInitConfiguration()
     {
         $config = array(
@@ -43,11 +44,11 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         );
         $this->extension->load($config, $this->container);
         //$this->container->compile();
-        
+
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.pheanstalk_locator'));
         $this->assertTrue($this->container->hasParameter('leezy.pheanstalk.pheanstalks'));
     }
-    
+
     public function testDefaultPheanstalk()
     {
         $config = array(
@@ -65,11 +66,11 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         );
         $this->extension->load($config, $this->container);
         $this->container->compile();
-        
+
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.primary'));
         $this->assertTrue($this->container->hasAlias('leezy.pheanstalk'));
     }
-    
+
     public function testNoDefaultPheanstalk()
     {
         $config = array(
@@ -90,7 +91,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.primary'));
         $this->assertFalse($this->container->hasAlias('leezy.pheanstalk'));
     }
-    
+
     /**
      * @expectedException Leezy\PheanstalkBundle\Exceptions\PheanstalkException
      */
@@ -114,7 +115,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->extension->load($config, $this->container);
         $this->container->compile();
     }
-    
+
     public function testMultiplePheanstalks()
     {
         $config = array(
@@ -142,7 +143,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.two'));
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.three'));
     }
-    
+
     public function testPheanstalkLocator()
     {
         $config = array(
@@ -163,7 +164,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.pheanstalk_locator'));
     }
-    
+
     /**
      * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      */
@@ -185,7 +186,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->extension->load($config, $this->container);
         $this->container->compile();
     }
-    
+
     /**
      * @expectedException \RuntimeException
      */
@@ -207,7 +208,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->extension->load($config, $this->container);
         $this->container->compile();
     }
-    
+
     public function testPheanstalkProxyCustomType()
     {
         $config = array(
@@ -223,9 +224,9 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
                 )
             )
         );
-        
+
         $this->container->setDefinition('acme.pheanstalk.pheanstalk_proxy', new Definition('Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface'));
-        
+
         $this->extension->load($config, $this->container);
         $this->container->compile();
     }

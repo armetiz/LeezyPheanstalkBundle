@@ -36,39 +36,41 @@ class PutCommand extends ContainerAwareCommand
         $delay = $input->getArgument('delay');
         $ttr = $input->getArgument('ttr');
         $pheanstalkName = $input->getArgument('pheanstalk');
-        
+
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
         $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
-        if(null === $pheanstalkName) {
+
+        if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
             $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
+
         if (null == $priority) {
             $priority = Pheanstalk::DEFAULT_PRIORITY;
         }
-        
+
         if (null == $delay) {
             $delay = Pheanstalk::DEFAULT_DELAY;
         }
-        
+
         if (null == $ttr) {
             $ttr = Pheanstalk::DEFAULT_TTR;
         }
-        
+
         $pheanstalk->useTube ($tube);
         $jobId = $pheanstalk->put ($data, $priority, $delay, $ttr);
-        
+
         $output->writeln('New job on tube <info>' . $tube . '</info> with id <info>' . $jobId . '</info>.');
     }
 }

@@ -26,30 +26,32 @@ class StatsTubeCommand extends ContainerAwareCommand
     {
         $tube = $input->getArgument('tube');
         $pheanstalkName = $input->getArgument('pheanstalk');
-        
+
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
         $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
-        if(null === $pheanstalkName) {
+
+        if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
             $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
+
         $stats = $pheanstalk->statsTube($tube);
-        
+
         if (count($stats) === 0 ) {
             $output->writeln('<info>0 stats.</info>');
         }
-        
+
         foreach ($stats as $key => $information) {
             $output->writeln('- <info>' . $key . '</info> : ' . $information);
         }

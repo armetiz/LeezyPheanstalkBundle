@@ -4,41 +4,42 @@ namespace Leezy\PheanstalkBundle\Tests\Proxy;
 
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 
-class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase {
+class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @var \Leezy\PheanstalkBundle\Proxy\PheanstalkProxy
      */
     protected $pheanstalkProxy;
-    
+
     /**
-     * @var \Pheanstalk_PheanstalkInterface 
+     * @var \Pheanstalk_PheanstalkInterface
      */
     protected $pheanstalk;
-    
+
     public function setUp()
     {
         $this->pheanstalk = $this->getMock('Pheanstalk_PheanstalkInterface');
         $this->pheanstalkProxy = new PheanstalkProxy();
     }
-    
+
     public function tearDown()
     {
         unset($this->pheanstalk);
         unset($this->pheanstalkProxy);
     }
-    
+
     public function testInterfaces()
     {
         $this->assertInstanceOf('Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface', $this->pheanstalkProxy);
         $this->assertInstanceOf('Pheanstalk_PheanstalkInterface', $this->pheanstalkProxy);
     }
-    
+
     public function testProxyValue()
     {
         $this->pheanstalkProxy->setPheanstalk($this->pheanstalk);
         $this->assertEquals($this->pheanstalk, $this->pheanstalkProxy->getPheanstalk());
     }
-    
+
     public function namedFunctions ()
     {
         return array (
@@ -68,25 +69,25 @@ class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase {
             array('watchOnly', array('foo')),
         );
     }
-    
+
     /**
      * @dataProvider namedFunctions
      */
     public function testProxyFunctionCalls($name, $value = null)
     {
-        if(null === $value) {
+        if (null === $value) {
             $value = array();
         }
-        
+
         $pheanstalkProxy = new PheanstalkProxy();
         $pheanstalkMock = $this->getMock('Pheanstalk_PheanstalkInterface');
         $dispatchMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $pheanstalkMock->expects($this->atLeastOnce())
                 ->method($name);
-        
+
         $pheanstalkProxy->setPheanstalk($pheanstalkMock);
         $pheanstalkProxy->setDispatcher($dispatchMock);
-        
+
         call_user_func_array(array($pheanstalkProxy, $name), $value);
     }
 }

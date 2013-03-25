@@ -26,31 +26,32 @@ class PeekCommand extends ContainerAwareCommand
     {
         $jobId = $input->getArgument('job');
         $pheanstalkName = $input->getArgument('pheanstalk');
-        
+
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
         $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
-        if(null === $pheanstalkName) {
+
+        if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
             $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
-        
+
         $job = $pheanstalk->peek ($jobId);
-        
+
         if ($job) {
             $output->writeln('Job id : <info>' . $job->getId() . '</info>');
             $output->writeln('Data : <info>' . $job->getData() . '</info>');
-        }
-        else {
+        } else {
             $output->writeln('No valid job found');
         }
     }

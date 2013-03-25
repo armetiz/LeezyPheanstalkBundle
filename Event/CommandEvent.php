@@ -32,10 +32,10 @@ class CommandEvent extends EventBase
     const USE_TUBE = "leezy.pheanstalk.event.use_tube";
     const WATCH = "leezy.pheanstalk.event.watch";
     const WATCH_ONLY = "leezy.pheanstalk.event.watch_only";
-    
+
     private $pheanstalk;
     private $payload;
-    
+
     public function __construct(Pheanstalk_PheanstalkInterface $pheanstalk, array $payload = array())
     {
         $this->pheanstalk = $pheanstalk;
@@ -49,7 +49,7 @@ class CommandEvent extends EventBase
     {
         return $this->pheanstalk;
     }
-    
+
     /**
      * @return array
      */
