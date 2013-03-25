@@ -33,7 +33,11 @@ class ListTubeCommand extends ContainerAwareCommand
             return;
         }
         
-        if (!$pheanstalk->getPheanstalk()->isServiceListening()) {
+        if(null === $pheanstalkName) {
+            $pheanstalkName = 'default';
+        }
+        
+        if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
             $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
             return;
         }
@@ -42,7 +46,10 @@ class ListTubeCommand extends ContainerAwareCommand
         
         if (count($tubes) === 0 ) {
             $output->writeln('<info>0</info> tube defined.');
+            return;
         }
+        
+        $output->writeln('Tubes:');
         
         foreach ($tubes as $tube) {
             $output->writeln('- <info>' . $tube . '</info>');

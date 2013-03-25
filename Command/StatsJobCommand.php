@@ -35,7 +35,11 @@ class StatsJobCommand extends ContainerAwareCommand
             return;
         }
         
-        if (!$pheanstalk->getPheanstalk()->isServiceListening()) {
+        if(null === $pheanstalkName) {
+            $pheanstalkName = 'default';
+        }
+        
+        if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
             $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
             return;
         }
