@@ -15,6 +15,11 @@ class PheanstalkProxy implements PheanstalkProxyInterface {
     protected $dispatcher;
     
     /**
+     * @var string
+     */
+    protected $name;
+    
+    /**
      * @var \Pheanstalk_PheanstalkInterface 
      */
     protected $pheanstalk;
@@ -378,6 +383,24 @@ class PheanstalkProxy implements PheanstalkProxyInterface {
     public function setPheanstalk(Pheanstalk_PheanstalkInterface $pheanstalk)
     {
         $this->pheanstalk = $pheanstalk;
+        
+        return $this;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function setName($name) 
+    {
+        $this->name = $name;
         
         return $this;
     }

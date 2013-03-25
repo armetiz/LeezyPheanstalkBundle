@@ -15,6 +15,8 @@ class ProxyCompilerPass implements CompilerPassInterface {
                 'pheanstalk_locator',
                 'proxy',
                 'data_collector',
+                'listener',
+                'event',
             );
     }
     
@@ -38,12 +40,15 @@ class ProxyCompilerPass implements CompilerPassInterface {
             $pheanstalkConfig = array($pheanstalk['server'], $pheanstalk['port'], $pheanstalk['timeout']);
             $isDefault = $pheanstalk['default'];
             
-            //TODO : Add Reflection to check PheanstalkProxyInterface implementation
+            $pheanstalkDef = $container->getDefinition($pheanstalk['proxy']);
+
+            //TODO: Add Reflection to check PheanstalkProxyInterface implementation
+            //$pheanstalkRefl = new \ReflectionClass($pheanstalkDef->getClass());
+            //$pheanstalkRefl->implementsInterface('Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface')
+            $pheanstalkDef->addMethodCall('setPheanstalk', array(new Definition('Pheanstalk_Pheanstalk', $pheanstalkConfig))); 
+            $pheanstalkDef->addMethodCall('setName', array($name)); 
             
-            $pheanstalkProxyDef = $container->getDefinition($pheanstalk['proxy']);
-            $pheanstalkProxyDef->addMethodCall('setPheanstalk', array(new Definition('Pheanstalk_Pheanstalk', $pheanstalkConfig))); 
-            
-            $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkProxyDef);
+            $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkDef);
 
             // Register the connection in the connection locator
             $pheanstalkLocatorDef->addMethodCall('addPheanstalk', array(

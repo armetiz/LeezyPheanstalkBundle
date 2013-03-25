@@ -14,4 +14,15 @@ interface PheanstalkProxyInterface extends Pheanstalk_PheanstalkInterface {
      * @param \Pheanstalk_PheanstalkInterface $pheanstalk
      */
     public function setPheanstalk(Pheanstalk_PheanstalkInterface $pheanstalk);
+    
+    /**
+     * @return string
+     */
+    public function getName();
+    
+    /**
+     * 
+     * @param string $name
+     */
+    public function setName($name);
 }
