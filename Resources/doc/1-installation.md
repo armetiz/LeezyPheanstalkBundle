@@ -57,7 +57,7 @@ Finally, add the following to your config.yml
 # app/config/config.yml
 leezy_pheanstalk:
     enabled: true
-    connection:
+    pheanstalks:
         primary:
             server: beanstalkd.domain.tld
             default: true

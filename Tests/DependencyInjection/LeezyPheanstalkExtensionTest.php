@@ -26,12 +26,34 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         unset($this->container, $this->extension);
     }
     
-    public function testDefaultConnection()
+    public function testInitConfiguration()
     {
         $config = array(
             "leezy_pheanstalk" => array (
                 "enabled" => true,
-                "connection" => array (
+                "pheanstalks" => array (
+                    "primary" => array (
+                        "server" => "beanstalkd.domain.tld",
+                        "port" => 11300,
+                        "timeout" => 60,
+                        "default" => true
+                    )
+                )
+            )
+        );
+        $this->extension->load($config, $this->container);
+        //$this->container->compile();
+        
+        $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.pheanstalk_locator'));
+        $this->assertTrue($this->container->hasParameter('leezy.pheanstalk.pheanstalks'));
+    }
+    
+    public function testDefaultPheanstalk()
+    {
+        $config = array(
+            "leezy_pheanstalk" => array (
+                "enabled" => true,
+                "pheanstalks" => array (
                     "primary" => array (
                         "server" => "beanstalkd.domain.tld",
                         "port" => 11300,
@@ -43,17 +65,17 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         );
         $this->extension->load($config, $this->container);
         $this->container->compile();
-
+        
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.primary'));
         $this->assertTrue($this->container->hasAlias('leezy.pheanstalk'));
     }
     
-    public function testNoDefaultConnection()
+    public function testNoDefaultPheanstalk()
     {
         $config = array(
             "leezy_pheanstalk" => array (
                 "enabled" => true,
-                "connection" => array (
+                "pheanstalks" => array (
                     "primary" => array (
                         "server" => "beanstalkd.domain.tld",
                         "port" => 11300,
@@ -72,12 +94,12 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Leezy\PheanstalkBundle\Exceptions\PheanstalkException
      */
-    public function testTwoDefaultConnections()
+    public function testTwoDefaultPheanstalks()
     {
         $config = array(
             "leezy_pheanstalk" => array (
                 "enabled" => true,
-                "connection" => array (
+                "pheanstalks" => array (
                     "one" => array (
                         "server" => "beanstalkd.domain.tld",
                         "default" => true
@@ -93,12 +115,12 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->container->compile();
     }
     
-    public function testMultipleConnections()
+    public function testMultiplePheanstalks()
     {
         $config = array(
             "leezy_pheanstalk" => array (
                 "enabled" => true,
-                "connection" => array (
+                "pheanstalks" => array (
                     "one" => array (
                         "server" => "beanstalkd.domain.tld",
                         "port" => 11300,
@@ -121,12 +143,12 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.three'));
     }
     
-    public function testConnectionLocator()
+    public function testPheanstalkLocator()
     {
         $config = array(
             "leezy_pheanstalk" => array (
                 "enabled" => true,
-                "connection" => array (
+                "pheanstalks" => array (
                     "primary" => array (
                         "server" => "beanstalkd.domain.tld",
                         "port" => 11300,
@@ -139,23 +161,23 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->extension->load($config, $this->container);
         $this->container->compile();
 
-        $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.connection_locator'));
+        $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.pheanstalk_locator'));
     }
     
     /**
      * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      */
-    public function testConnectionProxyCustomTypeNotDefined()
+    public function testPheanstalkProxyCustomTypeNotDefined()
     {
         $config = array(
             "leezy_pheanstalk" => array (
                 "enabled" => true,
-                "connection" => array (
+                "pheanstalks" => array (
                     "primary" => array (
                         "server" => "beanstalkd.domain.tld",
                         "port" => 11300,
                         "timeout" => 60,
-                        "proxy" => "acme.pheanstalk.connection_proxy"
+                        "proxy" => "acme.pheanstalk.pheanstalk_proxy"
                     )
                 )
             )
@@ -164,23 +186,45 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase {
         $this->container->compile();
     }
     
-    public function testConnectionProxyCustomType()
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testPheanstalkReservedName()
     {
         $config = array(
             "leezy_pheanstalk" => array (
                 "enabled" => true,
-                "connection" => array (
+                "pheanstalks" => array (
+                    "proxy" => array (
+                        "server" => "beanstalkd.domain.tld",
+                        "port" => 11300,
+                        "timeout" => 60,
+                        "proxy" => "acme.pheanstalk.pheanstalk_proxy"
+                    )
+                )
+            )
+        );
+        $this->extension->load($config, $this->container);
+        $this->container->compile();
+    }
+    
+    public function testPheanstalkProxyCustomType()
+    {
+        $config = array(
+            "leezy_pheanstalk" => array (
+                "enabled" => true,
+                "pheanstalks" => array (
                     "primary" => array (
                         "server" => "beanstalkd.domain.tld",
                         "port" => 11300,
                         "timeout" => 60,
-                        "proxy" => "acme.pheanstalk.connection_proxy"
+                        "proxy" => "acme.pheanstalk.pheanstalk_proxy"
                     )
                 )
             )
         );
         
-        $this->container->setDefinition('acme.pheanstalk.connection_proxy', new Definition('Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface'));
+        $this->container->setDefinition('acme.pheanstalk.pheanstalk_proxy', new Definition('Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface'));
         
         $this->extension->load($config, $this->container);
         $this->container->compile();

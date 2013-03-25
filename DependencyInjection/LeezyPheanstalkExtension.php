@@ -48,9 +48,9 @@ class LeezyPheanstalkExtension extends Extension
     public function configureConnections(ContainerBuilder $container, array $config)
     {
         // Create a connection locator that will reference all existing connection
-        $connectionLocatorDef = new Definition("Leezy\PheanstalkBundle\ConnectionLocator");
-        $container->setDefinition("leezy.pheanstalk.connection_locator", $connectionLocatorDef);
-        $container->setParameter('leezy.pheanstalk.connections', $config['connection']);
+        $connectionLocatorDef = new Definition("Leezy\PheanstalkBundle\PheanstalkLocator");
+        $container->setDefinition("leezy.pheanstalk.pheanstalk_locator", $connectionLocatorDef);
+        $container->setParameter('leezy.pheanstalk.pheanstalks', $config['pheanstalks']);
     }
 
     /**
@@ -65,7 +65,8 @@ class LeezyPheanstalkExtension extends Extension
         $dataCollectorDef = new Definition('Leezy\PheanstalkBundle\DataCollector\PheanstalkDataCollector');
         $dataCollectorDef->setPublic(false);
         $dataCollectorDef->addTag('data_collector', array('id' => 'pheanstalk', 'template' => $config['profiler']['template']));
-        $dataCollectorDef->addArgument(new Reference('leezy.pheanstalk.connection_locator'));
-        $container->setDefinition("leezy.data_collector.pheanstalk", $dataCollectorDef);
+        $dataCollectorDef->addArgument(new Reference('leezy.pheanstalk.pheanstalk_locator'));
+        
+        $container->setDefinition("leezy.pheanstalk.data_collector", $dataCollectorDef);
     }
 }

@@ -18,7 +18,7 @@ class PauseTubeCommand extends ContainerAwareCommand
             ->setName('leezy:pheanstalk:pause-tube')
             ->addArgument('tube', InputArgument::REQUIRED, 'The tube to pause')
             ->addArgument('delay', InputArgument::REQUIRED, 'Seconds before jobs may be reserved from this queue.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.')
+            ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
             ->setDescription('Temporarily prevent jobs being reserved from the given tube.')
         ;
     }
@@ -27,13 +27,18 @@ class PauseTubeCommand extends ContainerAwareCommand
     {
         $tube = $input->getArgument('tube');
         $delay = $input->getArgument('delay');
-        $connectionName = $input->getArgument('connection');
+        $pheanstalkName = $input->getArgument('pheanstalk');
         
-        $connectionLocator = $this->getContainer()->get('leezy.pheanstalk.connection_locator');
-        $pheanstalk = $connectionLocator->getConnection($connectionName);
+        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
+        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
         
-        if (null == $pheanstalk) {
-            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+        if (null === $pheanstalk) {
+            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+            return;
+        }
+        
+        if (!$pheanstalk->getPheanstalk()->isServiceListening()) {
+            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
             return;
         }
         

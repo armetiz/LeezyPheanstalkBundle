@@ -10,8 +10,8 @@
         </div>
         <div class="sf-toolbar-info">
             <div class="sf-toolbar-info-piece">
-                <b>Connections</b>
-                <span>{{ collector.connections|length }}</span>
+                <b>Pheanstalks</b>
+                <span>{{ collector.pheanstalks|length }}</span>
             </div>
             <div class="sf-toolbar-info-piece">
                 <b>Tubes</b>
@@ -30,16 +30,16 @@
         <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcCAYAAAB/E6/TAAABLUlEQVR42u3TP0vDQBiA8UK/gDiLzi0IhU4OEunk5OQUAhGSOBUCzqWfIKSzX8DRySF0URCcMjWLIJjFD9Cpk/D6HITecEPUuzhIAz8CIdyTP/f2iqI4qaqqDx8l5Ic2uIeP/bquezCokOAFF+oCN3t4gPzSEjc4NEPaCldQbzjELTYW0RJzHDchwwem+ons6ZBpLSJ7nueJC22h0V+FzmwWV0ee59vQNV67CGVZJmEYbkNjfpY6X6I0Qo4/3RMmTdDDspuQVsJvgkP3IdMbIkIjLPBoadG2646iKJI0Ta2wxm6OdnP0/Tk6DYJgHcfxpw21RtscDTDDnaVZ26474GkkSRIrrPEv5sgMTfHe+cA2O6wPH6vOBpYQNALneHb96XTEDI6dzpEZ0VzO0Rf3pP5LMLI4tAAAAABJRU5ErkJggg==" alt=""></span>
         <strong>Pheanstalk</strong>
         <span class="count">
-            <span>{{ collector.connections|length }}</span>
+            <span>{{ collector.pheanstalks|length }}</span>
             <span>{{ collector.jobCount }} Jb</span>
         </span>
     </span>
 {% endblock %}
 
 {% block panel %}
-    <h2>Connections</h2>
-    {% set data = collector.connections %}
-    {{ block('table_connection') }}
+    <h2>Pheanstalks</h2>
+    {% set data = collector.pheanstalks %}
+    {{ block('table_pheanstalk') }}
 
     <h2>Tubes</h2>
     {% set data = collector.tubes %}
@@ -52,7 +52,7 @@
     {{ block('javascript') }}
 {% endblock %}
 
-{% block table_connection %}
+{% block table_pheanstalk %}
     <table>
         {% for row in data %}
             <tr>
@@ -97,13 +97,13 @@
         {% for row in data %}
             <tr>
                 <th colspan="2" style="text-align: center;vertical-align: middle;padding: 5px 0">
-                    {{ row.name }} tube on '{{ row.connection }}' connection
+                    {{ row.name }} tube on '{{ row.pheanstalk }}' pheanstalk
                 </th>
             </tr>
             <tbody>
                 <tr>
-                    <th style="width: 150px">connection</th>
-                    <td>{{ row.connection }}</td>
+                    <th style="width: 150px">pheanstalk</th>
+                    <td>{{ row.pheanstalk }}</td>
                 </tr>
                 {% for stat, data in row.stats %}
                     <tr>

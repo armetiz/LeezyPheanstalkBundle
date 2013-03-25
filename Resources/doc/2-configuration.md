@@ -12,7 +12,7 @@ This bundle can be configured, and this is the list of what you can do :
 # app/config/config.yml
 leezy_pheanstalk:
     enabled: true
-    connection:
+    pheanstalks:
         primary:
             server: beanstalkd.domain.tld
             port: 11300
@@ -20,15 +20,15 @@ leezy_pheanstalk:
         secondary:
             server: beanstalkd-2.domain.tld
             default: true
-            proxy: acme.pheanstalk.connection
+            proxy: acme.pheanstalk
 ```
 
-*acme.pheanstalk.connection* is a custom proxy which implements the *Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface* interface.
+*acme.pheanstalk* is a custom proxy which implements the *Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface* interface.
 
 **Note:**
 ```
-    You can retreive each connection using the container with "leezy.pheanstalk.[connection_name]".
-    When you define a "default" connection. You can have a direct access to it with "leezy.pheanstalk".
+    You can retreive each pheanstalk using the container with "leezy.pheanstalk.[pheanstalk_name]".
+    When you define a "default" pheanstalk. You can have a direct access to it with "leezy.pheanstalk".
 ```
 
 ``` php
@@ -64,11 +64,11 @@ class HomeController extends Controller {
         $pheanstalkSecondary->delete($job);
 
         // ----------------------------------------
-        // on each defined connections
-        $pheanstalkConnectionLocator = $this->get("leezy.pheanstalk.connection_locator");
+        // on each defined pheanstalks
+        $pheanstalkLocator = $this->get("leezy.pheanstalk.pheanstalk_locator");
 
-        foreach($pheanstalkConnectionLocator->getConnections() as $connection) {
-            $pheanstalkDefault
+        foreach($pheanstalkLocator->getPheanstalks() as $pheanstalk) {
+            $pheanstalk
                 ->useTube('boardcast')
                 ->put("job payload goes here\n");
         }

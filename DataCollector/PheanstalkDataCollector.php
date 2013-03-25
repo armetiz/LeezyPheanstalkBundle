@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
 
-use Leezy\PheanstalkBundle\ConnectionLocator;
+use Leezy\PheanstalkBundle\PheanstalkLocator;
 
 /**
  * This is the data collector for LeezyPheanstalkBundle
@@ -17,13 +17,13 @@ use Leezy\PheanstalkBundle\ConnectionLocator;
  */
 class PheanstalkDataCollector extends DataCollector
 {
-    protected $connectionLocator;
+    protected $pheanstalkLocator;
 
-    public function __construct(ConnectionLocator $connectionLocator)
+    public function __construct(PheanstalkLocator $pheanstalkLocator)
     {
-        $this->connectionLocator = $connectionLocator;
+        $this->pheanstalkLocator = $pheanstalkLocator;
         $this->data = array(
-            'connections' => array(),
+            'pheanstalks' => array(),
             'tubes' => array(),
             'jobCount' => 0,
             'jobs' => array(),
@@ -32,54 +32,54 @@ class PheanstalkDataCollector extends DataCollector
 
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $defaultConnection = $this->connectionLocator->getDefaultConnection();
+        $defaultPheanstalk = $this->pheanstalkLocator->getDefaultPheanstalk();
         
         // Collect the information
-        foreach ($this->connectionLocator->getConnections() as $name => $connection) {
+        foreach ($this->pheanstalkLocator->getPheanstalks() as $name => $pheanstalk) {
             // Get information about this connection
-            $this->data['connections'][$name] = array(
+            $this->data['pheanstalks'][$name] = array(
                 'name' => $name,
-                'host' => $connection->getConnection()->getHost(),
-                'port' => $connection->getConnection()->getPort(),
-                'timeout' => $connection->getConnection()->getConnectTimeout(),
-                'default' => $defaultConnection === $connection,
+                'host' => $pheanstalk->getConnection()->getHost(),
+                'port' => $pheanstalk->getConnection()->getPort(),
+                'timeout' => $pheanstalk->getConnection()->getConnectTimeout(),
+                'default' => $defaultPheanstalk === $pheanstalk,
                 'stats' => array(),
-                'listening' => $connection->getConnection()->isServiceListening(),
+                'listening' => $pheanstalk->getConnection()->isServiceListening(),
             );
             
             //If connection is not listening, there is a connection problem.
             //Skip next steps which require an established connection
-            if (!$connection->getConnection()->isServiceListening()) {
+            if (!$pheanstalk->getConnection()->isServiceListening()) {
                 continue;
             }
             
-            $connectionStatistics = $connection->stats()->getArrayCopy();
+            $pheanstalkStatistics = $pheanstalk->stats()->getArrayCopy();
             
             // Get information about this connection
-            $this->data['connections'][$name]['stats'] = $connectionStatistics;
+            $this->data['pheanstalks'][$name]['stats'] = $pheanstalkStatistics;
 
             // Increment the number of jobs
-            $this->data['jobCount'] += $connectionStatistics['current-jobs-ready'];
+            $this->data['jobCount'] += $pheanstalkStatistics['current-jobs-ready'];
 
             // Get information about the tubes of this connection
-            $tubes = $connection->listTubes();
+            $tubes = $pheanstalk->listTubes();
             foreach ($tubes as $tubeName) {
 
                 // Fetch next ready job and next buried job for this tube
-                $this->fetchJobs($connection, $tubeName);
+                $this->fetchJobs($pheanstalk, $tubeName);
 
                 $this->data['tubes'][] = array(
-                    'connection' => $name,
+                    'pheanstalk' => $name,
                     'name' => $tubeName,
-                    'stats' => $connection->statsTube($tubeName)->getArrayCopy(),
+                    'stats' => $pheanstalk->statsTube($tubeName)->getArrayCopy(),
                 );
             }
         }
     }
 
-    public function getConnections()
+    public function getPheanstalks()
     {
-        return $this->data['connections'];
+        return $this->data['pheanstalks'];
     }
 
     public function getTubes()
@@ -105,12 +105,12 @@ class PheanstalkDataCollector extends DataCollector
     /**
      * Get the next job ready and buried in the specified tube and connection
      *
-     * @param \Pheanstalk_Pheanstalk $connection
+     * @param \Pheanstalk_Pheanstalk $pheanstalk
      * @param $tubeName
      */
-    private function fetchJobs(PheanstalkProxyInterface $connection, $tubeName) {
+    private function fetchJobs(PheanstalkProxyInterface $pheanstalk, $tubeName) {
         try {
-            $nextJobReady = $connection->peekReady($tubeName);
+            $nextJobReady = $pheanstalk->peekReady($tubeName);
             $this->data['jobs'][$tubeName]['ready'] = array(
                 'id' => $nextJobReady->getId(),
                 'data' => $nextJobReady->getData(),
@@ -118,7 +118,7 @@ class PheanstalkDataCollector extends DataCollector
         }catch (\Pheanstalk_Exception_ServerException $e){}
 
         try {
-            $nextJobBuried = $connection->peekBuried($tubeName);
+            $nextJobBuried = $pheanstalk->peekBuried($tubeName);
             $this->data['jobs'][$tubeName]['buried'] = array(
                 'id' => $nextJobBuried->getId(),
                 'data' => $nextJobBuried->getData(),

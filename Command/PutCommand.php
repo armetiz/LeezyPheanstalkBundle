@@ -23,7 +23,7 @@ class PutCommand extends ContainerAwareCommand
             ->addArgument('priority', InputArgument::OPTIONAL, 'From 0 (most urgent) to 0xFFFFFFFF (least urgent).')
             ->addArgument('delay', InputArgument::OPTIONAL, 'Seconds to wait before job becomes ready.')
             ->addArgument('ttr', InputArgument::OPTIONAL, 'Time To Run: seconds a job can be reserved for.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.')
+            ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
             ->setDescription('Puts a job on the queue.')
         ;
     }
@@ -35,13 +35,18 @@ class PutCommand extends ContainerAwareCommand
         $priority = $input->getArgument('priority');
         $delay = $input->getArgument('delay');
         $ttr = $input->getArgument('ttr');
-        $connectionName = $input->getArgument('connection');
+        $pheanstalkName = $input->getArgument('pheanstalk');
         
-        $connectionLocator = $this->getContainer()->get('leezy.pheanstalk.connection_locator');
-        $pheanstalk = $connectionLocator->getConnection($connectionName);
+        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
+        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
         
-        if (null == $pheanstalk) {
-            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+        if (null === $pheanstalk) {
+            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+            return;
+        }
+        
+        if (!$pheanstalk->getPheanstalk()->isServiceListening()) {
+            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
             return;
         }
         

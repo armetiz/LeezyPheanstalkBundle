@@ -17,7 +17,7 @@ class PeekCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:peek')
             ->addArgument('job', InputArgument::REQUIRED, 'The job to peek.')
-            ->addArgument('connection', InputArgument::OPTIONAL, 'Connection name.')
+            ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
             ->setDescription('Inspect a job in the system, regardless of what tube it is in.')
         ;
     }
@@ -25,13 +25,18 @@ class PeekCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $jobId = $input->getArgument('job');
-        $connectionName = $input->getArgument('connection');
+        $pheanstalkName = $input->getArgument('pheanstalk');
         
-        $connectionLocator = $this->getContainer()->get('leezy.pheanstalk.connection_locator');
-        $pheanstalk = $connectionLocator->getConnection($connectionName);
+        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
+        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
         
-        if (null == $pheanstalk) {
-            $output->writeln('Connection not found : <error>' . $connectionName . '</error>');
+        if (null === $pheanstalk) {
+            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+            return;
+        }
+        
+        if (!$pheanstalk->getPheanstalk()->isServiceListening()) {
+            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
             return;
         }
         

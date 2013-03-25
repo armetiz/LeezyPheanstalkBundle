@@ -4,22 +4,22 @@ namespace Leezy\PheanstalkBundle;
 
 use Pheanstalk_PheanstalkInterface;
 
-class ConnectionLocator
+class PheanstalkLocator
 {
-    private $connections;
+    private $pheanstalks;
     private $default;
     
     public function __construct()
     {
-        $this->connections = array();
+        $this->pheanstalks = array();
     }
     
     /**
      * @return array
      */
-    public function getConnections()
+    public function getPheanstalks()
     {
-        return $this->connections;
+        return $this->pheanstalks;
     }
     
     /**
@@ -27,11 +27,11 @@ class ConnectionLocator
      * 
      * @return \Pheanstalk_PheanstalkInterface
      */
-    public function getConnection($name = null) {
+    public function getPheanstalk($name = null) {
         $name = null !== $name ? $name : $this->default;
 
-        if (array_key_exists($name, $this->connections)) {
-            return $this->connections[$name];
+        if (array_key_exists($name, $this->pheanstalks)) {
+            return $this->pheanstalks[$name];
         }
 
         return null;
@@ -40,9 +40,9 @@ class ConnectionLocator
     /**
      * @return array
      */
-    public function getDefaultConnection()
+    public function getDefaultPheanstalk()
     {
-        return $this->getConnection();
+        return $this->getPheanstalk();
     }
     
     /**
@@ -50,13 +50,13 @@ class ConnectionLocator
      * @param \Pheanstalk_PheanstalkInterface $pheanstalk
      * @param boolean $default
      */
-    public function addConnection($name, Pheanstalk_PheanstalkInterface $pheanstalk, $default = false)
+    public function addPheanstalk($name, Pheanstalk_PheanstalkInterface $pheanstalk, $default = false)
     {
         if(!is_bool($default)) {
             throw new \InvalidArgumentException('Default parameter have to be a boolean');
         }
         
-        $this->connections[$name] = $pheanstalk;
+        $this->pheanstalks[$name] = $pheanstalk;
 
         // Set the default connection name
         if ($default) {

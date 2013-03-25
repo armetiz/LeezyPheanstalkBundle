@@ -8,43 +8,56 @@ use Symfony\Component\DependencyInjection\Definition;
 use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
 
 class ProxyCompilerPass implements CompilerPassInterface {
+    protected function reservedName()
+    {
+        return array(
+                'pheanstalks',
+                'pheanstalk_locator',
+                'proxy',
+                'data_collector',
+            );
+    }
+    
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasParameter('leezy.pheanstalk.connections')) {
+        if (!$container->hasParameter('leezy.pheanstalk.pheanstalks')) {
             return;
         }
         
-        $defaultConnectionName = null;
-        $connections = $container->getParameter('leezy.pheanstalk.connections');
+        $defaultPheanstalkName = null;
+        $pheanstalks = $container->getParameter('leezy.pheanstalk.pheanstalks');
         
-        $connectionLocatorDef = $container->getDefinition("leezy.pheanstalk.connection_locator");
+        $pheanstalkLocatorDef = $container->getDefinition("leezy.pheanstalk.pheanstalk_locator");
         
         // For each connection in the configuration file
-        foreach ($connections as $name => $connection) {
-            $connectionConfig = array($connection['server'], $connection['port'], $connection['timeout']);
-            $isDefault = $connection['default'];
+        foreach ($pheanstalks as $name => $pheanstalk) {
+            if(in_array($name, $this->reservedName())) {
+                throw new \RuntimeException('Reserved pheanstalk name : ' . $name);
+            }
+            
+            $pheanstalkConfig = array($pheanstalk['server'], $pheanstalk['port'], $pheanstalk['timeout']);
+            $isDefault = $pheanstalk['default'];
             
             //TODO : Add Reflection to check PheanstalkProxyInterface implementation
             
-            $pheanstalkProxyDef = $container->getDefinition($connection['proxy']);
-            $pheanstalkProxyDef->addMethodCall('setPheanstalk', array(new Definition('Pheanstalk_Pheanstalk', $connectionConfig))); 
-            //$pheanstalkDef->addTag('pheanstalk_connection', array('name' => $name));
+            $pheanstalkProxyDef = $container->getDefinition($pheanstalk['proxy']);
+            $pheanstalkProxyDef->addMethodCall('setPheanstalk', array(new Definition('Pheanstalk_Pheanstalk', $pheanstalkConfig))); 
             
             $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkProxyDef);
 
             // Register the connection in the connection locator
-            $connectionLocatorDef->addMethodCall('addConnection', array(
+            $pheanstalkLocatorDef->addMethodCall('addPheanstalk', array(
                 $name,
                 $container->getDefinition("leezy.pheanstalk." . $name),
                 $isDefault
             ));
 
             if ($isDefault) {
-                if (null !== $defaultConnectionName) {
-                    throw new PheanstalkException(sprintf("Default connection already defined. '%s' & '%s'", $defaultConnectionName, $name));
+                if (null !== $defaultPheanstalkName) {
+                    throw new PheanstalkException(sprintf("Default pheanstalk already defined. '%s' & '%s'", $defaultPheanstalkName, $name));
                 }
 
-                $defaultConnectionName = $name;
+                $defaultPheanstalkName = $name;
                 $container->setAlias("leezy.pheanstalk", "leezy.pheanstalk." . $name);
             }
         }
