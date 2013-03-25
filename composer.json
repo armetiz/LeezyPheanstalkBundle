@@ -12,7 +12,8 @@
     }],
     "require": {
         "symfony/framework-bundle": ">=2.0",
-        "pda/pheanstalk": "dev-master"
+        "pda/pheanstalk": "dev-master",
+        "symfony/monolog-bridge": ">=2.0"
     },
     "autoload": {
         "psr-0": { "Leezy\\PheanstalkBundle": "" }

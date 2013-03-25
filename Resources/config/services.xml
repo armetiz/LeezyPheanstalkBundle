@@ -5,14 +5,23 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="leezy.pheanstalk.proxy.class">Leezy\PheanstalkBundle\Proxy\PheanstalkProxy</parameter>
+        <parameter key="leezy.pheanstalk.listener.log.class">Leezy\PheanstalkBundle\Listener\PheanstalkLogListener</parameter>
     </parameters>
 
     <services>
-        <!-- repository -->
+        <!-- proxy -->
         <service id="leezy.pheanstalk.proxy.default" class="%leezy.pheanstalk.proxy.class%">
             <call method="setDispatcher">
                 <argument type="service" id="event_dispatcher" on-invalid="ignore"/>
             </call>
+        </service>
+        
+        <!-- listener -->
+        <service id="leezy.pheanstalk.listener.log" class="%leezy.pheanstalk.listener.log.class%">
+            <call method="setLogger">
+                <argument type="service" id="logger" on-invalid="ignore"/>
+            </call>
+            <tag name="kernel.event_subscriber" />
         </service>
     </services>
 </container>
