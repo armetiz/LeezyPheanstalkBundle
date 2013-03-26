@@ -1,4 +1,4 @@
-== 2.0.0 WIP ==
+== 2.0.0 ==
 * Add PheanstalkProxy
 * Allow user to define custom PheanstalkProxy
 * Fragment documentation

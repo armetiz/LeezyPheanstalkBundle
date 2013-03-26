@@ -1,6 +1,6 @@
 ## Custom proxy
 
-Add a custom proxy only if you can't do what you want using [Events](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/4-events.md) hook system.
+Add a custom proxy only if you can't do what you want using [Events](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.0/Resources/doc/4-events.md) hook system.
 
 # Create a proxy class
 
