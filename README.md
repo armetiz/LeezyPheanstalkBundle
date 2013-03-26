@@ -1,10 +1,5 @@
 ## LeezyPheanstalkBundle
 
-**This branch is under development**.
-
-**BC : Use 'pheanstalk' name instead of 'connection' to avoid confusion**
-
-
 [![project status](http://stillmaintained.com/armetiz/LeezyPheanstalkBundle.png)](http://stillmaintained.com/armetiz/LeezyPheanstalkBundle)
 [![Build Status](https://secure.travis-ci.org/armetiz/LeezyPheanstalkBundle.png)](http://travis-ci.org/armetiz/LeezyPheanstalkBundle)
 
