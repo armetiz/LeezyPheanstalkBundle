@@ -7,6 +7,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Leezy\PheanstalkBundle\Event\CommandEvent;
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
 
+use Monolog\Logger;
+
 class PheanstalkLogListener implements EventSubscriberInterface
 {
     /**
@@ -77,7 +79,7 @@ class PheanstalkLogListener implements EventSubscriberInterface
     }
 
     /**
-     * @return \Symfony\Bridge\Monolog\Logger
+     * @return \Monolog\Logger
      */
     public function getLogger()
     {
@@ -86,10 +88,12 @@ class PheanstalkLogListener implements EventSubscriberInterface
 
     /**
      *
-     * @param \Symfony\Bridge\Monolog\Logger $logger
+     * @param \Monolog\Logger $logger
      */
-    public function setLogger($logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
+        
+        return $this;
     }
 }
