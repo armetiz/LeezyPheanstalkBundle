@@ -13,12 +13,12 @@ The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a [pheanstalk](http
 * A proxy system to customize the command features.
 
 
-* [Installation](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.0/Resources/doc/1-installation.md)
-* [Configuration](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.0/Resources/doc/2-configuration.md)
-* [CLI Usage](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.0/Resources/doc/3-cli.md)
-* [Events](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.0/Resources/doc/4-events.md)
-* [Custom proxy](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.0/Resources/doc/5-custom-proxy.md)
-* [Extra - Beanstalk Manager](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.0/Resources/doc/extra-beanstalk-manager.md)
+* [Installation](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.1/Resources/doc/1-installation.md)
+* [Configuration](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.1/Resources/doc/2-configuration.md)
+* [CLI Usage](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.1/Resources/doc/3-cli.md)
+* [Events](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.1/Resources/doc/4-events.md)
+* [Custom proxy](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.1/Resources/doc/5-custom-proxy.md)
+* [Extra - Beanstalk Manager](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.1/Resources/doc/extra-beanstalk-manager.md)
 
 ## Usage example
 
@@ -67,7 +67,7 @@ $ phpunit
 
 ## License
 
-This bundle is under the MIT license. [See the complete license](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.0/LICENSE).
+This bundle is under the MIT license. [See the complete license](https://github.com/armetiz/LeezyPheanstalkBundle/tree/2.0.1/LICENSE).
 
 ## Credits
 
