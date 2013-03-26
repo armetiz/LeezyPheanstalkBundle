@@ -80,3 +80,6 @@ Author - [Thomas Tourlourat](http://www.armetiz.info)
 
 Contributor :
 * [Maxwell2022](https://github.com/Maxwell2022) : Symfony2 Profiler integration
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/armetiz/LeezyPheanstalkBundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
