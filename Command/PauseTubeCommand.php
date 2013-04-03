@@ -34,14 +34,14 @@ class PauseTubeCommand extends ContainerAwareCommand
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
         $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
 
+        if (null === $pheanstalkName) {
+            $pheanstalkName = 'default';
+        }
+        
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 
             return;
-        }
-
-        if (null === $pheanstalkName) {
-            $pheanstalkName = 'default';
         }
 
         if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
