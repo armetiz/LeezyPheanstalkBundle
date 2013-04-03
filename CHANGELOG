@@ -1,3 +1,6 @@
+== 2.1.0 (next) ==
+* Fix default name on Command
+
 == 2.0.1 ==
 * Set type hint for logger
 * Add few tests on PheanstalkLogListener
