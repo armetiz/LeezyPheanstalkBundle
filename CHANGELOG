@@ -1,4 +1,6 @@
-== 2.1.0 (next) ==
+== 2.1.0 ==
+* Use pda/pheanstalk 2.1.0
+* Add KickCommand
 * Fix default name on Command
 
 == 2.0.1 ==
