@@ -94,6 +94,18 @@ class PheanstalkProxy implements PheanstalkProxyInterface
     /**
      * {@inheritDoc}
      */
+    public function kickJob($job)
+    {
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(CommandEvent::KICK_JOB, new CommandEvent($this));
+        }
+
+        return $this->getPheanstalk()->kickJob($job);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function listTubes()
     {
         if ($this->dispatcher) {
