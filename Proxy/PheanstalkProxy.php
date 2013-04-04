@@ -97,7 +97,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface
     public function kickJob($job)
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::KICK_JOB, new CommandEvent($this));
+            $this->dispatcher->dispatch(CommandEvent::KICK_JOB, new CommandEvent($this, array('job' => $job)));
         }
 
         return $this->getPheanstalk()->kickJob($job);
