@@ -32,6 +32,10 @@ class KickCommand extends ContainerAwareCommand
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
         $pheanstalk = $pheanstalkLocator->getConnection($pheanstalkName);
 
+        if (null === $pheanstalkName) {
+            $pheanstalkName = 'default';
+        }
+        
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
             return;
@@ -44,7 +48,6 @@ class KickCommand extends ContainerAwareCommand
 
         try
         {
-            $numJobKicked = 0;
             $numJobKicked = $pheanstalk->useTube($tube)->kick($max);
 
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
@@ -59,7 +62,7 @@ class KickCommand extends ContainerAwareCommand
         catch(Pheanstalk_Exception_PheanstalkException $e)
         {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
-            $output->writeln(sprintf('%d Job(s) have been kicked from %s', $numJobKicked, $tube));
+            $output->writeln(sprintf('%d Job(s) have been kicked from %s', 0, $tube));
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }
     }
