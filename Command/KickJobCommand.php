@@ -2,12 +2,13 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
+use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class KickCommand extends ContainerAwareCommand
+class KickJobCommand extends ContainerAwareCommand
 {
     /**
      * @see Command
@@ -15,18 +16,16 @@ class KickCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('leezy:pheanstalk:kick')
-            ->addArgument('tube', InputArgument::REQUIRED, 'The tube to kick the jobs from.')
-            ->addArgument('max', InputArgument::OPTIONAL, 'The maximum job to kick from this tube.', 1)
+            ->setName('leezy:pheanstalk:kick-job')
+            ->addArgument('job', InputArgument::REQUIRED, 'The job to kick.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Kick buried jobs from a specific tube.')
+            ->setDescription('Kick the specified job if it has a valid buried status, regardless of what tube it is in.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tube = $input->getArgument('tube');
-        $max = $input->getArgument('max');
+        $jobId = $input->getArgument('job');
         $pheanstalkName = $input->getArgument('pheanstalk');
 
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
@@ -48,21 +47,16 @@ class KickCommand extends ContainerAwareCommand
 
         try
         {
-            $numJobKicked = $pheanstalk->useTube($tube)->kick($max);
+            $job = $pheanstalk->peek($jobId);
+            $pheanstalk->kickJob($job);
 
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+            $output->writeln(sprintf('The job #%d has been kicked.', $jobId));
 
-            if ($numJobKicked > 0) {
-                $output->writeln(sprintf('%d Job(s) have been kicked from %s', $numJobKicked, $tube));
-            }
-            else {
-                $output->writeln('No job to kicked were found');
-            }
         }
         catch(Pheanstalk_Exception_PheanstalkException $e)
         {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
-            $output->writeln(sprintf('%d Job(s) have been kicked from %s', 0, $tube));
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }
     }
