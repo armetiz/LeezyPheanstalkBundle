@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Pheanstalk_Exception_ServerException;
+use Pheanstalk_Exception;
 
 class PauseTubeCommand extends ContainerAwareCommand
 {
@@ -55,9 +55,9 @@ class PauseTubeCommand extends ContainerAwareCommand
             
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln('Tube <info>' . $tube . '</info> have been paused for <info>' . $delay . '</info> seconds.');
-        } catch (Pheanstalk_Exception_ServerException $ex) {
-            $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
-            $output->writeln('Can pause the tube.');
+        } catch(Pheanstalk_Exception $e) {
+            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }
     }
 }

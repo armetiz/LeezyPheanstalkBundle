@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Pheanstalk_Exception;
+
 class KickCommand extends ContainerAwareCommand
 {
     /**
@@ -46,8 +48,7 @@ class KickCommand extends ContainerAwareCommand
             return;
         }
 
-        try
-        {
+        try {
             $numJobKicked = $pheanstalk->useTube($tube)->kick($max);
 
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
@@ -58,9 +59,7 @@ class KickCommand extends ContainerAwareCommand
             else {
                 $output->writeln('No job to kicked were found');
             }
-        }
-        catch(Pheanstalk_Exception_PheanstalkException $e)
-        {
+        } catch(Pheanstalk_Exception $e) {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('%d Job(s) have been kicked from %s', 0, $tube));
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));

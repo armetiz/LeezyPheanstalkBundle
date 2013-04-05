@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Pheanstalk_Exception_CommandException;
+use Pheanstalk_Exception;
 
 class StatsJobCommand extends ContainerAwareCommand
 {
@@ -64,10 +64,9 @@ class StatsJobCommand extends ContainerAwareCommand
             foreach ($stats as $key => $information) {
                 $output->writeln('- <info>' . $key . '</info> : ' . $information);
             }
-        }
-        catch (Pheanstalk_Exception_CommandException $ex) {
-            $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
-            $output->writeln('No valid job found');
+        } catch(Pheanstalk_Exception $e) {
+            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }
     }
 }

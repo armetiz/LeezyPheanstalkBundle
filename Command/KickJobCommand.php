@@ -2,11 +2,12 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use Pheanstalk_Exception;
 
 class KickJobCommand extends ContainerAwareCommand
 {
@@ -17,7 +18,7 @@ class KickJobCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:kick-job')
-            ->addArgument('job', InputArgument::REQUIRED, 'The job to kick.')
+            ->addArgument('job', InputArgument::REQUIRED, 'The job id to kick.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
             ->setDescription('Kick the specified job if it has a valid buried status, regardless of what tube it is in.')
         ;
@@ -45,17 +46,14 @@ class KickJobCommand extends ContainerAwareCommand
             return;
         }
 
-        try
-        {
+        try {
             $job = $pheanstalk->peek($jobId);
             $pheanstalk->kickJob($job);
 
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('The job #%d has been kicked.', $jobId));
 
-        }
-        catch(Pheanstalk_Exception_PheanstalkException $e)
-        {
+        } catch(Pheanstalk_Exception $e) {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }
