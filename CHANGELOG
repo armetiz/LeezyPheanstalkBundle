@@ -1,3 +1,7 @@
+== 2.1.2 ==
+* Add KickJobCommand
+* Fix error management on command
+
 == 2.1.1 ==
 * Fix missing implementation of PheanstalkInterface::kickJob
 
