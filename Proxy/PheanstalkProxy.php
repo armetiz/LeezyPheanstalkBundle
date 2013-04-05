@@ -238,7 +238,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface
                 'ttr' => $ttr)));
         }
 
-        $this->getPheanstalk()->putInTube($tube, $data, $priority, $delay, $ttr);
+        return $this->getPheanstalk()->putInTube($tube, $data, $priority, $delay, $ttr);
     }
 
     /**
