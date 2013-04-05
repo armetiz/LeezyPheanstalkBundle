@@ -128,7 +128,11 @@
                     <td>Job ID: {{ job.id }}</td>
                 </tr>
                 <tr>
-                    <td>Data: {{ job.data }}</td>
+                    <td>
+                        <div style="float:left;width:100%;word-spacing:normal;word-wrap:break-word;max-width:720px;">
+                            Data: {{ job.data }}
+                        </div>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
