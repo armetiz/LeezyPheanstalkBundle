@@ -1,3 +1,7 @@
+## 2.1.3
+* Fixed return value for Proxy::putInTube
+* CHANGELOG use markdown extension
+
 ## 2.1.2
 * Add KickJobCommand
 * Fix error management on command
