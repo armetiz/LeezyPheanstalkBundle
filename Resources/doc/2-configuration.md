@@ -12,7 +12,7 @@ This bundle can be configured, and this is the list of what you can do :
 # app/config/config.yml
 leezy_pheanstalk:
     enabled: true
-    pheanstalks:
+    connection:
         primary:
             server: beanstalkd.domain.tld
             port: 11300
