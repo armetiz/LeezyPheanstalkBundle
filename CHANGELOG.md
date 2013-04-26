@@ -1,3 +1,6 @@
+## 2.1.4 (next)
+* Fix install documentation.
+
 ## 2.1.3
 * Fixed return value for Proxy::putInTube
 * CHANGELOG use markdown extension
