@@ -16,5 +16,8 @@ class PheanstalkLogListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($pheanstalkLogListener->getLogger());
         $this->assertEquals($pheanstalkLogListener, $pheanstalkLogListener->setLogger($logger));
         $this->assertEquals($logger, $pheanstalkLogListener->getLogger());
+        
+        $this->assertTrue(method_exists($logger, 'addWarning'));
+        $this->assertTrue(method_exists($logger, 'addInfo'));
     }
 }
