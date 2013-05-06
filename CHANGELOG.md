@@ -1,5 +1,6 @@
 ## 2.1.4 (next)
 * Fix install documentation.
+* Fix #29
 
 ## 2.1.3
 * Fixed return value for Proxy::putInTube
