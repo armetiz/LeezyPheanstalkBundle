@@ -28,12 +28,13 @@ class FlushTubeCommand extends ContainerAwareCommand
         $pheanstalkName = $input->getArgument('pheanstalk');
 
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
-        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
 
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
+        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 
