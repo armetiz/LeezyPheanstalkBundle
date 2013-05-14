@@ -62,7 +62,7 @@ class PheanstalkLogListener implements EventSubscriberInterface
         $connection = $pheanstalk->getConnection();
 
         if (!$connection->isServiceListening()) {
-            $this->getLogger()->addWarning('Pheanstalk connection isn\'t linstening');
+            $this->getLogger()->addWarning('Pheanstalk connection isn\'t listening');
         }
 
         $pheanstalkName = 'unknown';
@@ -72,10 +72,13 @@ class PheanstalkLogListener implements EventSubscriberInterface
 
         $nameExploded = explode(".", $event->getName());
 
-        $this->getLogger()->addInfo('Pheanstalk command: ' . $nameExploded[count($nameExploded) - 1], array (
-            'payload' => $event->getPayload(),
-            'pheanstalk' => $pheanstalkName,
-        ));
+        $this->getLogger()->addInfo(
+            'Pheanstalk command: ' . $nameExploded[count($nameExploded) - 1],
+            array (
+                'payload' => $event->getPayload(),
+                'pheanstalk' => $pheanstalkName,
+            )
+        );
     }
 
     /**

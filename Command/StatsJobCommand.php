@@ -20,8 +20,7 @@ class StatsJobCommand extends ContainerAwareCommand
             ->setName('leezy:pheanstalk:stats-job')
             ->addArgument('job', InputArgument::REQUIRED, 'Jod id to get stats.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Gives statistical information about the specified job if it exists.')
-        ;
+            ->setDescription('Gives statistical information about the specified job if it exists.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -35,7 +34,7 @@ class StatsJobCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 
@@ -49,7 +48,7 @@ class StatsJobCommand extends ContainerAwareCommand
         }
 
         try {
-            
+
             $job = $pheanstalk->peek($jobId);
             $stats = $pheanstalk->statsJob($job);
 
@@ -64,7 +63,7 @@ class StatsJobCommand extends ContainerAwareCommand
             foreach ($stats as $key => $information) {
                 $output->writeln('- <info>' . $key . '</info> : ' . $information);
             }
-        } catch(Pheanstalk_Exception $e) {
+        } catch (Pheanstalk_Exception $e) {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }
