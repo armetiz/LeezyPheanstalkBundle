@@ -20,8 +20,7 @@ class KickJobCommand extends ContainerAwareCommand
             ->setName('leezy:pheanstalk:kick-job')
             ->addArgument('job', InputArgument::REQUIRED, 'The job id to kick.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Kick the specified job if it has a valid buried status, regardless of what tube it is in.')
-        ;
+            ->setDescription('Kick the specified job if it has a valid buried status, regardless of what tube it is in.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -35,7 +34,7 @@ class KickJobCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
             return;
@@ -53,7 +52,7 @@ class KickJobCommand extends ContainerAwareCommand
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('The job #%d has been kicked.', $jobId));
 
-        } catch(Pheanstalk_Exception $e) {
+        } catch (Pheanstalk_Exception $e) {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }

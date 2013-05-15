@@ -116,7 +116,8 @@ class PheanstalkDataCollector extends DataCollector
                 'id' => $nextJobReady->getId(),
                 'data' => $nextJobReady->getData(),
             );
-        } catch (\Pheanstalk_Exception_ServerException $e) {}
+        } catch (\Pheanstalk_Exception_ServerException $e) {
+        }
 
         try {
             $nextJobBuried = $pheanstalk->peekBuried($tubeName);
@@ -124,6 +125,7 @@ class PheanstalkDataCollector extends DataCollector
                 'id' => $nextJobBuried->getId(),
                 'data' => $nextJobBuried->getData(),
             );
-        } catch (\Pheanstalk_Exception_ServerException $e) {}
+        } catch (\Pheanstalk_Exception_ServerException $e) {
+        }
     }
 }

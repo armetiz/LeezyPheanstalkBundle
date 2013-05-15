@@ -52,11 +52,14 @@ class ProxyCompilerPass implements CompilerPassInterface
             $container->setDefinition("leezy.pheanstalk." . $name, $pheanstalkDef);
 
             // Register the connection in the connection locator
-            $pheanstalkLocatorDef->addMethodCall('addPheanstalk', array(
-                $name,
-                $container->getDefinition("leezy.pheanstalk." . $name),
-                $isDefault
-            ));
+            $pheanstalkLocatorDef->addMethodCall(
+                'addPheanstalk',
+                array(
+                    $name,
+                    $container->getDefinition("leezy.pheanstalk." . $name),
+                    $isDefault
+                )
+            );
 
             if ($isDefault) {
                 if (null !== $defaultPheanstalkName) {
