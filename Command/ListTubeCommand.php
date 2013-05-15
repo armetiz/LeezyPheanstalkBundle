@@ -17,8 +17,7 @@ class ListTubeCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:list-tube')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('The names of all tubes on the server.')
-        ;
+            ->setDescription('The names of all tubes on the server.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -31,7 +30,7 @@ class ListTubeCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 

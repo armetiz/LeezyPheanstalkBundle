@@ -18,8 +18,7 @@ class FlushTubeCommand extends ContainerAwareCommand
             ->setName('leezy:pheanstalk:flush-tube')
             ->addArgument('tube', InputArgument::REQUIRED, 'Tube.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Delete all job in a specific tube.')
-        ;
+            ->setDescription('Delete all job in a specific tube.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -33,7 +32,7 @@ class FlushTubeCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 

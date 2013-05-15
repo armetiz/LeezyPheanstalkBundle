@@ -20,8 +20,7 @@ class PeekCommand extends ContainerAwareCommand
             ->setName('leezy:pheanstalk:peek')
             ->addArgument('job', InputArgument::REQUIRED, 'The job to peek.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Inspect a job in the system, regardless of what tube it is in.')
-        ;
+            ->setDescription('Inspect a job in the system, regardless of what tube it is in.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -35,7 +34,7 @@ class PeekCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 
@@ -49,13 +48,12 @@ class PeekCommand extends ContainerAwareCommand
         }
 
         try {
-            $job = $pheanstalk->peek ($jobId);
+            $job = $pheanstalk->peek($jobId);
 
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln('Job id : <info>' . $job->getId() . '</info>');
             $output->writeln('Data : <info>' . $job->getData() . '</info>');
-        }
-        catch(Pheanstalk_Exception $e) {
+        } catch (Pheanstalk_Exception $e) {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }

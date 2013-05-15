@@ -20,8 +20,7 @@ class DeleteJobCommand extends ContainerAwareCommand
             ->setName('leezy:pheanstalk:delete-job')
             ->addArgument('job', InputArgument::REQUIRED, 'Jod id to delete.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Delete the specified job if it exists.')
-        ;
+            ->setDescription('Delete the specified job if it exists.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -35,7 +34,7 @@ class DeleteJobCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 
@@ -54,7 +53,7 @@ class DeleteJobCommand extends ContainerAwareCommand
 
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln('Job <info>' . $jobId . '</info> deleted.');
-        } catch(Pheanstalk_Exception $e) {
+        } catch (Pheanstalk_Exception $e) {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }

@@ -21,8 +21,7 @@ class KickCommand extends ContainerAwareCommand
             ->addArgument('tube', InputArgument::REQUIRED, 'The tube to kick the jobs from.')
             ->addArgument('max', InputArgument::OPTIONAL, 'The maximum job to kick from this tube.', 1)
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Kick buried jobs from a specific tube.')
-        ;
+            ->setDescription('Kick buried jobs from a specific tube.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -37,7 +36,7 @@ class KickCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
             return;
@@ -59,7 +58,7 @@ class KickCommand extends ContainerAwareCommand
             else {
                 $output->writeln('No job to kicked were found');
             }
-        } catch(Pheanstalk_Exception $e) {
+        } catch (Pheanstalk_Exception $e) {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('%d Job(s) have been kicked from %s', 0, $tube));
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));

@@ -17,8 +17,7 @@ class StatsCommand extends ContainerAwareCommand
         $this
             ->setName('leezy:pheanstalk:stats')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Gives statistical information about the beanstalkd system as a whole.')
-        ;
+            ->setDescription('Gives statistical information about the beanstalkd system as a whole.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -31,7 +30,7 @@ class StatsCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 
@@ -49,10 +48,10 @@ class StatsCommand extends ContainerAwareCommand
         if (count($stats) === 0 ) {
             $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
             $output->writeln('<info>0 stats.</info>');
-            
+
             return;
         }
-        
+
         $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
 
         foreach ($stats as $key => $information) {
