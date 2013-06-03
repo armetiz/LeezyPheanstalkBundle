@@ -43,10 +43,10 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
             )
         );
         $this->extension->load($config, $this->container);
-        //$this->container->compile();
+        $this->container->compile();
 
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.pheanstalk_locator'));
-        $this->assertTrue($this->container->hasParameter('leezy.pheanstalk.pheanstalks'));
+        $this->assertFalse($this->container->hasParameter('leezy.pheanstalk.pheanstalks'));
     }
 
     public function testDefaultPheanstalk()
