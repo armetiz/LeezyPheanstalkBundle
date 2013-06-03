@@ -20,8 +20,7 @@ class StatsTubeCommand extends ContainerAwareCommand
             ->setName('leezy:pheanstalk:stats-tube')
             ->addArgument('tube', InputArgument::REQUIRED, 'Tube to get stats.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Gives statistical information about the specified tube if it exists.')
-        ;
+            ->setDescription('Gives statistical information about the specified tube if it exists.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -35,7 +34,7 @@ class StatsTubeCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 
@@ -50,19 +49,18 @@ class StatsTubeCommand extends ContainerAwareCommand
 
         try {
             $stats = $pheanstalk->statsTube($tube);
-            
+
             if (count($stats) === 0 ) {
                 $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
                 $output->writeln('<info>0 stats.</info>');
-            }
-            else {
+            } else {
                 $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
 
                 foreach ($stats as $key => $information) {
                     $output->writeln('- <info>' . $key . '</info> : ' . $information);
                 }
             }
-        } catch(Pheanstalk_Exception $e) {
+        } catch (Pheanstalk_Exception $e) {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }

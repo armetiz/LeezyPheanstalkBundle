@@ -21,8 +21,7 @@ class PauseTubeCommand extends ContainerAwareCommand
             ->addArgument('tube', InputArgument::REQUIRED, 'The tube to pause')
             ->addArgument('delay', InputArgument::REQUIRED, 'Seconds before jobs may be reserved from this queue.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Temporarily prevent jobs being reserved from the given tube.')
-        ;
+            ->setDescription('Temporarily prevent jobs being reserved from the given tube.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -37,7 +36,7 @@ class PauseTubeCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 
@@ -51,11 +50,11 @@ class PauseTubeCommand extends ContainerAwareCommand
         }
 
         try {
-            $pheanstalk->pauseTube ($tube, $delay);
-            
+            $pheanstalk->pauseTube($tube, $delay);
+
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln('Tube <info>' . $tube . '</info> have been paused for <info>' . $delay . '</info> seconds.');
-        } catch(Pheanstalk_Exception $e) {
+        } catch (Pheanstalk_Exception $e) {
             $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }

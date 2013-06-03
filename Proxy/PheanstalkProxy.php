@@ -207,13 +207,20 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         $priority = Pheanstalk_PheanstalkInterface::DEFAULT_PRIORITY,
         $delay = Pheanstalk_PheanstalkInterface::DEFAULT_DELAY,
         $ttr = Pheanstalk_PheanstalkInterface::DEFAULT_TTR
-    )
-    {
+    ) {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::PUT, new CommandEvent($this, array('data' => $data,
-                'priority' => $priority,
-                'delay' => $delay,
-                'ttr' => $ttr)));
+            $this->dispatcher->dispatch(
+                CommandEvent::PUT,
+                new CommandEvent(
+                    $this,
+                    array(
+                        'data' => $data,
+                        'priority' => $priority,
+                        'delay' => $delay,
+                        'ttr' => $ttr
+                    )
+                )
+            );
         }
 
         return $this->getPheanstalk()->put($data, $priority, $delay, $ttr);
@@ -228,14 +235,21 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         $priority = Pheanstalk_PheanstalkInterface::DEFAULT_PRIORITY,
         $delay = Pheanstalk_PheanstalkInterface::DEFAULT_DELAY,
         $ttr = Pheanstalk_PheanstalkInterface::DEFAULT_TTR
-    )
-    {
+    ) {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::PUT_IN_TUBE, new CommandEvent($this, array('tube' => $tube,
-                'data' => $data,
-                'priority' => $priority,
-                'delay' => $delay,
-                'ttr' => $ttr)));
+            $this->dispatcher->dispatch(
+                CommandEvent::PUT_IN_TUBE,
+                new CommandEvent(
+                    $this,
+                    array(
+                        'tube' => $tube,
+                        'data' => $data,
+                        'priority' => $priority,
+                        'delay' => $delay,
+                        'ttr' => $ttr
+                    )
+                )
+            );
         }
 
         return $this->getPheanstalk()->putInTube($tube, $data, $priority, $delay, $ttr);
@@ -248,8 +262,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         $job,
         $priority = Pheanstalk_PheanstalkInterface::DEFAULT_PRIORITY,
         $delay = Pheanstalk_PheanstalkInterface::DEFAULT_DELAY
-    )
-    {
+    ) {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::RELEASE, new CommandEvent($this, array('job' => $job, 'priority' => $priority, 'delay' => $delay)));
         }

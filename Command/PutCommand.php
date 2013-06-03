@@ -24,8 +24,7 @@ class PutCommand extends ContainerAwareCommand
             ->addArgument('delay', InputArgument::OPTIONAL, 'Seconds to wait before job becomes ready.')
             ->addArgument('ttr', InputArgument::OPTIONAL, 'Time To Run: seconds a job can be reserved for.')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Puts a job on the queue.')
-        ;
+            ->setDescription('Puts a job on the queue.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -43,7 +42,7 @@ class PutCommand extends ContainerAwareCommand
         if (null === $pheanstalkName) {
             $pheanstalkName = 'default';
         }
-        
+
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
 
@@ -68,8 +67,8 @@ class PutCommand extends ContainerAwareCommand
             $ttr = Pheanstalk::DEFAULT_TTR;
         }
 
-        $pheanstalk->useTube ($tube);
-        $jobId = $pheanstalk->put ($data, $priority, $delay, $ttr);
+        $pheanstalk->useTube($tube);
+        $jobId = $pheanstalk->put($data, $priority, $delay, $ttr);
 
         $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
         $output->writeln('New job on tube <info>' . $tube . '</info> with id <info>' . $jobId . '</info>.');
