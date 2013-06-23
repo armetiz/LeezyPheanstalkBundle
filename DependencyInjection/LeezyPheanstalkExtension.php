@@ -29,7 +29,7 @@ class LeezyPheanstalkExtension extends Extension
                 'event',
             );
     }
-  
+
     /**
      * {@inheritDoc}
      */
@@ -64,7 +64,7 @@ class LeezyPheanstalkExtension extends Extension
         // Create a connection locator that will reference all existing connection
         $connectionLocatorDef = new Definition("Leezy\PheanstalkBundle\PheanstalkLocator");
         $container->setDefinition("leezy.pheanstalk.pheanstalk_locator", $connectionLocatorDef);
-        
+
         $defaultPheanstalkName = null;
         $pheanstalks = $config['pheanstalks'];
 
@@ -123,13 +123,12 @@ class LeezyPheanstalkExtension extends Extension
 
         $container->setDefinition("leezy.pheanstalk.data_collector", $dataCollectorDef);
     }
-    
+
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasParameter('leezy.pheanstalk.pheanstalks')) {
             return;
         }
-        
-        
+
     }
 }
