@@ -39,11 +39,13 @@ class KickCommand extends ContainerAwareCommand
 
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
 
         if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
             $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
 
@@ -54,8 +56,7 @@ class KickCommand extends ContainerAwareCommand
 
             if ($numJobKicked > 0) {
                 $output->writeln(sprintf('%d Job(s) have been kicked from %s', $numJobKicked, $tube));
-            }
-            else {
+            } else {
                 $output->writeln('No job to kicked were found');
             }
         } catch (Pheanstalk_Exception $e) {

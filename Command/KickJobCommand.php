@@ -37,11 +37,13 @@ class KickJobCommand extends ContainerAwareCommand
 
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
 
         if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
             $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
+
             return;
         }
 

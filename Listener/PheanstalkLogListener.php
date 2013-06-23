@@ -96,7 +96,7 @@ class PheanstalkLogListener implements EventSubscriberInterface
     public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
-        
+
         return $this;
     }
 }
