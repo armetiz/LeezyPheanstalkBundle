@@ -53,7 +53,7 @@ class FlushTubeCommand extends ContainerAwareCommand
                 $pheanstalk->delete($job);
                 $numJobDelete++;
             }
-        } catch (Pheanstalk_Exception_PheanstalkException $ex) {
+        } catch (\Pheanstalk_Exception_ServerException $ex) {
 
         }
 
@@ -63,7 +63,7 @@ class FlushTubeCommand extends ContainerAwareCommand
                 $pheanstalk->delete($job);
                 $numJobDelete++;
             }
-        } catch (Pheanstalk_Exception_PheanstalkException $ex) {
+        } catch (\Pheanstalk_Exception_ServerException $ex) {
 
         }
 
@@ -73,7 +73,7 @@ class FlushTubeCommand extends ContainerAwareCommand
                 $pheanstalk->delete($job);
                 $numJobDelete++;
             }
-        } catch (Pheanstalk_Exception_PheanstalkException $ex) {
+        } catch (\Pheanstalk_Exception_ServerException $ex) {
 
         }
 
