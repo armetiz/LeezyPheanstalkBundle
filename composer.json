@@ -1,9 +1,9 @@
 {
-    "name": "vacatia/pheanstalk-bundle",
+    "name": "leezy/pheanstalk-bundle",
     "description": "The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a command line interface for manage the Beanstalkd workqueue server & a pheanstalk integration.",
     "keywords": ["Symfony2", "Beanstalkd", "Bundle", "Pheanstalk"],
     "type": "symfony-bundle",
-    "homepage": "https://github.com/vacatia/LeezyPheanstalkBundle",
+    "homepage": "https://github.com/armetiz/LeezyPheanstalkBundle",
     "license": "BSD",
     "authors": [{
         "name" : "Thomas Tourlourat",
