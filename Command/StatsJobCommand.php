@@ -55,6 +55,7 @@ class StatsJobCommand extends ContainerAwareCommand
             if (count($stats) === 0 ) {
                 $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
                 $output->writeln('<info>0 stats.</info>');
+
                 return;
             }
 
