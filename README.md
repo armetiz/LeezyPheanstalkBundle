@@ -2,6 +2,7 @@
 
 [![project status](http://stillmaintained.com/armetiz/LeezyPheanstalkBundle.png)](http://stillmaintained.com/armetiz/LeezyPheanstalkBundle)
 [![Build Status](https://secure.travis-ci.org/armetiz/LeezyPheanstalkBundle.png)](http://travis-ci.org/armetiz/LeezyPheanstalkBundle)
+[![Packagist](https://poser.pugx.org/leezy/pheanstalk-bundle/downloads.png)](https://packagist.org/packages/leezy/pheanstalk-bundle)
 
 [Beanstalkd workqueue](http://kr.github.com/beanstalkd/) clients for Symfony2.
 
@@ -13,12 +14,13 @@ The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a [pheanstalk](http
 * A proxy system to customize the command features.
 
 
-* [Installation](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/1-installation.md)
-* [Configuration](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/2-configuration.md)
-* [CLI Usage](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/3-cli.md)
-* [Events](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/4-events.md)
-* [Custom proxy](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/5-custom-proxy.md)
-* [Extra - Beanstalk Manager](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/extra-beanstalk-manager.md)
+Documentation :
+- [Installation](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/1-installation.md)
+- [Configuration](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/2-configuration.md)
+- [CLI Usage](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/3-cli.md)
+- [Events](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/4-events.md)
+- [Custom proxy](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/5-custom-proxy.md)
+- [Extra - Beanstalk Manager](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/extra-beanstalk-manager.md)
 
 ## Usage example
 
