@@ -1,6 +1,10 @@
-## 2.1.4 (next)
+## 2.1.4
 * Fix install documentation.
 * Fix #29
+* Remove github analytics
+* Fixed FlushTube Command by catching the correct Exception
+* Pretty smal fixes to be more PSR2 compliant
+* Move connection definition from compiler pass to the extension
 
 ## 2.1.3
 * Fixed return value for Proxy::putInTube
