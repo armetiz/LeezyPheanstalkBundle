@@ -81,9 +81,6 @@ class LeezyPheanstalkExtension extends Extension
 
             $pheanstalkDef = $container->getDefinition($pheanstalk['proxy']);
 
-            //TODO: Add Reflection to check PheanstalkProxyInterface implementation
-            //$pheanstalkRefl = new \ReflectionClass($pheanstalkDef->getClass());
-            //$pheanstalkRefl->implementsInterface('Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface')
             $pheanstalkDef->addMethodCall('setPheanstalk', array(new Definition('Pheanstalk_Pheanstalk', $pheanstalkConfig)));
             $pheanstalkDef->addMethodCall('setName', array($name));
 
