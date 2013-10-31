@@ -1,3 +1,6 @@
+## 2.1.5 (next)
+* Fix #38
+
 ## 2.1.4
 * Fix install documentation.
 * Fix #29
