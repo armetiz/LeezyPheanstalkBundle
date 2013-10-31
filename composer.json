@@ -4,7 +4,7 @@
     "keywords": ["Symfony2", "Beanstalkd", "Bundle", "Pheanstalk"],
     "type": "symfony-bundle",
     "homepage": "https://github.com/armetiz/LeezyPheanstalkBundle",
-    "license": "BSD",
+    "license": "MIT",
     "authors": [{
         "name" : "Thomas Tourlourat",
         "email" : "thomas@tourlourat.com",

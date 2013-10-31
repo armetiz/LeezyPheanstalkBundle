@@ -14,7 +14,3 @@ app/config/parameters.ini
 #composer
 composer.phar
 composer.lock
-
-*.swp
-.DS_Store
-.idea
