@@ -21,6 +21,7 @@ Documentation :
 - [Events](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/4-events.md)
 - [Custom proxy](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/5-custom-proxy.md)
 - [Extra - Beanstalk Manager](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/extra-beanstalk-manager.md)
+- [Extra - Proxy to prefix tubes](https://github.com/h4cc/LeezyPheanstalkBundleExtra)
 
 ## Usage example
 
