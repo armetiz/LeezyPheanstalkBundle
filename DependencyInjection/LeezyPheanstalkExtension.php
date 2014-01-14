@@ -9,8 +9,6 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
-
 /**
  * This is the class that loads and manages your bundle configuration
  *
