@@ -3,9 +3,8 @@
 namespace Leezy\PheanstalkBundle\Proxy;
 
 use Pheanstalk_PheanstalkInterface;
-
+use Pheanstalk_Connection;
 use Leezy\PheanstalkBundle\Event\CommandEvent;
-
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class PheanstalkProxy implements PheanstalkProxyInterface
