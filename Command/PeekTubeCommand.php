@@ -52,8 +52,6 @@ class PeekTubeCommand extends ContainerAwareCommand
             return;
         }
 
-        $pheanstalk->useTube($tube);
-
         try {
             if ($buried) {
                 $job = $pheanstalk->peekBuried($tube);
