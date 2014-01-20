@@ -7,11 +7,12 @@ Commands are available for the following tasks:
 2. Flush a tube.
 3. List available tubes.
 4. Pause a tube.
-5. Peek a job and get associated data.
-6. Put a new job in a tube.
-7. Get statistics about beanstalkd server.
-8. Get statistics about a job.
-9. Get statistics about a tube.
+5. Peek a tube to get the first ready/burried job and associated data.
+6. Peek a job and get associated data.
+7. Put a new job in a tube.
+8. Get statistics about beanstalkd server.
+9. Get statistics about a job.
+10. Get statistics about a tube.
 
 **Note:**
 
@@ -54,6 +55,18 @@ Tubes that are display contains at least one job.
 
 ``` bash
 $ php app/console leezy:pheanstalk:pause-tube your-tube
+```
+
+### Peek a tube to get the first ready job and associated data.
+
+``` bash
+$ php app/console leezy:pheanstalk:peek-tube your-tube
+```
+
+### Peek a tube to get the first burried job and associated data.
+
+``` bash
+$ php app/console leezy:pheanstalk:peek-tube -b your-tube
 ```
 
 ### Peek a job and get associated data.
