@@ -29,7 +29,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
      */
     public function setConnection(Pheanstalk_Connection $connection)
     {
-        return $this->getPheanstalk()->setConnection($connection);
+        $this->getPheanstalk()->setConnection($connection);
+        return $this;
     }
 
     /**
@@ -63,7 +64,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
             $this->dispatcher->dispatch(CommandEvent::DELETE, new CommandEvent($this, array('job' => $job)));
         }
 
-        return $this->getPheanstalk()->delete($job);
+        $this->getPheanstalk()->delete($job);
+        return $this;
     }
 
     /**
@@ -75,7 +77,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
             $this->dispatcher->dispatch(CommandEvent::IGNORE, new CommandEvent($this, array('tube' => $tube)));
         }
 
-        return $this->getPheanstalk()->ignore($tube);
+        $this->getPheanstalk()->ignore($tube);
+        return $this;
     }
 
     /**
@@ -99,7 +102,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
             $this->dispatcher->dispatch(CommandEvent::KICK_JOB, new CommandEvent($this, array('job' => $job)));
         }
 
-        return $this->getPheanstalk()->kickJob($job);
+        $this->getPheanstalk()->kickJob($job);
+        return $this;
     }
 
     /**
@@ -147,7 +151,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
             $this->dispatcher->dispatch(CommandEvent::PAUSE_TUBE, new CommandEvent($this, array('tube' => $tube, 'delay' => $delay)));
         }
 
-        return $this->getPheanstalk()->pauseTube($tube, $delay);
+        $this->getPheanstalk()->pauseTube($tube, $delay);
+        return $this;
     }
 
     /**
@@ -266,7 +271,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
             $this->dispatcher->dispatch(CommandEvent::RELEASE, new CommandEvent($this, array('job' => $job, 'priority' => $priority, 'delay' => $delay)));
         }
 
-        return $this->getPheanstalk()->release($job, $priority, $delay);
+        $this->getPheanstalk()->release($job, $priority, $delay);
+        return $this;
     }
 
     /**
@@ -338,7 +344,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
             $this->dispatcher->dispatch(CommandEvent::TOUCH, new CommandEvent($this, array('job' => $job)));
         }
 
-        return $this->getPheanstalk()->touch($job);
+        $this->getPheanstalk()->touch($job);
+        return $this;
     }
 
     /**
@@ -350,7 +357,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
             $this->dispatcher->dispatch(CommandEvent::USE_TUBE, new CommandEvent($this, array('tube' => $tube)));
         }
 
-        return $this->getPheanstalk()->useTube($tube);
+        $this->getPheanstalk()->useTube($tube);
+        return $this;
     }
 
     /**
@@ -362,7 +370,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
             $this->dispatcher->dispatch(CommandEvent::WATCH, new CommandEvent($this, array('tube' => $tube)));
         }
 
-        return $this->getPheanstalk()->watch($tube);
+        $this->getPheanstalk()->watch($tube);
+        return $this;
     }
 
     /**
@@ -374,7 +383,8 @@ class PheanstalkProxy implements PheanstalkProxyInterface
             $this->dispatcher->dispatch(CommandEvent::WATCH_ONLY, new CommandEvent($this, array('tube' => $tube)));
         }
 
-        return $this->getPheanstalk()->watchOnly($tube);
+        $this->getPheanstalk()->watchOnly($tube);
+        return $this;
     }
 
     /**
