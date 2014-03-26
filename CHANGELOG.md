@@ -1,3 +1,13 @@
+## 2.2.0
+* Pull Request #41 Fix chainable methods to return proxy object
+
+## 2.1.6
+* Add command to view the first ready/burried job in a certrain tube
+* Remove useless import
+* Add missing use
+* Add Scrutinizer Badge
+* Add link to LeezyPheanstalkBundleExtra
+
 ## 2.1.5
 * Fix #38
 
