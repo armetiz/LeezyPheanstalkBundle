@@ -18,9 +18,9 @@ class StatsTubeCommand extends ContainerAwareCommand
     {
         $this
             ->setName('leezy:pheanstalk:stats-tube')
-            ->addArgument('tube', InputArgument::OPTIONAL, 'Tube to get stats.', null)
-            ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.', 'default')
-            ->setDescription('Gives statistical information about the specified tube if it exists.');
+            ->addArgument('tube', InputArgument::OPTIONAL, 'Tube to get stats for.', null)
+            ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.', null)
+            ->setDescription('Gives statistical information about a specified tube, or about all tubes.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -28,7 +28,12 @@ class StatsTubeCommand extends ContainerAwareCommand
         $pheanstalkName = $input->getArgument('pheanstalk');
 
         $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
+        /** @var \Pheanstalk_Pheanstalk $pheanstalk */
         $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
+
+        if (null === $pheanstalkName) {
+            $pheanstalkName = 'default';
+        }
 
         if (null === $pheanstalk) {
             $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
@@ -57,7 +62,7 @@ class StatsTubeCommand extends ContainerAwareCommand
             $whiteline = false;
             foreach ($tubes as $tube) {
                 // fetch stats for each tube
-                $stats = (array) $pheanstalk->statsTube($tube);
+                $stats = $pheanstalk->statsTube($tube);
 
                 if (count($stats) === 0 ) {
                     $output->writeln('Tube : <error>' . $tube . '</error>');
@@ -65,7 +70,7 @@ class StatsTubeCommand extends ContainerAwareCommand
                 } else {
                     // only add a whiteline if we are past the first tube (for BC)
                     if ($whiteline) {
-                        $output->writeln('');
+                        $output->writeln('Tube:');
                     }
 
                     foreach ($stats as $key => $information) {
