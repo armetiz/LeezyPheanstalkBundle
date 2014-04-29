@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Pheanstalk_Exception;
+
 class StatsCommand extends ContainerAwareCommand
 {
     /**
@@ -43,19 +45,24 @@ class StatsCommand extends ContainerAwareCommand
             return;
         }
 
-        $stats = $pheanstalk->stats();
+        try {
+            $stats = $pheanstalk->stats();
 
-        if (count($stats) === 0 ) {
-            $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
-            $output->writeln('<info>0 stats.</info>');
+            if (count($stats) === 0 ) {
+                $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
+                $output->writeln('<info>0 stats.</info>');
 
-            return;
-        }
+                return;
+            }
 
-        $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
 
-        foreach ($stats as $key => $information) {
-            $output->writeln('- <info>' . $key . '</info> : ' . $information);
+            foreach ($stats as $key => $information) {
+                $output->writeln('- <info>' . $key . '</info> : ' . $information);
+            }
+        } catch (Pheanstalk_Exception $e) {
+            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }
     }
 }
