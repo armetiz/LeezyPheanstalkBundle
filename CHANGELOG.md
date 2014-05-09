@@ -1,3 +1,6 @@
+## 2.3.0
+* PR #43 - StatsTube shows stats for all tube if no argument is given
+
 ## 2.2.0
 * Pull Request #41 Fix chainable methods to return proxy object
 
