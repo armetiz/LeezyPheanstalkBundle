@@ -1,3 +1,6 @@
+## 2.4.0
+* Add CLI Command to display next ready job
+
 ## 2.3.0
 * PR #43 - StatsTube shows stats for all tube if no argument is given
 
