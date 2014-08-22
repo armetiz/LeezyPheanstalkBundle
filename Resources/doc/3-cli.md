@@ -13,6 +13,7 @@ Commands are available for the following tasks:
 8. Get statistics about beanstalkd server.
 9. Get statistics about a job.
 10. Get statistics about a tube.
+11. Get next ready job.
 
 **Note:**
 
@@ -97,4 +98,10 @@ $ php app/console leezy:pheanstalk:stats-job 42
 
 ``` bash
 $ php app/console leezy:pheanstalk:stats-tube your-tube
+```
+
+### Get next ready job.
+
+``` bash
+$ php app/console leezy:pheanstalk:next-ready your-tube --details
 ```
