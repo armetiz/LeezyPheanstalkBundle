@@ -21,9 +21,8 @@ class NextReadyCommand extends ContainerAwareCommand
             ->addOption(
                 'details',
                 null,
-                InputOption::VALUE_OPTIONAL,
-                'Display details',
-                false
+                InputOption::VALUE_NONE,
+                'Display details'
             )
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
             ->setDescription('Gives the next ready job from a specified tube.');
@@ -65,7 +64,7 @@ class NextReadyCommand extends ContainerAwareCommand
                 sprintf('Next ready job in tube <info>%s</info> is <info>%s</info>', $tubeName, $nextJobReadyId)
             );
 
-            if((bool)$input->getOption('details')) {
+            if($input->getOption('details')) {
                 $output->writeln('Details :');
                 $output->writeln($nextJobReadyData);
             }
