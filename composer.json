@@ -16,8 +16,14 @@
         "pda/pheanstalk": ">=2.1.0,<3.0-dev",
         "symfony/monolog-bridge": ">=2.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
     "autoload": {
         "psr-0": { "Leezy\\PheanstalkBundle": "" }
+    },
+    "config": {
+        "bin-dir": "bin"
     },
     "extra": {
         "branch-alias": {
