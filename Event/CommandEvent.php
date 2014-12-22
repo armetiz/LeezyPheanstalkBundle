@@ -44,7 +44,7 @@ class CommandEvent extends EventBase
     }
 
     /**
-     * @return \Leezy\PheanstalkBundle\Proxy\PheanstalkInterface
+     * @return \Pheanstalk_PheanstalkInterface
      */
     public function getPheanstalk()
     {
