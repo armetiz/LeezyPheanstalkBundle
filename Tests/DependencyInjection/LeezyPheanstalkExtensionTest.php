@@ -46,7 +46,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
         $this->container->compile();
 
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.pheanstalk_locator'));
-        $this->assertFalse($this->container->hasParameter('leezy.pheanstalk.pheanstalks'));
+        $this->assertTrue($this->container->hasParameter('leezy.pheanstalk.pheanstalks'));  // Needed by ProxyCompilerPass
     }
 
     public function testDefaultPheanstalk()
@@ -229,5 +229,36 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->extension->load($config, $this->container);
         $this->container->compile();
+    }
+
+    public function testLoggerConfiguration()
+    {
+        $config = array(
+            "leezy_pheanstalk" => array(
+                "enabled" => true,
+                "pheanstalks" => array(
+                    "primary" => array(
+                        "server" => "beanstalkd.domain.tld",
+                        "port" => 11300,
+                        "timeout" => 60,
+                        "default" => true
+                    )
+                )
+            )
+        );
+
+        $this->container->setDefinition('logger', new Definition('Monolog\Logger'));
+
+        $this->extension->load($config, $this->container);
+        $this->container->compile();
+
+        $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.listener.log'));
+        $listener = $this->container->getDefinition('leezy.pheanstalk.listener.log');
+
+        $this->assertTrue($listener->hasMethodCall('setLogger'));
+        $this->assertTrue($listener->hasTag('monolog.logger'));
+
+        $tag = $listener->getTag('monolog.logger');
+        $this->assertEquals('pheanstalk', $tag[0]['channel']);
     }
 }

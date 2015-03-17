@@ -1,6 +1,32 @@
-## 2.1.4 (next)
+## 2.5.0
+* Logging is now done to a specific channel (PR #50 @pkruithof)
+
+## 2.4.0
+* Add CLI Command to display next ready job
+
+## 2.3.0
+* PR #43 - StatsTube shows stats for all tube if no argument is given
+
+## 2.2.0
+* Pull Request #41 Fix chainable methods to return proxy object
+
+## 2.1.6
+* Add command to view the first ready/burried job in a certrain tube
+* Remove useless import
+* Add missing use
+* Add Scrutinizer Badge
+* Add link to LeezyPheanstalkBundleExtra
+
+## 2.1.5
+* Fix #38
+
+## 2.1.4
 * Fix install documentation.
 * Fix #29
+* Remove github analytics
+* Fixed FlushTube Command by catching the correct Exception
+* Pretty smal fixes to be more PSR2 compliant
+* Move connection definition from compiler pass to the extension
 
 ## 2.1.3
 * Fixed return value for Proxy::putInTube
