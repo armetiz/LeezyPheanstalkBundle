@@ -22,6 +22,7 @@
                 <argument type="service" id="logger" on-invalid="ignore"/>
             </call>
             <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="pheanstalk" />
         </service>
     </services>
 </container>
