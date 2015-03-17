@@ -1,3 +1,6 @@
+## 2.5.0
+* Logging is now done to a specific channel (PR #50 @pkruithof)
+
 ## 2.4.0
 * Add CLI Command to display next ready job
 
