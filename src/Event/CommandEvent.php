@@ -16,6 +16,7 @@ class CommandEvent extends Event
     const LIST_TUBES         = 'leezy.pheanstalk.event.list_tubes';
     const LIST_TUBES_WATCHED = 'leezy.pheanstalk.event.list_tubes_watched';
     const PAUSE_TUBE         = 'leezy.pheanstalk.event.pause_tube';
+    const RESUME_TUBE        = 'leezy.pheanstalk.event.resume_tube';
     const PEEK               = 'leezy.pheanstalk.event.peek';
     const PEEK_READY         = 'leezy.pheanstalk.event.peek_ready';
     const PEEK_DELAYED       = 'leezy.pheanstalk.event.peek_delayed';

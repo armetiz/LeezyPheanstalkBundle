@@ -161,6 +161,20 @@ class PheanstalkProxy implements PheanstalkProxyInterface
     /**
      * {@inheritDoc}
      */
+    public function resumeTube($tube)
+    {
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(CommandEvent::RESUME_TUBE, new CommandEvent($this, ['tube' => $tube]));
+        }
+
+        $this->pheanstalk->resumeTube($tube);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function peek($jobId)
     {
         if ($this->dispatcher) {
