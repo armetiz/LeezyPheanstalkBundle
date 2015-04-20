@@ -29,6 +29,7 @@ class LeezyPheanstalkExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        $loader->load('commands.xml');
 
         if (!$config['enabled']) {
             return;
