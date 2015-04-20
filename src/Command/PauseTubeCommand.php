@@ -2,17 +2,15 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Pheanstalk\Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Pheanstalk_Exception;
-
-class PauseTubeCommand extends ContainerAwareCommand
+class PauseTubeCommand extends AbstractPheanstalkCommand
 {
     /**
-     * @see Command
+     * @inheritdoc
      */
     protected function configure()
     {
@@ -24,39 +22,29 @@ class PauseTubeCommand extends ContainerAwareCommand
             ->setDescription('Temporarily prevent jobs being reserved from the given tube.');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tube = $input->getArgument('tube');
+        $tube  = $input->getArgument('tube');
         $delay = $input->getArgument('delay');
-        $pheanstalkName = $input->getArgument('pheanstalk');
+        $name  = $input->getArgument('pheanstalk');
 
-        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
-        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-
-        if (null === $pheanstalkName) {
-            $pheanstalkName = 'default';
-        }
-
-        if (null === $pheanstalk) {
-            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
-
-        if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
-            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
+        $pheanstalk = $this->getPheanstalk($name);
 
         try {
             $pheanstalk->pauseTube($tube, $delay);
 
-            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
-            $output->writeln('Tube <info>' . $tube . '</info> have been paused for <info>' . $delay . '</info> seconds.');
-        } catch (Pheanstalk_Exception $e) {
-            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+            $output->writeln('Pheanstalk: <info>'.$name.'</info>');
+            $output->writeln('Tube <info>'.$tube.'</info> has been paused for <info>'.$delay.'</info> seconds.');
+
+            return 0;
+        } catch (Exception $e) {
+            $output->writeln('Pheanstalk: <info>'.$name.'</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+
+            return 1;
         }
     }
 }

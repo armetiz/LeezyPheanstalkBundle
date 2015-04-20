@@ -2,17 +2,15 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Pheanstalk\Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Pheanstalk_Exception;
-
-class KickJobCommand extends ContainerAwareCommand
+class KickJobCommand extends AbstractPheanstalkCommand
 {
     /**
-     * @see Command
+     * @inheritdoc
      */
     protected function configure()
     {
@@ -23,40 +21,28 @@ class KickJobCommand extends ContainerAwareCommand
             ->setDescription('Kick the specified job if it has a valid buried status, regardless of what tube it is in.');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $jobId = $input->getArgument('job');
-        $pheanstalkName = $input->getArgument('pheanstalk');
-
-        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
-        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-
-        if (null === $pheanstalkName) {
-            $pheanstalkName = 'default';
-        }
-
-        if (null === $pheanstalk) {
-            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
-
-        if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
-            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
+        $jobId      = $input->getArgument('job');
+        $name       = $input->getArgument('pheanstalk');
+        $pheanstalk = $this->getPheanstalk($name);
 
         try {
             $job = $pheanstalk->peek($jobId);
             $pheanstalk->kickJob($job);
 
-            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
-            $output->writeln(sprintf('The job #%d has been kicked.', $jobId));
+            $output->writeln('Pheanstalk: <info>'.$name.'</info>');
+            $output->writeln(sprintf('Job #%d has been kicked.', $jobId));
 
-        } catch (Pheanstalk_Exception $e) {
-            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+            return 0;
+        } catch (Exception $e) {
+            $output->writeln('Pheanstalk: <info>'.$name.'</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+
+            return 1;
         }
     }
 }

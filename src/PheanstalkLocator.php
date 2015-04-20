@@ -2,20 +2,30 @@
 
 namespace Leezy\PheanstalkBundle;
 
-use Pheanstalk_PheanstalkInterface;
+use Pheanstalk\PheanstalkInterface;
 
 class PheanstalkLocator
 {
+    /**
+     * @var PheanstalkInterface[]
+     */
     private $pheanstalks;
+
+    /**
+     * @var string
+     */
     private $default;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
-        $this->pheanstalks = array();
+        $this->pheanstalks = [];
     }
 
     /**
-     * @return array
+     * @return PheanstalkInterface[]
      */
     public function getPheanstalks()
     {
@@ -25,7 +35,7 @@ class PheanstalkLocator
     /**
      * @param string $name
      *
-     * @return \Pheanstalk_PheanstalkInterface
+     * @return PheanstalkInterface
      */
     public function getPheanstalk($name = null)
     {
@@ -35,7 +45,7 @@ class PheanstalkLocator
             return $this->pheanstalks[$name];
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -47,11 +57,11 @@ class PheanstalkLocator
     }
 
     /**
-     * @param string                          $name
-     * @param \Pheanstalk_PheanstalkInterface $pheanstalk
-     * @param boolean                         $default
+     * @param string              $name
+     * @param PheanstalkInterface $pheanstalk
+     * @param bool                $default
      */
-    public function addPheanstalk($name, Pheanstalk_PheanstalkInterface $pheanstalk, $default = false)
+    public function addPheanstalk($name, PheanstalkInterface $pheanstalk, $default = false)
     {
         if (!is_bool($default)) {
             throw new \InvalidArgumentException('Default parameter have to be a boolean');

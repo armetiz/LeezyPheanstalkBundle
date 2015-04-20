@@ -2,15 +2,15 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Pheanstalk\Exception\ServerException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class FlushTubeCommand extends ContainerAwareCommand
+class FlushTubeCommand extends AbstractPheanstalkCommand
 {
     /**
-     * @see Command
+     * @inheritdoc
      */
     protected function configure()
     {
@@ -21,63 +21,50 @@ class FlushTubeCommand extends ContainerAwareCommand
             ->setDescription('Delete all job in a specific tube.');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tube = $input->getArgument('tube');
-        $pheanstalkName = $input->getArgument('pheanstalk');
-
-        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
-        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-
-        if (null === $pheanstalkName) {
-            $pheanstalkName = 'default';
-        }
-
-        if (null === $pheanstalk) {
-            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
-
-        if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
-            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
+        $tube       = $input->getArgument('tube');
+        $name       = $input->getArgument('pheanstalk');
+        $pheanstalk = $this->getPheanstalk($name);
 
         $numJobDelete = 0;
 
         try {
+            $pheanstalk->useTube($tube);
             while (true) {
-                $job = $pheanstalk->useTube($tube)->peekDelayed();
+                $job = $pheanstalk->peekDelayed();
                 $pheanstalk->delete($job);
                 $numJobDelete++;
             }
-        } catch (\Pheanstalk_Exception_ServerException $ex) {
-
+        } catch (ServerException $ex) {
         }
 
         try {
+            $pheanstalk->useTube($tube);
             while (true) {
-                $job = $pheanstalk->useTube($tube)->peekBuried();
+                $job = $pheanstalk->peekBuried();
                 $pheanstalk->delete($job);
                 $numJobDelete++;
             }
-        } catch (\Pheanstalk_Exception_ServerException $ex) {
-
+        } catch (ServerException $ex) {
         }
 
         try {
+            $pheanstalk->useTube($tube);
             while (true) {
-                $job = $pheanstalk->useTube($tube)->peekReady();
+                $job = $pheanstalk->peekReady();
                 $pheanstalk->delete($job);
                 $numJobDelete++;
             }
-        } catch (\Pheanstalk_Exception_ServerException $ex) {
-
+        } catch (ServerException $ex) {
         }
 
-        $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
-        $output->writeln('Job deleted : <info>' . $numJobDelete . '</info>.');
+        $output->writeln('Pheanstalk: <info>'.$name.'</info>');
+        $output->writeln('Jobs deleted: <info>'.$numJobDelete.'</info>.');
+
+        return 0;
     }
 }

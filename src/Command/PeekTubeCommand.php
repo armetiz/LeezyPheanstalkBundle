@@ -2,18 +2,16 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Pheanstalk\Exception;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Pheanstalk_Exception;
-
-class PeekTubeCommand extends ContainerAwareCommand
+class PeekTubeCommand extends AbstractPheanstalkCommand
 {
     /**
-     * @see Command
+     * @inheritdoc
      */
     protected function configure()
     {
@@ -25,32 +23,16 @@ class PeekTubeCommand extends ContainerAwareCommand
             ->setDescription('Take a peek at the first job in a tube, ready or burried.');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tube = $input->getArgument('tube');
+        $tube   = $input->getArgument('tube');
         $buried = $input->getOption('buried');
+        $name   = $input->getArgument('pheanstalk');
 
-        $pheanstalkName = $input->getArgument('pheanstalk');
-
-        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
-        /** @var \Pheanstalk_Pheanstalk $pheanstalk */
-        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-
-        if (null === $pheanstalkName) {
-            $pheanstalkName = 'default';
-        }
-
-        if (null === $pheanstalk) {
-            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
-
-        if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
-            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
+        $pheanstalk = $this->getPheanstalk($name);
 
         try {
             if ($buried) {
@@ -60,15 +42,19 @@ class PeekTubeCommand extends ContainerAwareCommand
             }
 
             if ($job) {
-                $output->writeln(sprintf('Pheanstalk : <info>%s</info>', $pheanstalkName));
-                $output->writeln(sprintf('Tube : <info>%s</info>', $tube));
-                $output->writeln(sprintf('Job id : <info>%s</info>', $job->getId()));
-                $output->writeln(sprintf('Data : <info>%s</info>', $job->getData()));
+                $output->writeln(sprintf('Pheanstalk: <info>%s</info>', $name));
+                $output->writeln(sprintf('Tube: <info>%s</info>', $tube));
+                $output->writeln(sprintf('Job id: <info>%s</info>', $job->getId()));
+                $output->writeln(sprintf('Data: <info>%s</info>', $job->getData()));
             }
-        } catch (Pheanstalk_Exception $e) {
-            $output->writeln(sprintf('Pheanstalk : <info>%s</info>', $pheanstalkName));
-            $output->writeln(sprintf('Tube : <info>%s</info>', $tube));
+
+            return 0;
+        } catch (Exception $e) {
+            $output->writeln(sprintf('Pheanstalk: <info>%s</info>', $name));
+            $output->writeln(sprintf('Tube: <info>%s</info>', $tube));
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+
+            return 1;
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace Leezy\PheanstalkBundle\Tests;
 
 use Leezy\PheanstalkBundle\PheanstalkLocator;
+use Pheanstalk\PheanstalkInterface;
 
 class PheanstalkLocatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +16,7 @@ class PheanstalkLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetNoDefinedPheanstalk()
     {
-        $pheanstalk = $this->getMock('Pheanstalk_PheanstalkInterface');
+        $pheanstalk = $this->getMockForAbstractClass(PheanstalkInterface::class);
 
         $pheanstalkLocator = new PheanstalkLocator();
         $pheanstalkLocator->addPheanstalk('default', $pheanstalk);
@@ -25,16 +26,20 @@ class PheanstalkLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDefaultPheanstalk()
     {
-        $pheanstalkA = $this->getMock('Pheanstalk_PheanstalkInterface');
-        $pheanstalkB = $this->getMock('Pheanstalk_PheanstalkInterface');
+        $pheanstalkA = $this->getMockForAbstractClass(PheanstalkInterface::class);
+        $pheanstalkB = $this->getMockForAbstractClass(PheanstalkInterface::class);
 
         $pheanstalkLocator = new PheanstalkLocator();
         $pheanstalkLocator->addPheanstalk('default', $pheanstalkA, true);
         $pheanstalkLocator->addPheanstalk('foo', $pheanstalkB);
 
-        $this->assertEquals($pheanstalkA, $pheanstalkLocator->getPheanstalk('default'));
-        $this->assertEquals($pheanstalkB, $pheanstalkLocator->getPheanstalk('foo'));
         $this->assertEquals($pheanstalkA, $pheanstalkLocator->getPheanstalk());
         $this->assertEquals($pheanstalkA, $pheanstalkLocator->getDefaultPheanstalk());
+        $this->assertEquals($pheanstalkA, $pheanstalkLocator->getPheanstalk('default'));
+        $this->assertEquals($pheanstalkB, $pheanstalkLocator->getPheanstalk('foo'));
+        $this->assertEquals(
+            ['default' => $pheanstalkA, 'foo' => $pheanstalkB],
+            $pheanstalkLocator->getPheanstalks()
+        );
     }
 }

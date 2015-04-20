@@ -2,13 +2,13 @@
 
 namespace Leezy\PheanstalkBundle\Exceptions;
 
-use Exception;
-
-class PheanstalkException extends Exception
+class PheanstalkException extends \Exception
 {
-    public function __construct($message = "Pheanstalk exception.")
+    /**
+     * @inheritdoc
+     */
+    public function __construct($message = 'Pheanstalk exception.')
     {
         parent::__construct($message);
     }
-
 }

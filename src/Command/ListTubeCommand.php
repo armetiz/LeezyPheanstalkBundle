@@ -2,15 +2,14 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ListTubeCommand extends ContainerAwareCommand
+class ListTubeCommand extends AbstractPheanstalkCommand
 {
     /**
-     * @see Command
+     * @inheritdoc
      */
     protected function configure()
     {
@@ -20,42 +19,29 @@ class ListTubeCommand extends ContainerAwareCommand
             ->setDescription('The names of all tubes on the server.');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pheanstalkName = $input->getArgument('pheanstalk');
-
-        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
-        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-
-        if (null === $pheanstalkName) {
-            $pheanstalkName = 'default';
-        }
-
-        if (null === $pheanstalk) {
-            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
-
-        if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
-            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
+        $name       = $input->getArgument('pheanstalk');
+        $pheanstalk = $this->getPheanstalk($name);
 
         $tubes = $pheanstalk->listTubes();
 
-        if (count($tubes) === 0 ) {
-            $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
+        if (count($tubes) === 0) {
+            $output->writeln('Pheanstalk: <error>'.$name.'</error>');
             $output->writeln('<error>0</error> tube defined.');
 
-            return;
+            return 0;
         }
 
-        $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+        $output->writeln('Pheanstalk: <info>'.$name.'</info>');
 
         foreach ($tubes as $tube) {
-            $output->writeln('- ' . $tube);
+            $output->writeln('- '.$tube);
         }
+
+        return 0;
     }
 }

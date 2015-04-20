@@ -1,10 +1,10 @@
 ## Custom proxy
 
-Add a custom proxy only if you can't do what you want using [Events](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/4-events.md) hook system.
+Add a custom proxy only if you can't do what you want using [Events](/Resources/doc/4-events.md) hook system.
 
 # Create a proxy class
 
-Two choices: 
+Two choices:
 * Implement **Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface**
 * Extend **Leezy\PheanstalkBundle\Proxy\PheanstalkProxy**
 
@@ -14,12 +14,14 @@ Two choices:
 namespace Acme\DemoBundle\Proxy;
 
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy as PheanstalkProxyBase;
+use Pheanstalk\PheanstalkInterface;
 
-class PheanstalkProxy extends PheanstalkProxyBase {
+class PheanstalkProxy extends PheanstalkProxyBase
+{
     /**
      * {@inheritDoc}
      */
-    public function bury($job, $priority = Pheanstalk_PheanstalkInterface::DEFAULT_PRIORITY)
+    public function bury($job, $priority = PheanstalkInterface::DEFAULT_PRIORITY)
     {
         //crazy job here
 

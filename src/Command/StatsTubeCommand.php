@@ -2,17 +2,15 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Pheanstalk\Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Pheanstalk_Exception;
-
-class StatsTubeCommand extends ContainerAwareCommand
+class StatsTubeCommand extends AbstractPheanstalkCommand
 {
     /**
-     * @see Command
+     * @inheritdoc
      */
     protected function configure()
     {
@@ -23,34 +21,18 @@ class StatsTubeCommand extends ContainerAwareCommand
             ->setDescription('Gives statistical information about a specified tube, or about all tubes.');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pheanstalkName = $input->getArgument('pheanstalk');
+        $name       = $input->getArgument('pheanstalk');
+        $pheanstalk = $this->getPheanstalk($name);
 
-        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
-        /** @var \Pheanstalk_Pheanstalk $pheanstalk */
-        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-
-        if (null === $pheanstalkName) {
-            $pheanstalkName = 'default';
-        }
-
-        if (null === $pheanstalk) {
-            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
-
-        if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
-            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
-
-        $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+        $output->writeln('Pheanstalk: <info>'.$name.'</info>');
 
         try {
-            $tubes = array();
+            $tubes = [];
 
             // if a tube argument is given, only consider that tube. If not, get stats for all tubes
             if ($tube = $input->getArgument('tube')) {
@@ -64,8 +46,8 @@ class StatsTubeCommand extends ContainerAwareCommand
                 // fetch stats for each tube
                 $stats = $pheanstalk->statsTube($tube);
 
-                if (count($stats) === 0 ) {
-                    $output->writeln('Tube : <error>' . $tube . '</error>');
+                if (count($stats) === 0) {
+                    $output->writeln('Tube: <error>'.$tube.'</error>');
                     $output->writeln('<info>0 stats.</info>');
                 } else {
                     // only add a whiteline if we are past the first tube (for BC)
@@ -74,14 +56,18 @@ class StatsTubeCommand extends ContainerAwareCommand
                     }
 
                     foreach ($stats as $key => $information) {
-                        $output->writeln('- <info>' . $key . '</info> : ' . $information);
+                        $output->writeln('- <info>'.$key.'</info>: '.$information);
                     }
                 }
 
                 $whiteline = true;
             }
-        } catch (Pheanstalk_Exception $e) {
+
+            return 0;
+        } catch (Exception $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+
+            return 1;
         }
     }
 }

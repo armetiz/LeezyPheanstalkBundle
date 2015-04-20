@@ -6,7 +6,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This is the class that validates and merges configuration from your app/config files
+ * This is the class that validates and merges configuration from your app/config files.
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
@@ -28,30 +28,30 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('template')->defaultValue('LeezyPheanstalkBundle:Profiler:pheanstalk.html.twig')->end()
                 ->end()
             ->end()
-            ->booleanNode("enabled")->defaultTrue()->end()
-            ->arrayNode("pheanstalks")
+            ->booleanNode('enabled')->defaultTrue()->end()
+            ->arrayNode('pheanstalks')
                 ->requiresAtLeastOneElement()
                 ->useAttributeAsKey('name')
                 ->prototype('array')
                     ->children()
-                        ->scalarNode("server")
+                        ->scalarNode('server')
                             ->isRequired()
                             ->cannotBeEmpty()
                         ->end()
-                        ->scalarNode("port")
+                        ->scalarNode('port')
                             ->cannotBeEmpty()
-                            ->defaultValue("11300")
+                            ->defaultValue('11300')
                         ->end()
-                        ->scalarNode("timeout")
+                        ->scalarNode('timeout')
                             ->cannotBeEmpty()
-                            ->defaultValue("60")
+                            ->defaultValue('60')
                         ->end()
-                        ->booleanNode("default")
+                        ->booleanNode('default')
                             ->defaultFalse()
                         ->end()
-                        ->scalarNode("proxy")
+                        ->scalarNode('proxy')
                             ->cannotBeEmpty()
-                            ->defaultValue("leezy.pheanstalk.proxy.default")
+                            ->defaultValue('leezy.pheanstalk.proxy.default')
                         ->end()
                     ->end()
                 ->end()

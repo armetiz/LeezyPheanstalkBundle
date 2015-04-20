@@ -6,7 +6,7 @@ This bundle can be configured, and this is the list of what you can do :
 * Define specific port for each connection. This option is optional and default value is 11300.
 * Define specific timeout for each connection. Timeout refere to the connection timeout. This option is optional and default value is 60.
 * Use custom proxy for pheanstalk client.
-* Disable this bundle. This options is optional and default value is true. 
+* Disable this bundle. This options is optional and default value is true.
 
 ``` yaml
 # app/config/config.yml
@@ -38,9 +38,10 @@ namespace Acme\DemoBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class HomeController extends Controller {
-
-    public function indexAction() {
+class HomeController extends Controller
+{
+    public function indexAction()
+    {
         $pheanstalkPrimary = $this->get("leezy.pheanstalk.primary");
         $pheanstalkSecondary = $this->get("leezy.pheanstalk");
 
@@ -67,13 +68,11 @@ class HomeController extends Controller {
         // on each defined pheanstalks
         $pheanstalkLocator = $this->get("leezy.pheanstalk.pheanstalk_locator");
 
-        foreach($pheanstalkLocator->getPheanstalks() as $pheanstalk) {
+        foreach ($pheanstalkLocator->getPheanstalks() as $pheanstalk) {
             $pheanstalk
                 ->useTube('boardcast')
                 ->put("job payload goes here\n");
         }
     }
-
 }
-?>
 ```

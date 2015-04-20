@@ -2,17 +2,15 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Pheanstalk\Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Pheanstalk_Exception;
-
-class StatsCommand extends ContainerAwareCommand
+class StatsCommand extends AbstractPheanstalkCommand
 {
     /**
-     * @see Command
+     * @inheritdoc
      */
     protected function configure()
     {
@@ -22,47 +20,36 @@ class StatsCommand extends ContainerAwareCommand
             ->setDescription('Gives statistical information about the beanstalkd system as a whole.');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pheanstalkName = $input->getArgument('pheanstalk');
-
-        $pheanstalkLocator = $this->getContainer()->get('leezy.pheanstalk.pheanstalk_locator');
-        $pheanstalk = $pheanstalkLocator->getPheanstalk($pheanstalkName);
-
-        if (null === $pheanstalkName) {
-            $pheanstalkName = 'default';
-        }
-
-        if (null === $pheanstalk) {
-            $output->writeln('Pheanstalk not found : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
-
-        if (!$pheanstalk->getPheanstalk()->getConnection()->isServiceListening()) {
-            $output->writeln('Pheanstalk not connected : <error>' . $pheanstalkName . '</error>');
-
-            return;
-        }
+        $name       = $input->getArgument('pheanstalk');
+        $pheanstalk = $this->getPheanstalk($name);
 
         try {
             $stats = $pheanstalk->stats();
 
-            if (count($stats) === 0 ) {
-                $output->writeln('Pheanstalk : <error>' . $pheanstalkName . '</error>');
+            if (count($stats) === 0) {
+                $output->writeln('Pheanstalk: <error>'.$name.'</error>');
                 $output->writeln('<info>0 stats.</info>');
 
-                return;
+                return 0;
             }
 
-            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+            $output->writeln('Pheanstalk: <info>'.$name.'</info>');
 
             foreach ($stats as $key => $information) {
-                $output->writeln('- <info>' . $key . '</info> : ' . $information);
+                $output->writeln('- <info>'.$key.'</info>: '.$information);
             }
-        } catch (Pheanstalk_Exception $e) {
-            $output->writeln('Pheanstalk : <info>' . $pheanstalkName . '</info>');
+
+            return 0;
+        } catch (Exception $e) {
+            $output->writeln('Pheanstalk: <info>'.$name.'</info>');
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+
+            return 1;
         }
     }
 }

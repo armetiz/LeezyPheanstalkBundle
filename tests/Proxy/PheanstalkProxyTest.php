@@ -3,22 +3,25 @@
 namespace Leezy\PheanstalkBundle\Tests\Proxy;
 
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
+use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
+use Pheanstalk\PheanstalkInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Leezy\PheanstalkBundle\Proxy\PheanstalkProxy
+     * @var PheanstalkProxyInterface
      */
     protected $pheanstalkProxy;
 
     /**
-     * @var \Pheanstalk_PheanstalkInterface
+     * @var PheanstalkInterface
      */
     protected $pheanstalk;
 
     public function setUp()
     {
-        $this->pheanstalk = $this->getMock('Pheanstalk_PheanstalkInterface');
+        $this->pheanstalk      = $this->getMockForAbstractClass(PheanstalkInterface::class);
         $this->pheanstalkProxy = new PheanstalkProxy();
     }
 
@@ -30,8 +33,8 @@ class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase
 
     public function testInterfaces()
     {
-        $this->assertInstanceOf('Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface', $this->pheanstalkProxy);
-        $this->assertInstanceOf('Pheanstalk_PheanstalkInterface', $this->pheanstalkProxy);
+        $this->assertInstanceOf(PheanstalkProxyInterface::class, $this->pheanstalkProxy);
+        $this->assertInstanceOf(PheanstalkInterface::class, $this->pheanstalkProxy);
     }
 
     public function testProxyValue()
@@ -40,34 +43,34 @@ class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->pheanstalk, $this->pheanstalkProxy->getPheanstalk());
     }
 
-    public function namedFunctions ()
+    public function namedFunctions()
     {
-        return array (
-            array('bury', array('foo', 42)),
-            array('delete', array('foo')),
-            array('ignore', array('foo')),
-            array('kick', array(42)),
-            array('listTubes'),
-            array('listTubesWatched', array(true)),
-            array('listTubeUsed', array(true)),
-            array('pauseTube', array('foo', 42)),
-            array('peek', array(42)),
-            array('peekReady', array('foo')),
-            array('peekDelayed', array('foo')),
-            array('peekBuried', array('foo')),
-            array('put', array('foo', 42, 42, 42)),
-            array('putInTube', array('foo', 'bar', 42, 42, 42)),
-            array('release', array('foo', 42, 42)),
-            array('reserve', array(42)),
-            array('reserveFromTube', array('foo', 42)),
-            array('statsJob', array('foo')),
-            array('statsTube', array('foo')),
-            array('stats'),
-            array('touch', array('foo')),
-            array('useTube', array('foo')),
-            array('watch', array('foo')),
-            array('watchOnly', array('foo')),
-        );
+        return [
+            ['bury', ['foo', 42]],
+            ['delete', ['foo']],
+            ['ignore', ['foo']],
+            ['kick', [42]],
+            ['listTubes'],
+            ['listTubesWatched', [true]],
+            ['listTubeUsed', [true]],
+            ['pauseTube', ['foo', 42]],
+            ['peek', [42]],
+            ['peekReady', ['foo']],
+            ['peekDelayed', ['foo']],
+            ['peekBuried', ['foo']],
+            ['put', ['foo', 42, 42, 42]],
+            ['putInTube', ['foo', 'bar', 42, 42, 42]],
+            ['release', ['foo', 42, 42]],
+            ['reserve', [42]],
+            ['reserveFromTube', ['foo', 42]],
+            ['statsJob', ['foo']],
+            ['statsTube', ['foo']],
+            ['stats'],
+            ['touch', ['foo']],
+            ['useTube', ['foo']],
+            ['watch', ['foo']],
+            ['watchOnly', ['foo']],
+        ];
     }
 
     /**
@@ -76,18 +79,17 @@ class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase
     public function testProxyFunctionCalls($name, $value = null)
     {
         if (null === $value) {
-            $value = array();
+            $value = [];
         }
 
         $pheanstalkProxy = new PheanstalkProxy();
-        $pheanstalkMock = $this->getMock('Pheanstalk_PheanstalkInterface');
-        $dispatchMock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $pheanstalkMock->expects($this->atLeastOnce())
-                ->method($name);
+        $pheanstalkMock  = $this->getMockForAbstractClass(PheanstalkInterface::class);
+        $dispatchMock    = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $pheanstalkMock->expects($this->atLeastOnce())->method($name);
 
         $pheanstalkProxy->setPheanstalk($pheanstalkMock);
         $pheanstalkProxy->setDispatcher($dispatchMock);
 
-        call_user_func_array(array($pheanstalkProxy, $name), $value);
+        call_user_func_array([$pheanstalkProxy, $name], $value);
     }
 }

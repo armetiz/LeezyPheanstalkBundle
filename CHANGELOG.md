@@ -1,3 +1,14 @@
+## 3.0.0
+
+This version does not break compatibility itself, but it does upgrade
+Pheanstalk to version 3, which uses namespaces. If you use any Pheanstalk
+classes directly in your code, you should update those references.
+
+* Upped Pheanstalk version to ~3.0
+* Upped Symfony requirement to ~2.3
+* Upped PHP version requirement to 5.5.9
+* Added PRS-4 autoloader configuration
+
 ## 2.5.0
 * Logging is now done to a specific channel (PR #50 @pkruithof)
 
