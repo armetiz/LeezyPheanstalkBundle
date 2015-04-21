@@ -39,6 +39,5 @@
         "branch-alias": {
             "dev-master": "3.x-dev"
         }
-    },
-    "target-dir": "Leezy/PheanstalkBundle"
+    }
 }
