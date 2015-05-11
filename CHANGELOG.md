@@ -8,6 +8,7 @@ classes directly in your code, you should update those references.
 * Upped Symfony requirement to ~2.3
 * Upped PHP version requirement to 5.5.9
 * Added PRS-4 autoloader configuration
+* The option `enabled` was removed from configuration
 
 ## 2.5.0
 * Logging is now done to a specific channel (PR #50 @pkruithof)
