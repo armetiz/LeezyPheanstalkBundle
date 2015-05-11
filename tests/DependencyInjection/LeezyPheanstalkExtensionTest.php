@@ -39,7 +39,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'primary' => [
                         'server'  => 'beanstalkd.domain.tld',
@@ -61,7 +60,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'primary' => [
                         'server'  => 'beanstalkd.domain.tld',
@@ -83,7 +81,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'primary' => [
                         'server'  => 'beanstalkd.domain.tld',
@@ -107,7 +104,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'one' => [
                         'server'  => 'beanstalkd.domain.tld',
@@ -128,7 +124,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'one'   => [
                         'server'  => 'beanstalkd.domain.tld',
@@ -156,7 +151,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'primary' => [
                         'server'  => 'beanstalkd.domain.tld',
@@ -180,7 +174,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'primary' => [
                         'server'  => 'beanstalkd.domain.tld',
@@ -202,7 +195,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'proxy' => [
                         'server'  => 'beanstalkd.domain.tld',
@@ -221,7 +213,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'primary' => [
                         'server'  => 'beanstalkd.domain.tld',
@@ -243,7 +234,6 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'leezy_pheanstalk' => [
-                'enabled'     => true,
                 'pheanstalks' => [
                     'primary' => [
                         'server'  => 'beanstalkd.domain.tld',

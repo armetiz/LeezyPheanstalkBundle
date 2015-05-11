@@ -11,7 +11,6 @@ This bundle can be configured, and this is the list of what you can do :
 ``` yaml
 # app/config/config.yml
 leezy_pheanstalk:
-    enabled: true
     pheanstalks:
         primary:
             server: beanstalkd.domain.tld

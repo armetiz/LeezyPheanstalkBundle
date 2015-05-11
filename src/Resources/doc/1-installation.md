@@ -50,7 +50,6 @@ Finally, add the following to your config.yml
 ``` yaml
 # app/config/config.yml
 leezy_pheanstalk:
-    enabled: true
     pheanstalks:
         primary:
             server: beanstalkd.domain.tld

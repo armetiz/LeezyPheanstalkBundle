@@ -28,7 +28,6 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('template')->defaultValue('LeezyPheanstalkBundle:Profiler:pheanstalk.html.twig')->end()
                 ->end()
             ->end()
-            ->booleanNode('enabled')->defaultTrue()->end()
             ->arrayNode('pheanstalks')
                 ->requiresAtLeastOneElement()
                 ->useAttributeAsKey('name')

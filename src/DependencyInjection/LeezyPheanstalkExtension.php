@@ -31,10 +31,6 @@ class LeezyPheanstalkExtension extends Extension
         $loader->load('services.xml');
         $loader->load('commands.xml');
 
-        if (!$config['enabled']) {
-            return;
-        }
-
         $this->configureConnections($container, $config);
 
         if ($config['profiler']['enabled']) {
