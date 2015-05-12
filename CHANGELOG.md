@@ -9,6 +9,7 @@ classes directly in your code, you should update those references.
 * Upped PHP version requirement to 5.5.9
 * Added PRS-4 autoloader configuration
 * The option `enabled` was removed from configuration
+* The `*.class` service parameters were replaced by its real values
 
 ## 2.5.0
 * Logging is now done to a specific channel (PR #50 @pkruithof)
