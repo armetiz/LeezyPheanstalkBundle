@@ -50,9 +50,10 @@ class PheanstalkLogListener implements EventSubscriberInterface
 
     /**
      *
-     * @param \Leezy\PheanstalkBundle\Event\CommandEvent $eventArgs
+     * @param CommandEvent $event
+     * @param string $eventName
      */
-    public function onCommand(CommandEvent $event)
+    public function onCommand(CommandEvent $event, $eventName)
     {
         if (!$this->getLogger()) {
             return;
@@ -70,7 +71,7 @@ class PheanstalkLogListener implements EventSubscriberInterface
             $pheanstalkName = $pheanstalk->getName();
         }
 
-        $nameExploded = explode(".", $event->getName());
+        $nameExploded = explode(".", $eventName);
 
         $this->getLogger()->addInfo(
             'Pheanstalk command: ' . $nameExploded[count($nameExploded) - 1],
