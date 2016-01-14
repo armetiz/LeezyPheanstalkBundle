@@ -1,3 +1,8 @@
+## 3.1.0
+
+* Allow dependencies `symfony/framework-bundle` ~3.0
+* Allow dependencies `symfony/console` ~3.0
+
 ## 3.0.0
 
 This version does not break compatibility itself, but it does upgrade

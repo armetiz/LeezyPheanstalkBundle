@@ -13,7 +13,8 @@ env:
   - SYMFONY_VERSION=2.4.*
   - SYMFONY_VERSION=2.5.*
   - SYMFONY_VERSION=2.6.*
-  - SYMFONY_VERSION=2.7.*@dev
+  - SYMFONY_VERSION=2.7.*
+  - SYMFONY_VERSION=3.*
 
 cache:
   directories:
