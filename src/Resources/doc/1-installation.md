@@ -13,7 +13,7 @@ Add LeezyPheanstalkBundle in your composer.json:
 ```js
 {
     "require": {
-        "leezy/pheanstalk-bundle": "~3.0"
+        "leezy/pheanstalk-bundle": "~3.1"
     }
 }
 ```
