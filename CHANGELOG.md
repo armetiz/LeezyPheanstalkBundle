@@ -1,3 +1,8 @@
+## 3.1.0
+
+* Allow dependencies `symfony/framework-bundle` ~3.0
+* Allow dependencies `symfony/console` ~3.0
+
 ## 3.0.0
 
 This version does not break compatibility itself, but it does upgrade
@@ -9,6 +14,7 @@ classes directly in your code, you should update those references.
 * Upped PHP version requirement to 5.5.9
 * Added PRS-4 autoloader configuration
 * The option `enabled` was removed from configuration
+* The `*.class` service parameters were replaced by its real values
 
 ## 2.5.0
 * Logging is now done to a specific channel (PR #50 @pkruithof)
