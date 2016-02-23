@@ -7,6 +7,7 @@ use Leezy\PheanstalkBundle\Listener\PheanstalkLogListener;
 use Pheanstalk\Connection;
 use Pheanstalk\PheanstalkInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class PheanstalkLogListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -78,5 +79,25 @@ class PheanstalkLogListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new PheanstalkLogListener();
         $listener->setLogger($this->logger);
         $listener->onCommand(new CommandEvent($this->pheanstalk, []), CommandEvent::PEEK_READY);
+    }
+
+    /**
+     * @see https://github.com/armetiz/LeezyPheanstalkBundle/issues/60
+     */
+    public function testWithEventDispatcher()
+    {
+        $this->logger->expects($this->once())->method('info');
+
+        $this->connection->expects($this->any())->method('isServiceListening')->will($this->returnValue(true));
+
+        $listener = new PheanstalkLogListener();
+        $listener->setLogger($this->logger);
+
+        $eventDispatcher = new EventDispatcher();
+        $eventDispatcher->addSubscriber($listener);
+        $eventDispatcher->dispatch(
+            CommandEvent::PEEK_READY,
+            new CommandEvent($this->pheanstalk, [])
+        );
     }
 }
