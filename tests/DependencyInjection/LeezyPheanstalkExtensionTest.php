@@ -145,6 +145,9 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.one'));
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.two'));
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.three'));
+
+        # @see https://github.com/armetiz/LeezyPheanstalkBundle/issues/61
+        $this->assertNotSame($this->container->getDefinition('leezy.pheanstalk.one'), $this->container->getDefinition('leezy.pheanstalk.two'));
     }
 
     public function testPheanstalkLocator()

@@ -56,7 +56,8 @@ class ProxyCompilerPass implements CompilerPassInterface
             $pheanstalkConfig = [$pheanstalk['server'], $pheanstalk['port'], $pheanstalk['timeout']];
             $isDefault        = $pheanstalk['default'];
 
-            $pheanstalkDef = $container->getDefinition($pheanstalk['proxy']);
+            # @see https://github.com/armetiz/LeezyPheanstalkBundle/issues/61
+            $pheanstalkDef = clone $container->getDefinition($pheanstalk['proxy']);
 
             $pheanstalkDef->addMethodCall('setPheanstalk', [new Definition(Pheanstalk::class, $pheanstalkConfig)]);
             $pheanstalkDef->addMethodCall('setName', [$name]);
