@@ -1,13 +1,14 @@
 {% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
 {% block toolbar %}
-    <div class="sf-toolbar-block">
-        <div class="sf-toolbar-icon">
-            <a href="{{ path('_profiler', { 'token': token, 'panel': name }) }}">
-                <span style="width:0px; height: 28px; vertical-align: middle;"></span>
-                <span class="sf-toolbar-status">{{ collector.jobCount }}</span> Jobs
-            </a>
-        </div>
+    <div class="sf-toolbar-block sf-toolbar-block-leezy-pheanstalk sf-toolbar-status-normal">
+        <a href="{{ path('_profiler', { 'token': token, 'panel': name }) }}">
+            <div class="sf-toolbar-icon">
+                {{ include('@LeezyPheanstalk/Profiler/database.svg') }}
+                <span class="sf-toolbar-value">{{ collector.jobCount }}</span>
+                <span class="sf-toolbar-label">Jobs</span>
+            </div>
+        </a>
         <div class="sf-toolbar-info">
             <div class="sf-toolbar-info-piece">
                 <b>Pheanstalks</b>
@@ -27,7 +28,7 @@
 
 {% block menu %}
     <span class="label">
-        <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcCAYAAAB/E6/TAAABLUlEQVR42u3TP0vDQBiA8UK/gDiLzi0IhU4OEunk5OQUAhGSOBUCzqWfIKSzX8DRySF0URCcMjWLIJjFD9Cpk/D6HITecEPUuzhIAz8CIdyTP/f2iqI4qaqqDx8l5Ic2uIeP/bquezCokOAFF+oCN3t4gPzSEjc4NEPaCldQbzjELTYW0RJzHDchwwem+ons6ZBpLSJ7nueJC22h0V+FzmwWV0ee59vQNV67CGVZJmEYbkNjfpY6X6I0Qo4/3RMmTdDDspuQVsJvgkP3IdMbIkIjLPBoadG2646iKJI0Ta2wxm6OdnP0/Tk6DYJgHcfxpw21RtscDTDDnaVZ26474GkkSRIrrPEv5sgMTfHe+cA2O6wPH6vOBpYQNALneHb96XTEDI6dzpEZ0VzO0Rf3pP5LMLI4tAAAAABJRU5ErkJggg==" alt=""></span>
+        <span class="icon">{{ include('@LeezyPheanstalk/Profiler/database.svg') }}</span>
         <strong>Pheanstalk</strong>
         <span class="count">
             <span>{{ collector.pheanstalks|length }}</span>
