@@ -25,4 +25,4 @@ $ php composer.phar require leezy/pheanstalk-bundle
 $ # Please provide a version constraint [...]: 1.x-dev
 ```
 
-For the last operation, take a look on [Installation](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/Resources/doc/1-installation.md) about how to enable and configure the bundle.
+For the last operation, take a look on [Installation](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/src/Resources/doc/1-installation.md) about how to enable and configure the bundle.
