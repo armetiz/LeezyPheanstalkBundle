@@ -1,6 +1,6 @@
 ## Custom proxy
 
-Add a custom proxy only if you can't do what you want using [Events](/Resources/doc/4-events.md) hook system.
+Add a custom proxy only if you can't do what you want using [Events](/src/Resources/doc/4-events.md) hook system.
 
 # Create a proxy class
 
