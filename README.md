@@ -72,6 +72,10 @@ $ phpunit
 
 This bundle is under the MIT license. [See the complete license](https://github.com/armetiz/LeezyPheanstalkBundle/blob/master/LICENSE).
 
+## Other
+
+[Silex integration](https://github.com/sergiors/pheanstalk-service-provider)
+
 ## Credits
 
 Author - [Thomas Tourlourat](http://www.armetiz.info)
