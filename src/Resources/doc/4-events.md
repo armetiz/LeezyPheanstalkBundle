@@ -28,7 +28,7 @@ See events name above :
 * CommandEvent::WATCH 
 * CommandEvent::WATCH_ONLY 
 
-**Note** FQDN is \Leezy\PheanstalkBundle\Event\CommandEvent
+**Note** FQDN is \Leezy\PheanstalkBundle\Event\CommandEvent  
 **Note** If you need more documentation about those events; you should read the [https://raw.githubusercontent.com/kr/beanstalkd/master/doc/protocol.txt](beanstalkd protocol).
 
 ## Usage example
