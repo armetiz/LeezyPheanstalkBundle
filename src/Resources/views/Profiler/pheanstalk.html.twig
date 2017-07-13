@@ -4,21 +4,21 @@
     <div class="sf-toolbar-block sf-toolbar-block-leezy-pheanstalk sf-toolbar-status-normal">
         <a href="{{ path('_profiler', { 'token': token, 'panel': name }) }}">
             <div class="sf-toolbar-icon">
-                {{ include('@LeezyPheanstalk/Profiler/database.svg') }}
+                {{ include('@LeezyPheanstalk/Profiler/queue.svg') }}
                 <span class="sf-toolbar-value">{{ collector.jobCount }}</span>
                 <span class="sf-toolbar-label">Jobs</span>
             </div>
         </a>
         <div class="sf-toolbar-info">
-            <div class="sf-toolbar-info-piece">
+            <div class="sf-toolbar-status">
                 <b>Pheanstalks</b>
                 <span>{{ collector.pheanstalks|length }}</span>
             </div>
-            <div class="sf-toolbar-info-piece">
+            <div class="sf-toolbar-status">
                 <b>Tubes</b>
                 <span>{{ collector.tubes|length }}</span>
             </div>
-            <div class="sf-toolbar-info-piece">
+            <div class="sf-toolbar-status">
                 <b>Jobs</b>
                 <span>{{ collector.jobCount }}</span>
             </div>
@@ -28,7 +28,7 @@
 
 {% block menu %}
     <span class="label">
-        <span class="icon">{{ include('@LeezyPheanstalk/Profiler/database.svg') }}</span>
+        <span class="icon">{{ include('@LeezyPheanstalk/Profiler/queue.svg') }}</span>
         <strong>Pheanstalk</strong>
         <span class="count">
             <span>{{ collector.pheanstalks|length }}</span>
