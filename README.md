@@ -1,8 +1,8 @@
 ## LeezyPheanstalkBundle
 
-[![Build Status](https://secure.travis-ci.org/armetiz/LeezyPheanstalkBundle.png)](http://travis-ci.org/armetiz/LeezyPheanstalkBundle)
+[![Build Status](https://travis-ci.org/armetiz/LeezyPheanstalkBundle.svg?branch=master)](http://travis-ci.org/armetiz/LeezyPheanstalkBundle)
 [![Packagist](https://poser.pugx.org/leezy/pheanstalk-bundle/downloads.png)](https://packagist.org/packages/leezy/pheanstalk-bundle)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/armetiz/LeezyPheanstalkBundle/badges/quality-score.png?s=7580874ae743d4ee26a0402b3af68fb9277972b8)](https://scrutinizer-ci.com/g/armetiz/LeezyPheanstalkBundle/)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/armetiz/LeezyPheanstalkBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/armetiz/LeezyPheanstalkBundle/)
 
 [Beanstalkd workqueue](http://kr.github.com/beanstalkd/) clients for Symfony2.
 
