@@ -6,25 +6,13 @@ Installation is a quick 3 step process:
 2. Enable the Bundle
 3. Configure your application's config.yml
 
-### Step 1: Download LeezyPheanstalkBundle
+### Step 1: Require LeezyPheanstalkBundle
 
-Add LeezyPheanstalkBundle in your composer.json:
-
-```js
-{
-    "require": {
-        "leezy/pheanstalk-bundle": "~3.1"
-    }
-}
-```
-
-Now tell composer to download the bundle by running the command:
+Tell composer to require this bundle by running:
 
 ``` bash
-$ php composer.phar update leezy/pheanstalk-bundle
+$ composer require leezy/pheanstalk-bundle
 ```
-
-Composer will install the bundle to your project's `vendor/leezy` directory.
 
 ### Step 2: Enable the bundle
 
