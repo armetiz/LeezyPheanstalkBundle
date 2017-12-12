@@ -8,43 +8,43 @@
         <service id="leezy.pheanstalk.command.abstract" class="Leezy\PheanstalkBundle\Command\AbstractPheanstalkCommand" abstract="true">
             <argument type="service" id="leezy.pheanstalk.pheanstalk_locator"/>
         </service>
-        <service id="leezy.pheanstalk.command.delete_job" class="Leezy\PheanstalkBundle\Command\DeleteJobCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.delete_job" class="Leezy\PheanstalkBundle\Command\DeleteJobCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.flush_tube" class="Leezy\PheanstalkBundle\Command\FlushTubeCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.flush_tube" class="Leezy\PheanstalkBundle\Command\FlushTubeCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.kick" class="Leezy\PheanstalkBundle\Command\KickCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.kick" class="Leezy\PheanstalkBundle\Command\KickCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.kick_job" class="Leezy\PheanstalkBundle\Command\KickJobCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.kick_job" class="Leezy\PheanstalkBundle\Command\KickJobCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.list_tube" class="Leezy\PheanstalkBundle\Command\ListTubeCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.list_tube" class="Leezy\PheanstalkBundle\Command\ListTubeCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.next_ready" class="Leezy\PheanstalkBundle\Command\NextReadyCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.next_ready" class="Leezy\PheanstalkBundle\Command\NextReadyCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.pause_tube" class="Leezy\PheanstalkBundle\Command\PauseTubeCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.pause_tube" class="Leezy\PheanstalkBundle\Command\PauseTubeCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.peek" class="Leezy\PheanstalkBundle\Command\PeekCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.peek" class="Leezy\PheanstalkBundle\Command\PeekCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.peek_tube" class="Leezy\PheanstalkBundle\Command\PeekTubeCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.peek_tube" class="Leezy\PheanstalkBundle\Command\PeekTubeCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.put" class="Leezy\PheanstalkBundle\Command\PutCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.put" class="Leezy\PheanstalkBundle\Command\PutCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.stats" class="Leezy\PheanstalkBundle\Command\StatsCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.stats" class="Leezy\PheanstalkBundle\Command\StatsCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.stats_job" class="Leezy\PheanstalkBundle\Command\StatsJobCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.stats_job" class="Leezy\PheanstalkBundle\Command\StatsJobCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
-        <service id="leezy.pheanstalk.command.stats_tube" class="Leezy\PheanstalkBundle\Command\StatsTubeCommand" parent="leezy.pheanstalk.command.abstract">
+        <service id="leezy.pheanstalk.command.stats_tube" class="Leezy\PheanstalkBundle\Command\StatsTubeCommand" parent="leezy.pheanstalk.command.abstract" public="true">
             <tag name="console.command"/>
         </service>
     </services>
