@@ -37,6 +37,16 @@ class PheanstalkDataCollector extends DataCollector
         ];
     }
 
+    public function reset()
+    {
+        $this->data = [
+            'pheanstalks' => [],
+            'tubes'       => [],
+            'jobCount'    => 0,
+            'jobs'        => [],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
