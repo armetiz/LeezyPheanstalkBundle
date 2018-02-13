@@ -42,7 +42,7 @@ abstract class AbstractPheanstalkCommandTest extends \PHPUnit_Framework_TestCase
         $this->pheanstalk = $this->createPheanstalkMock($connection);
         $this->locator    = $this->createLocatorMock($this->pheanstalk);
 
-        $this->application = new Application($this->kernel);
+        $this->application = new Application();
         $this->application->add($this->getCommand());
     }
 
@@ -56,7 +56,7 @@ abstract class AbstractPheanstalkCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = $this->getCommand();
 
-        $application = new Application($this->kernel);
+        $application = new Application();
         $application->add($command);
 
         $commandTester = new CommandTester($command);
@@ -77,7 +77,7 @@ abstract class AbstractPheanstalkCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = $this->getCommand();
 
-        $application = new Application($this->kernel);
+        $application = new Application();
         $application->add($command);
 
         $commandTester = new CommandTester($command);
