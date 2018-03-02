@@ -1,3 +1,7 @@
+## 3.3.0
+
+* Support Symfony 4
+
 ## 3.1.0
 
 * Allow dependencies `symfony/framework-bundle` ~3.0
