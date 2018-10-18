@@ -29,11 +29,11 @@ cache:
     - $HOME/.composer/cache
 
 install:
-  - composer self-update
+  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer self-update
 
 before_script:
-  - composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
-  - composer install --prefer-source
+  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
+  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer install --prefer-source
 
 script:
   - ./bin/phpunit --coverage-text
