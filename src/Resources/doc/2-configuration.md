@@ -20,6 +20,9 @@ leezy_pheanstalk:
             server: beanstalkd-2.domain.tld
             default: true
             proxy: acme.pheanstalk
+    profiler:
+        enabled: true
+        template: 'LeezyPheanstalkBundle:Profiler:pheanstalk.html.twig'
 ```
 
 *acme.pheanstalk* is a custom proxy which implements the *Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface* interface.
