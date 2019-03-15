@@ -12,6 +12,7 @@ The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a [pheanstalk](http
 * An integration to the Symfony2 profiler system to monitor your beanstalk server.
 * An integration to the Symfony2 logger system.
 * A proxy system to customize the command features.
+* Auto-wiring: `PheanstalkInterface`
 
 
 Documentation :

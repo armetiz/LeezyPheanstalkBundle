@@ -10,6 +10,7 @@ namespace Leezy\PheanstalkBundle\DependencyInjection\Compiler;
 
 use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
 use Pheanstalk\Pheanstalk;
+use Pheanstalk\PheanstalkInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -82,6 +83,8 @@ class ProxyCompilerPass implements CompilerPassInterface
                 if ($alias !== null) {
                     $alias->setPublic(true);
                 }
+
+                $container->setAlias(PheanstalkInterface::class, 'leezy.pheanstalk')->setPublic(true);
             }
         }
     }
