@@ -79,12 +79,15 @@ class ProxyCompilerPass implements CompilerPassInterface
                 }
 
                 $defaultPheanstalkName = $name;
-                $alias = $container->setAlias('leezy.pheanstalk', 'leezy.pheanstalk.'.$name);
-                if ($alias !== null) {
-                    $alias->setPublic(true);
+                $legacyAlias = $container->setAlias('leezy.pheanstalk', 'leezy.pheanstalk.'.$name);
+                if ($legacyAlias) {
+                    $legacyAlias->setPublic(true);
                 }
 
-                $container->setAlias(PheanstalkInterface::class, 'leezy.pheanstalk')->setPublic(true);
+                $autoWiringAlias = $container->setAlias(PheanstalkInterface::class, 'leezy.pheanstalk');
+                if ($autoWiringAlias) {
+                    $autoWiringAlias->setPublic(true);
+                }
             }
         }
     }
