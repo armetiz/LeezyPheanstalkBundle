@@ -6,11 +6,12 @@ use Leezy\PheanstalkBundle\Command\AbstractPheanstalkCommand;
 use Leezy\PheanstalkBundle\PheanstalkLocator;
 use Pheanstalk\Connection;
 use Pheanstalk\PheanstalkInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class AbstractPheanstalkCommandTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractPheanstalkCommandTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|KernelInterface
@@ -32,7 +33,7 @@ abstract class AbstractPheanstalkCommandTest extends \PHPUnit_Framework_TestCase
      */
     protected $application;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->kernel  = $this->getMockForAbstractClass(KernelInterface::class);
 

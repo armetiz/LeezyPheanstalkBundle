@@ -6,10 +6,11 @@ use Leezy\PheanstalkBundle\DataCollector\PheanstalkDataCollector;
 use Leezy\PheanstalkBundle\PheanstalkLocator;
 use Pheanstalk\Connection;
 use Pheanstalk\PheanstalkInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PheanstalkDataCollectorTest extends \PHPUnit_Framework_TestCase
+class PheanstalkDataCollectorTest extends TestCase
 {
     public function testCollect()
     {

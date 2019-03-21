@@ -3,6 +3,7 @@
 namespace Leezy\PheanstalkBundle\Command;
 
 use Pheanstalk\Exception;
+use Pheanstalk\JobId;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,7 +27,7 @@ class StatsJobCommand extends AbstractPheanstalkCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $jobId = $input->getArgument('job');
+        $jobId = new JobId($input->getArgument('job'));
         $name  = $input->getArgument('pheanstalk');
 
         $pheanstalk = $this->getPheanstalk($name);

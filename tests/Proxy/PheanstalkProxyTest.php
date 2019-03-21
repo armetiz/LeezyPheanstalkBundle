@@ -5,9 +5,10 @@ namespace Leezy\PheanstalkBundle\Tests\Proxy;
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
 use Pheanstalk\PheanstalkInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase
+class PheanstalkProxyTest extends TestCase
 {
     /**
      * @var PheanstalkProxyInterface
@@ -19,13 +20,13 @@ class PheanstalkProxyTest extends \PHPUnit_Framework_TestCase
      */
     protected $pheanstalk;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->pheanstalk      = $this->getMockForAbstractClass(PheanstalkInterface::class);
         $this->pheanstalkProxy = new PheanstalkProxy();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->pheanstalk);
         unset($this->pheanstalkProxy);

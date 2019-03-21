@@ -14,7 +14,7 @@ class PheanstalkLogListener implements EventSubscriberInterface
     /**
      * @inheritdoc
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             CommandEvent::BURY               => 'onCommand',
@@ -44,22 +44,18 @@ class PheanstalkLogListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param CommandEvent $event
-     * @param string       $eventName
-     */
-    public function onCommand(CommandEvent $event, $eventName)
+    public function onCommand(CommandEvent $event, string $eventName): void
     {
         if (!$this->logger) {
             return;
         }
 
         $pheanstalk = $event->getPheanstalk();
-        $connection = $pheanstalk->getConnection();
+//        $connection = $pheanstalk->getConnection();
 
-        if (!$connection->isServiceListening()) {
-            $this->logger->warning('Pheanstalk connection isn\'t listening');
-        }
+//        if (!$connection->isServiceListening()) {
+//            $this->logger->warning('Pheanstalk connection isn\'t listening');
+//        }
 
         $pheanstalkName = 'unknown';
         if ($pheanstalk instanceof PheanstalkProxyInterface) {

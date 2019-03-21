@@ -3,8 +3,8 @@
 namespace Leezy\PheanstalkBundle\DataCollector;
 
 use Leezy\PheanstalkBundle\PheanstalkLocator;
+use Pheanstalk\Contract\PheanstalkInterface;
 use Pheanstalk\Exception\ServerException;
-use Pheanstalk\PheanstalkInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -55,23 +55,24 @@ class PheanstalkDataCollector extends DataCollector
         $defaultPheanstalk = $this->pheanstalkLocator->getDefaultPheanstalk();
 
         // Collect the information
+        /** @var PheanstalkInterface $pheanstalk */
         foreach ($this->pheanstalkLocator->getPheanstalks() as $name => $pheanstalk) {
             // Get information about this connection
             $this->data['pheanstalks'][$name] = [
                 'name'      => $name,
-                'host'      => $pheanstalk->getConnection()->getHost(),
-                'port'      => $pheanstalk->getConnection()->getPort(),
-                'timeout'   => $pheanstalk->getConnection()->getConnectTimeout(),
+//                'host'      => $pheanstalk->getConnection()->getHost(),
+//                'port'      => $pheanstalk->getConnection()->getPort(),
+//                'timeout'   => $pheanstalk->getConnection()->getConnectTimeout(),
                 'default'   => $defaultPheanstalk === $pheanstalk,
                 'stats'     => [],
-                'listening' => $pheanstalk->getConnection()->isServiceListening(),
+//                'listening' => $pheanstalk->getConnection()->isServiceListening(),
             ];
 
-            // If connection is not listening, there is a connection problem.
-            // Skip next steps which require an established connection
-            if (!$pheanstalk->getConnection()->isServiceListening()) {
-                continue;
-            }
+//            // If connection is not listening, there is a connection problem.
+//            // Skip next steps which require an established connection
+//            if (!$pheanstalk->getConnection()->isServiceListening()) {
+//                continue;
+//            }
 
             $pheanstalkStatistics = $pheanstalk->stats()->getArrayCopy();
 
@@ -142,10 +143,14 @@ class PheanstalkDataCollector extends DataCollector
      * @param PheanstalkInterface $pheanstalk
      * @param string              $tubeName
      */
-    private function fetchJobs(PheanstalkInterface $pheanstalk, $tubeName)
+    private function fetchJobs(PheanstalkInterface $pheanstalk, string $tubeName): void
     {
         try {
-            $nextJobReady = $pheanstalk->peekReady($tubeName);
+            $nextJobReady = $pheanstalk->useTube($tubeName)->peekReady();
+
+            if(null === $nextJobReady) {
+                return;
+            }
 
             $this->data['jobs'][$tubeName]['ready'] = [
                 'id'   => $nextJobReady->getId(),
@@ -155,7 +160,11 @@ class PheanstalkDataCollector extends DataCollector
         }
 
         try {
-            $nextJobBuried = $pheanstalk->peekBuried($tubeName);
+            $nextJobBuried = $pheanstalk->useTube($tubeName)->peekBuried();
+
+            if(null === $nextJobBuried) {
+                return;
+            }
 
             $this->data['jobs'][$tubeName]['buried'] = [
                 'id'   => $nextJobBuried->getId(),

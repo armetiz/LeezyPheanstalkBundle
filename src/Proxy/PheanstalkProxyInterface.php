@@ -2,27 +2,15 @@
 
 namespace Leezy\PheanstalkBundle\Proxy;
 
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Contract\PheanstalkInterface;
 
 interface PheanstalkProxyInterface extends PheanstalkInterface
 {
-    /**
-     * @return PheanstalkInterface
-     */
-    public function getPheanstalk();
+    public function getPheanstalk(): PheanstalkInterface;
 
-    /**
-     * @param PheanstalkInterface $pheanstalk
-     */
-    public function setPheanstalk(PheanstalkInterface $pheanstalk);
+    public function setPheanstalk(PheanstalkInterface $pheanstalk): void;
 
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 
-    /**
-     * @param string $name
-     */
-    public function setName($name);
+    public function setName(string $name);
 }

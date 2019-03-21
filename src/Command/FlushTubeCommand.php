@@ -36,6 +36,10 @@ class FlushTubeCommand extends AbstractPheanstalkCommand
             $pheanstalk->useTube($tube);
             while (true) {
                 $job = $pheanstalk->peekDelayed();
+                if(null === $job) {
+                    break;
+                }
+
                 $pheanstalk->delete($job);
                 $numJobDelete++;
             }
@@ -46,6 +50,10 @@ class FlushTubeCommand extends AbstractPheanstalkCommand
             $pheanstalk->useTube($tube);
             while (true) {
                 $job = $pheanstalk->peekBuried();
+                if(null === $job) {
+                    break;
+                }
+
                 $pheanstalk->delete($job);
                 $numJobDelete++;
             }
@@ -56,6 +64,10 @@ class FlushTubeCommand extends AbstractPheanstalkCommand
             $pheanstalk->useTube($tube);
             while (true) {
                 $job = $pheanstalk->peekReady();
+                if(null === $job) {
+                    break;
+                }
+
                 $pheanstalk->delete($job);
                 $numJobDelete++;
             }

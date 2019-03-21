@@ -5,11 +5,12 @@ namespace Leezy\PheanstalkBundle\Tests\DependencyInjection;
 use Leezy\PheanstalkBundle\DependencyInjection\LeezyPheanstalkExtension;
 use Leezy\PheanstalkBundle\LeezyPheanstalkBundle;
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
+class LeezyPheanstalkExtensionTest extends TestCase
 {
     /**
      * @var ContainerBuilder
@@ -21,7 +22,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = new ContainerBuilder();
         $this->extension = new LeezyPheanstalkExtension();
@@ -30,7 +31,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
         $bundle->build($this->container); // Attach all default factories
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->container, $this->extension);
     }

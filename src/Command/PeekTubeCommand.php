@@ -36,9 +36,9 @@ class PeekTubeCommand extends AbstractPheanstalkCommand
 
         try {
             if ($buried) {
-                $job = $pheanstalk->peekBuried($tube);
+                $job = $pheanstalk->useTube($tube)->peekBuried();
             } else {
-                $job = $pheanstalk->peekReady($tube);
+                $job = $pheanstalk->useTube($tube)->peekReady();
             }
 
             if ($job) {

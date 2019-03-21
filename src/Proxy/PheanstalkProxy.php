@@ -4,7 +4,7 @@ namespace Leezy\PheanstalkBundle\Proxy;
 
 use Leezy\PheanstalkBundle\Event\CommandEvent;
 use Pheanstalk\Connection;
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Contract\PheanstalkInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class PheanstalkProxy implements PheanstalkProxyInterface
@@ -23,24 +23,6 @@ class PheanstalkProxy implements PheanstalkProxyInterface
      * @var PheanstalkInterface
      */
     protected $pheanstalk;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setConnection(Connection $connection)
-    {
-        $this->pheanstalk->setConnection($connection);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getConnection()
-    {
-        return $this->pheanstalk->getConnection();
-    }
 
     /**
      * {@inheritDoc}

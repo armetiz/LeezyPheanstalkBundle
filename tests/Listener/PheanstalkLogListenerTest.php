@@ -6,10 +6,11 @@ use Leezy\PheanstalkBundle\Event\CommandEvent;
 use Leezy\PheanstalkBundle\Listener\PheanstalkLogListener;
 use Pheanstalk\Connection;
 use Pheanstalk\PheanstalkInterface;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class PheanstalkLogListenerTest extends \PHPUnit_Framework_TestCase
+class PheanstalkLogListenerTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|PheanstalkInterface
@@ -26,7 +27,7 @@ class PheanstalkLogListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected $logger;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->logger = $this
             ->getMockBuilder(LoggerInterface::class)

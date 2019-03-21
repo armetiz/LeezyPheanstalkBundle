@@ -2,7 +2,7 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Contract\PheanstalkInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,10 +40,10 @@ class PutCommand extends AbstractPheanstalkCommand
         $pheanstalk = $this->getPheanstalk($name);
 
         $pheanstalk->useTube($tube);
-        $jobId = $pheanstalk->put($data, $priority, $delay, $ttr);
+        $job = $pheanstalk->put($data, $priority, $delay, $ttr);
 
         $output->writeln('Pheanstalk: <info>'.$name.'</info>');
-        $output->writeln('New job on tube <info>'.$tube.'</info> with id <info>'.$jobId.'</info>.');
+        $output->writeln('New job on tube <info>'.$tube.'</info> with id <info>'.$job->getId().'</info>.');
 
         return 0;
     }

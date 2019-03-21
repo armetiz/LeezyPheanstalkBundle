@@ -9,8 +9,8 @@
 namespace Leezy\PheanstalkBundle\DependencyInjection\Compiler;
 
 use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
+use Pheanstalk\Contract\PheanstalkInterface;
 use Pheanstalk\Pheanstalk;
-use Pheanstalk\PheanstalkInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
