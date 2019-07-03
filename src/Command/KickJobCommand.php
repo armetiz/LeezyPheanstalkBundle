@@ -3,6 +3,7 @@
 namespace Leezy\PheanstalkBundle\Command;
 
 use Pheanstalk\Exception;
+use Pheanstalk\JobId;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,8 +32,7 @@ class KickJobCommand extends AbstractPheanstalkCommand
         $pheanstalk = $this->getPheanstalk($name);
 
         try {
-            $job = $pheanstalk->peek($jobId);
-            $pheanstalk->kickJob($job);
+            $pheanstalk->kickJob(new JobId($jobId));
 
             $output->writeln('Pheanstalk: <info>'.$name.'</info>');
             $output->writeln(sprintf('Job #%d has been kicked.', $jobId));

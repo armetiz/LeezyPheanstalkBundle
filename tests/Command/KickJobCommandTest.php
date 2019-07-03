@@ -4,6 +4,7 @@ namespace Leezy\PheanstalkBundle\Tests\Command;
 
 use Leezy\PheanstalkBundle\Command\KickJobCommand;
 use Pheanstalk\Job;
+use Pheanstalk\JobId;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class KickJobCommandTest extends AbstractPheanstalkCommandTest
@@ -11,16 +12,15 @@ class KickJobCommandTest extends AbstractPheanstalkCommandTest
     public function testExecute()
     {
         $args = $this->getCommandArgs();
-        $job  = new Job($args['job'], 'test');
+        $jobId  = new JobId($args['job']);
 
-        $this->pheanstalk->expects($this->once())->method('peek')->with($args['job'])->will($this->returnValue($job));
-        $this->pheanstalk->expects($this->once())->method('kickJob')->with($job);
+        $this->pheanstalk->expects($this->once())->method('kickJob')->with($jobId);
 
         $command = $this->application->find('leezy:pheanstalk:kick-job');
         $commandTester = new CommandTester($command);
         $commandTester->execute($args);
 
-        $this->assertContains(sprintf('Job #%d has been kicked', $job->getId()), $commandTester->getDisplay());
+        $this->assertContains(sprintf('Job #%d has been kicked', $jobId->getId()), $commandTester->getDisplay());
     }
 
     /**

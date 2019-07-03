@@ -33,8 +33,7 @@ class StatsJobCommand extends AbstractPheanstalkCommand
         $pheanstalk = $this->getPheanstalk($name);
 
         try {
-            $job   = $pheanstalk->peek($jobId);
-            $stats = $pheanstalk->statsJob($job);
+            $stats = $pheanstalk->statsJob($jobId);
 
             if (count($stats) === 0) {
                 $output->writeln('Pheanstalk: <error>'.$name.'</error>');

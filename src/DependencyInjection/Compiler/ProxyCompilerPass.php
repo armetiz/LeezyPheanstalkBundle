@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * Description of ProxyCompilerPass.
- *
- * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 class ProxyCompilerPass implements CompilerPassInterface
 {
@@ -60,9 +58,11 @@ class ProxyCompilerPass implements CompilerPassInterface
             # @see https://github.com/armetiz/LeezyPheanstalkBundle/issues/61
             $pheanstalkDef = clone $container->getDefinition($pheanstalk['proxy']);
 
-            $pheanstalkDef->addMethodCall('setPheanstalk', [new Definition(Pheanstalk::class, $pheanstalkConfig)]);
-            $pheanstalkDef->addMethodCall('setName', [$name]);
             $pheanstalkDef->setPublic(true);
+            $pheanstalkDef->setArguments([
+                new Definition(Pheanstalk::class, $pheanstalkConfig),
+                $name
+            ]);
 
             $container->setDefinition('leezy.pheanstalk.'.$name, $pheanstalkDef);
 

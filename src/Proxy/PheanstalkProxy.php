@@ -3,57 +3,49 @@
 namespace Leezy\PheanstalkBundle\Proxy;
 
 use Leezy\PheanstalkBundle\Event\CommandEvent;
-use Pheanstalk\Connection;
+use Pheanstalk\Contract\JobIdInterface;
 use Pheanstalk\Contract\PheanstalkInterface;
+use Pheanstalk\Contract\ResponseInterface;
+use Pheanstalk\Job;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class PheanstalkProxy implements PheanstalkProxyInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $dispatcher;
-
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $name;
 
-    /**
-     * @var PheanstalkInterface
-     */
+    /** @var PheanstalkInterface */
     protected $pheanstalk;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function bury($job, $priority = self::DEFAULT_PRIORITY)
+    /** @var EventDispatcherInterface */
+    protected $dispatcher;
+
+    public function __construct(string $name, PheanstalkInterface $pheanstalk)
+    {
+        $this->name = $name;
+        $this->pheanstalk = $pheanstalk;
+    }
+
+    public function bury(JobIdInterface $job, int $priority = PheanstalkInterface::DEFAULT_PRIORITY): void
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::BURY, new CommandEvent($this, ['job' => $job, 'priority' => $priority]));
+            $this->dispatcher->dispatch(CommandEvent::BURY,
+                new CommandEvent($this, ['job' => $job, 'priority' => $priority]));
         }
 
         $this->pheanstalk->bury($job, $priority);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function delete($job)
+    public function delete(JobIdInterface $job): void
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::DELETE, new CommandEvent($this, ['job' => $job]));
         }
 
         $this->pheanstalk->delete($job);
-
-        return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function ignore($tube)
+    public function ignore(string $tube): PheanstalkInterface
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::IGNORE, new CommandEvent($this, ['tube' => $tube]));
@@ -64,10 +56,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function kick($max)
+    public function kick(int $max): int
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::KICK, new CommandEvent($this, ['max' => $max]));
@@ -76,24 +65,16 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this->pheanstalk->kick($max);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function kickJob($job)
+    public function kickJob(JobIdInterface $job): void
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::KICK_JOB, new CommandEvent($this, ['job' => $job]));
         }
 
         $this->pheanstalk->kickJob($job);
-
-        return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function listTubes()
+    public function listTubes(): array
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::LIST_TUBES, new CommandEvent($this));
@@ -102,111 +83,87 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this->pheanstalk->listTubes();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function listTubesWatched($askServer = false)
+    public function listTubesWatched(bool $askServer = false): array
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::LIST_TUBES_WATCHED, new CommandEvent($this, ['askServer' => $askServer]));
+            $this->dispatcher->dispatch(CommandEvent::LIST_TUBES_WATCHED,
+                new CommandEvent($this, ['askServer' => $askServer]));
         }
 
         return $this->pheanstalk->listTubesWatched($askServer);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function listTubeUsed($askServer = false)
+    public function listTubeUsed(bool $askServer = false): string
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::LIST_TUBE_USED, new CommandEvent($this, ['askServer' => $askServer]));
+            $this->dispatcher->dispatch(CommandEvent::LIST_TUBE_USED,
+                new CommandEvent($this, ['askServer' => $askServer]));
         }
 
         return $this->pheanstalk->listTubeUsed($askServer);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function pauseTube($tube, $delay)
+    public function pauseTube(string $tube, int $delay): void
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::PAUSE_TUBE, new CommandEvent($this, ['tube' => $tube, 'delay' => $delay]));
+            $this->dispatcher->dispatch(CommandEvent::PAUSE_TUBE,
+                new CommandEvent($this, ['tube' => $tube, 'delay' => $delay]));
         }
 
         $this->pheanstalk->pauseTube($tube, $delay);
-
-        return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function resumeTube($tube)
+    public function resumeTube(string $tube): void
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::RESUME_TUBE, new CommandEvent($this, ['tube' => $tube]));
         }
 
         $this->pheanstalk->resumeTube($tube);
-
-        return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function peek($jobId)
+    public function peek(JobIdInterface $jobId): Job
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::PEEK, new CommandEvent($this, ['jobId' => $jobId]));
+            $this->dispatcher->dispatch(CommandEvent::PEEK, new CommandEvent($this, ['jobId' => $jobId->getId()]));
         }
 
         return $this->pheanstalk->peek($jobId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function peekReady($tube = null)
+    public function peekReady(): ?Job
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::PEEK_READY, new CommandEvent($this, ['tube' => $tube]));
+            $this->dispatcher->dispatch(CommandEvent::PEEK_READY, new CommandEvent($this));
         }
 
-        return $this->pheanstalk->peekReady($tube);
+        return $this->pheanstalk->peekReady();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function peekDelayed($tube = null)
+    public function peekDelayed(): ?Job
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::PEEK_DELAYED, new CommandEvent($this, ['tube' => $tube]));
+            $this->dispatcher->dispatch(CommandEvent::PEEK_DELAYED, new CommandEvent($this));
         }
 
-        return $this->pheanstalk->peekDelayed($tube);
+        return $this->pheanstalk->peekDelayed();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function peekBuried($tube = null)
+    public function peekBuried(): ?Job
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::PEEK_BURIED, new CommandEvent($this, ['tube' => $tube]));
+            $this->dispatcher->dispatch(CommandEvent::PEEK_BURIED, new CommandEvent($this));
         }
 
-        return $this->pheanstalk->peekBuried($tube);
+        return $this->pheanstalk->peekBuried();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function put($data, $priority = self::DEFAULT_PRIORITY, $delay = self::DEFAULT_DELAY, $ttr = self::DEFAULT_TTR)
-    {
+    public function put(
+        string $data,
+        int $priority = self::DEFAULT_PRIORITY,
+        int $delay = self::DEFAULT_DELAY,
+        int $ttr = self::DEFAULT_TTR
+    ): Job {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(
                 CommandEvent::PUT,
@@ -225,72 +182,41 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this->pheanstalk->put($data, $priority, $delay, $ttr);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function putInTube($tube, $data, $priority = self::DEFAULT_PRIORITY, $delay = self::DEFAULT_DELAY, $ttr = self::DEFAULT_TTR)
-    {
+    public function release(
+        JobIdInterface $job,
+        int $priority = PheanstalkInterface::DEFAULT_PRIORITY,
+        int $delay = PheanstalkInterface::DEFAULT_DELAY
+    ): void {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(
-                CommandEvent::PUT_IN_TUBE,
-                new CommandEvent(
-                    $this,
-                    [
-                        'tube'     => $tube,
-                        'data'     => $data,
-                        'priority' => $priority,
-                        'delay'    => $delay,
-                        'ttr'      => $ttr,
-                    ]
-                )
+                CommandEvent::RELEASE,
+                new CommandEvent($this, ['job' => $job, 'priority' => $priority, 'delay' => $delay])
             );
         }
 
-        return $this->pheanstalk->putInTube($tube, $data, $priority, $delay, $ttr);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function release($job, $priority = self::DEFAULT_PRIORITY, $delay = self::DEFAULT_DELAY)
-    {
-        if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::RELEASE, new CommandEvent($this, ['job' => $job, 'priority' => $priority, 'delay' => $delay]));
-        }
-
         $this->pheanstalk->release($job, $priority, $delay);
-
-        return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function reserve($timeout = null)
+    public function reserve(): ?Job
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::RESERVE, new CommandEvent($this, ['timeout' => $timeout]));
+            $this->dispatcher->dispatch(CommandEvent::RESERVE, new CommandEvent($this));
         }
 
-        return $this->pheanstalk->reserve($timeout);
+        return $this->pheanstalk->reserve();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function reserveFromTube($tube, $timeout = null)
+    public function reserveWithTimeout(int $timeout): ?Job
     {
         if ($this->dispatcher) {
-            $this->dispatcher->dispatch(CommandEvent::RESERVE, new CommandEvent($this, ['tube' => $tube, 'timeout' => $timeout]));
+            $this->dispatcher->dispatch(CommandEvent::RESERVE_WITH_TIMEOUT, new CommandEvent($this));
         }
 
-        return $this->pheanstalk->reserveFromTube($tube, $timeout);
+        return $this->pheanstalk->reserveWithTimeout($timeout);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function statsJob($job)
+
+    public function statsJob(JobIdInterface $job): ResponseInterface
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::STATS_JOB, new CommandEvent($this, ['job' => $job]));
@@ -299,10 +225,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this->pheanstalk->statsJob($job);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function statsTube($tube)
+    public function statsTube(string $tube): ResponseInterface
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::STATS_TUBE, new CommandEvent($this, ['tube' => $tube]));
@@ -311,10 +234,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this->pheanstalk->statsTube($tube);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function stats()
+    public function stats(): ResponseInterface
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::STATS, new CommandEvent($this));
@@ -323,24 +243,16 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this->pheanstalk->stats();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function touch($job)
+    public function touch(JobIdInterface $job): void
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::TOUCH, new CommandEvent($this, ['job' => $job]));
         }
 
         $this->pheanstalk->touch($job);
-
-        return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function useTube($tube)
+    public function useTube(string $tube): PheanstalkInterface
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::USE_TUBE, new CommandEvent($this, ['tube' => $tube]));
@@ -351,10 +263,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function watch($tube)
+    public function watch(string $tube): PheanstalkInterface
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::WATCH, new CommandEvent($this, ['tube' => $tube]));
@@ -365,10 +274,7 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function watchOnly($tube)
+    public function watchOnly(string $tube): PheanstalkInterface
     {
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(CommandEvent::WATCH_ONLY, new CommandEvent($this, ['tube' => $tube]));
@@ -379,55 +285,23 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this;
     }
 
-    /**
-     * @return EventDispatcherInterface
-     */
-    public function getDispatcher()
+    public function getDispatcher(): EventDispatcherInterface
     {
         return $this->dispatcher;
     }
 
-    /**
-     * @param EventDispatcherInterface $dispatch
-     */
     public function setDispatcher(EventDispatcherInterface $dispatch)
     {
         $this->dispatcher = $dispatch;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getPheanstalk()
+    public function getPheanstalk(): PheanstalkInterface
     {
         return $this->pheanstalk;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setPheanstalk(PheanstalkInterface $pheanstalk)
-    {
-        $this->pheanstalk = $pheanstalk;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
     }
 }

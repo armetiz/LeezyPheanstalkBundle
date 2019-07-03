@@ -22,8 +22,6 @@ class PheanstalkLogListener implements EventSubscriberInterface
             CommandEvent::IGNORE             => 'onCommand',
             CommandEvent::KICK               => 'onCommand',
             CommandEvent::LIST_TUBE_USED     => 'onCommand',
-            CommandEvent::LIST_TUBES         => 'onCommand',
-            CommandEvent::LIST_TUBES_WATCHED => 'onCommand',
             CommandEvent::PAUSE_TUBE         => 'onCommand',
             CommandEvent::PEEK               => 'onCommand',
             CommandEvent::PEEK_READY         => 'onCommand',
@@ -51,11 +49,6 @@ class PheanstalkLogListener implements EventSubscriberInterface
         }
 
         $pheanstalk = $event->getPheanstalk();
-//        $connection = $pheanstalk->getConnection();
-
-//        if (!$connection->isServiceListening()) {
-//            $this->logger->warning('Pheanstalk connection isn\'t listening');
-//        }
 
         $pheanstalkName = 'unknown';
         if ($pheanstalk instanceof PheanstalkProxyInterface) {

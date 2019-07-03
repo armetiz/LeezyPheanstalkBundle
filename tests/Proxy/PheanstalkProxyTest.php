@@ -4,7 +4,8 @@ namespace Leezy\PheanstalkBundle\Tests\Proxy;
 
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Connection;
+use Pheanstalk\Contract\PheanstalkInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -23,7 +24,11 @@ class PheanstalkProxyTest extends TestCase
     public function setUp(): void
     {
         $this->pheanstalk      = $this->getMockForAbstractClass(PheanstalkInterface::class);
-        $this->pheanstalkProxy = new PheanstalkProxy();
+        $this->pheanstalkProxy = new PheanstalkProxy(
+            'default',
+            $this->getMockForAbstractClass(PheanstalkInterface::class),
+            $this->getMockForClass(Connection::class)
+        );
     }
 
     public function tearDown(): void
@@ -34,14 +39,8 @@ class PheanstalkProxyTest extends TestCase
 
     public function testInterfaces()
     {
+        $this->assertInstanceOf(PheanstalkInterface::class, $this->pheanstalk);
         $this->assertInstanceOf(PheanstalkProxyInterface::class, $this->pheanstalkProxy);
-        $this->assertInstanceOf(PheanstalkInterface::class, $this->pheanstalkProxy);
-    }
-
-    public function testProxyValue()
-    {
-        $this->pheanstalkProxy->setPheanstalk($this->pheanstalk);
-        $this->assertEquals($this->pheanstalk, $this->pheanstalkProxy->getPheanstalk());
     }
 
     public function namedFunctions()

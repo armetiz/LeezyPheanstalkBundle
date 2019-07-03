@@ -25,6 +25,7 @@ class CommandEvent extends Event
     public const PUT_IN_TUBE        = 'leezy.pheanstalk.event.put_in_tube';
     public const RELEASE            = 'leezy.pheanstalk.event.release';
     public const RESERVE            = 'leezy.pheanstalk.event.reserve';
+    public const RESERVE_WITH_TIMEOUT            = 'leezy.pheanstalk.event.reserve_with_timeout';
     public const RESERVE_FROM_TUBE  = 'leezy.pheanstalk.event.reserve_from_tube';
     public const STATS              = 'leezy.pheanstalk.event.stats';
     public const STATS_TUBE         = 'leezy.pheanstalk.event.stats_tube';

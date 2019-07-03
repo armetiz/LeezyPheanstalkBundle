@@ -6,19 +6,12 @@ use Pheanstalk\Contract\PheanstalkInterface;
 
 class PheanstalkLocator
 {
-    /**
-     * @var PheanstalkInterface[]
-     */
+    /** @var PheanstalkInterface[] */
     private $pheanstalks;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $default;
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->pheanstalks = [];
@@ -32,7 +25,7 @@ class PheanstalkLocator
         return $this->pheanstalks;
     }
 
-    public function getPheanstalk(string $name = null): PheanstalkInterface
+    public function getPheanstalk(string $name = null): ?PheanstalkInterface
     {
         $name = $name ?? $this->default;
 
@@ -43,17 +36,13 @@ class PheanstalkLocator
         return null;
     }
 
-    public function getDefaultPheanstalk(): PheanstalkInterface
+    public function getDefaultPheanstalk(): ?PheanstalkInterface
     {
         return $this->getPheanstalk();
     }
 
     public function addPheanstalk(string $name, PheanstalkInterface $pheanstalk, bool $default = false): void
     {
-        if (!is_bool($default)) {
-            throw new \InvalidArgumentException('Default parameter have to be a boolean');
-        }
-
         $this->pheanstalks[$name] = $pheanstalk;
 
         // Set the default connection name

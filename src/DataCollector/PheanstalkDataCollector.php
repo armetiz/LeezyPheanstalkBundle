@@ -60,21 +60,11 @@ class PheanstalkDataCollector extends DataCollector
             // Get information about this connection
             $this->data['pheanstalks'][$name] = [
                 'name'      => $name,
-//                'host'      => $pheanstalk->getConnection()->getHost(),
-//                'port'      => $pheanstalk->getConnection()->getPort(),
-//                'timeout'   => $pheanstalk->getConnection()->getConnectTimeout(),
                 'default'   => $defaultPheanstalk === $pheanstalk,
                 'stats'     => [],
-//                'listening' => $pheanstalk->getConnection()->isServiceListening(),
             ];
 
-//            // If connection is not listening, there is a connection problem.
-//            // Skip next steps which require an established connection
-//            if (!$pheanstalk->getConnection()->isServiceListening()) {
-//                continue;
-//            }
-
-            $pheanstalkStatistics = $pheanstalk->stats()->getArrayCopy();
+            $pheanstalkStatistics = iterator_to_array($pheanstalk->stats());
 
             // Get information about this connection
             $this->data['pheanstalks'][$name]['stats'] = $pheanstalkStatistics;
@@ -91,7 +81,7 @@ class PheanstalkDataCollector extends DataCollector
                 $this->data['tubes'][] = [
                     'pheanstalk' => $name,
                     'name'       => $tubeName,
-                    'stats'      => $pheanstalk->statsTube($tubeName)->getArrayCopy(),
+                    'stats'      => iterator_to_array($pheanstalk->statsTube($tubeName)),
                 ];
             }
         }

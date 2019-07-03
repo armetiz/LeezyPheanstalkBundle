@@ -32,11 +32,10 @@ class DeleteJobCommand extends AbstractPheanstalkCommand
         $pheanstalk = $this->getPheanstalk($name);
 
         try {
-            $job = $pheanstalk->peek($jobId);
-            $pheanstalk->delete($job);
+            $pheanstalk->delete($jobId);
 
             $output->writeln('Pheanstalk: <info>'.$name.'</info>');
-            $output->writeln('Job <info>'.$jobId.'</info> deleted.');
+            $output->writeln('Job <info>'.$jobId->getId().'</info> deleted.');
 
             return 0;
         } catch (Exception $e) {
