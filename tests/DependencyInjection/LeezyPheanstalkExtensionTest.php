@@ -232,6 +232,8 @@ class LeezyPheanstalkExtensionTest extends TestCase
 
         $this->extension->load($config, $this->container);
         $this->container->compile();
+
+        $this->assertNotNull($this->container->get('leezy.pheanstalk.primary'));
     }
 
     public function testLoggerConfiguration()

@@ -11,18 +11,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class PheanstalkProxy implements PheanstalkProxyInterface
 {
-    /** @var string */
-    protected $name;
-
     /** @var PheanstalkInterface */
     protected $pheanstalk;
 
     /** @var EventDispatcherInterface */
     protected $dispatcher;
 
-    public function __construct(string $name, PheanstalkInterface $pheanstalk)
+    public function __construct(PheanstalkInterface $pheanstalk)
     {
-        $this->name = $name;
         $this->pheanstalk = $pheanstalk;
     }
 
@@ -298,10 +294,5 @@ class PheanstalkProxy implements PheanstalkProxyInterface
     public function getPheanstalk(): PheanstalkInterface
     {
         return $this->pheanstalk;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
     }
 }

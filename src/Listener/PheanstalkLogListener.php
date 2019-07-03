@@ -48,20 +48,12 @@ class PheanstalkLogListener implements EventSubscriberInterface
             return;
         }
 
-        $pheanstalk = $event->getPheanstalk();
-
-        $pheanstalkName = 'unknown';
-        if ($pheanstalk instanceof PheanstalkProxyInterface) {
-            $pheanstalkName = $pheanstalk->getName();
-        }
-
         $nameExploded = explode('.', $eventName);
 
         $this->logger->info(
             'Pheanstalk command: '.$nameExploded[count($nameExploded) - 1],
             [
                 'payload'    => $event->getPayload(),
-                'pheanstalk' => $pheanstalkName,
             ]
         );
     }

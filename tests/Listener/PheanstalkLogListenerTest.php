@@ -5,7 +5,7 @@ namespace Leezy\PheanstalkBundle\Tests\Listener;
 use Leezy\PheanstalkBundle\Event\CommandEvent;
 use Leezy\PheanstalkBundle\Listener\PheanstalkLogListener;
 use Pheanstalk\Connection;
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Contract\PheanstalkInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;

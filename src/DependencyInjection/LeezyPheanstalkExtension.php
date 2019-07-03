@@ -31,7 +31,7 @@ class LeezyPheanstalkExtension extends Extension
         $loader->load('services.xml');
         $loader->load('commands.xml');
 
-        $this->configureConnections($container, $config);
+        $this->configureLocator($container, $config);
 
         if ($config['profiler']['enabled']) {
             $this->configureProfiler($container, $config);
@@ -43,10 +43,8 @@ class LeezyPheanstalkExtension extends Extension
      *
      * @param ContainerBuilder $container
      * @param array            $config
-     *
-     * @throws PheanstalkException
      */
-    public function configureConnections(ContainerBuilder $container, array $config)
+    public function configureLocator(ContainerBuilder $container, array $config)
     {
         // Create a connection locator that will reference all existing connection
         $connectionLocatorDef = new Definition(PheanstalkLocator::class);
