@@ -2,8 +2,10 @@
 
 namespace Leezy\PheanstalkBundle\DataCollector;
 
+use Exception;
 use Leezy\PheanstalkBundle\PheanstalkLocator;
 use Pheanstalk\Contract\PheanstalkInterface;
+use Pheanstalk\Exception\ConnectionException;
 use Pheanstalk\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +31,7 @@ class PheanstalkDataCollector extends DataCollector
     public function __construct(PheanstalkLocator $pheanstalkLocator)
     {
         $this->pheanstalkLocator = $pheanstalkLocator;
-        $this->data              = [
+        $this->data = [
             'pheanstalks' => [],
             'tubes'       => [],
             'jobCount'    => 0,
@@ -50,7 +52,7 @@ class PheanstalkDataCollector extends DataCollector
     /**
      * @inheritdoc
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, Exception $exception = null)
     {
         $defaultPheanstalk = $this->pheanstalkLocator->getDefaultPheanstalk();
 
@@ -59,12 +61,16 @@ class PheanstalkDataCollector extends DataCollector
         foreach ($this->pheanstalkLocator->getPheanstalks() as $name => $pheanstalk) {
             // Get information about this connection
             $this->data['pheanstalks'][$name] = [
-                'name'      => $name,
-                'default'   => $defaultPheanstalk === $pheanstalk,
-                'stats'     => [],
+                'name'    => $name,
+                'default' => $defaultPheanstalk === $pheanstalk,
+                'stats'   => [],
             ];
 
-            $pheanstalkStatistics = iterator_to_array($pheanstalk->stats());
+            try {
+                $pheanstalkStatistics = iterator_to_array($pheanstalk->stats());
+            } catch (ConnectionException $exception) {
+                $pheanstalkStatistics = null;
+            }
 
             // Get information about this connection
             $this->data['pheanstalks'][$name]['stats'] = $pheanstalkStatistics;
@@ -78,10 +84,16 @@ class PheanstalkDataCollector extends DataCollector
                 // Fetch next ready job and next buried job for this tube
                 $this->fetchJobs($pheanstalk, $tubeName);
 
+                try {
+                    $tubeStatistics = iterator_to_array($pheanstalk->statsTube($tubeName));
+                } catch (ConnectionException $exception) {
+                    $tubeStatistics = null;
+                }
+
                 $this->data['tubes'][] = [
                     'pheanstalk' => $name,
                     'name'       => $tubeName,
-                    'stats'      => iterator_to_array($pheanstalk->statsTube($tubeName)),
+                    'stats'      => $tubeStatistics,
                 ];
             }
         }
@@ -138,7 +150,7 @@ class PheanstalkDataCollector extends DataCollector
         try {
             $nextJobReady = $pheanstalk->useTube($tubeName)->peekReady();
 
-            if(null === $nextJobReady) {
+            if (null === $nextJobReady) {
                 return;
             }
 
@@ -152,7 +164,7 @@ class PheanstalkDataCollector extends DataCollector
         try {
             $nextJobBuried = $pheanstalk->useTube($tubeName)->peekBuried();
 
-            if(null === $nextJobBuried) {
+            if (null === $nextJobBuried) {
                 return;
             }
 

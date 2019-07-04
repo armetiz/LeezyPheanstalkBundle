@@ -2,6 +2,7 @@
 
 namespace Leezy\PheanstalkBundle;
 
+use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
 use Pheanstalk\Contract\PheanstalkInterface;
 
 class PheanstalkLocator
@@ -34,6 +35,11 @@ class PheanstalkLocator
         }
 
         return null;
+    }
+
+    public function getPheanstalkName(PheanstalkInterface $pheanstalk): ?string
+    {
+        return array_search($pheanstalk, $this->pheanstalks, true);
     }
 
     public function getDefaultPheanstalk(): ?PheanstalkInterface

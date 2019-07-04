@@ -281,11 +281,6 @@ class PheanstalkProxy implements PheanstalkProxyInterface
         return $this;
     }
 
-    public function getDispatcher(): EventDispatcherInterface
-    {
-        return $this->dispatcher;
-    }
-
     public function setDispatcher(EventDispatcherInterface $dispatch)
     {
         $this->dispatcher = $dispatch;
