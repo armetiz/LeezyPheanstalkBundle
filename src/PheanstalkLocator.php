@@ -39,7 +39,13 @@ class PheanstalkLocator
 
     public function getPheanstalkName(PheanstalkInterface $pheanstalk): ?string
     {
-        return array_search($pheanstalk, $this->pheanstalks, true);
+        $name = array_search($pheanstalk, $this->pheanstalks, true);
+
+        if(false === $name) {
+            return null;
+        }
+
+        return $name;
     }
 
     public function getDefaultPheanstalk(): ?PheanstalkInterface
