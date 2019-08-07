@@ -4,9 +4,11 @@ namespace Leezy\PheanstalkBundle\DependencyInjection;
 
 use Leezy\PheanstalkBundle\DataCollector\PheanstalkDataCollector;
 use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
+use Leezy\PheanstalkBundle\Listener\PheanstalkLogListener;
 use Leezy\PheanstalkBundle\PheanstalkLocator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -32,10 +34,35 @@ class LeezyPheanstalkExtension extends Extension
         $loader->load('commands.xml');
 
         $this->configureLocator($container, $config);
+        $this->configureLogListener($container, $config);
 
         if ($config['profiler']['enabled']) {
             $this->configureProfiler($container, $config);
         }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param array            $config
+     */
+    public function configureLogListener(ContainerBuilder $container, array $config)
+    {
+        // Create a connection locator that will reference all existing connection
+        $definition = new Definition(PheanstalkLogListener::class);
+        $definition->addArgument(new Reference(PheanstalkLocator::class));
+        $definition->addTag('kernel.event_subscriber');
+        $definition->addTag('monolog.logger', [
+            'channel' => 'pheanstalk',
+        ]);
+
+        if($container->has('logger')) {
+            $definition->addMethodCall('setLogger', [
+                new Reference('logger')
+            ]);
+        }
+
+        $container->setDefinition('leezy.pheanstalk.listener.log', $definition)->setPublic(true);
+        $container->setAlias(PheanstalkLogListener::class, 'leezy.pheanstalk.listener.log')->setPublic(true);
     }
 
     /**
@@ -47,6 +74,7 @@ class LeezyPheanstalkExtension extends Extension
         // Create a connection locator that will reference all existing connection
         $connectionLocatorDef = new Definition(PheanstalkLocator::class);
         $container->setDefinition('leezy.pheanstalk.pheanstalk_locator', $connectionLocatorDef);
+        $container->setAlias(PheanstalkLocator::class, 'leezy.pheanstalk.pheanstalk_locator');
         $container->setParameter('leezy.pheanstalk.pheanstalks', $config['pheanstalks']);
     }
 
@@ -65,5 +93,6 @@ class LeezyPheanstalkExtension extends Extension
         $dataCollectorDef->addArgument(new Reference('leezy.pheanstalk.pheanstalk_locator'));
 
         $container->setDefinition('leezy.pheanstalk.data_collector', $dataCollectorDef);
+        $container->setAlias(PheanstalkDataCollector::class, 'leezy.pheanstalk.data_collector');
     }
 }

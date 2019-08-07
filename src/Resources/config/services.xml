@@ -11,14 +11,5 @@
                 <argument type="service" id="event_dispatcher" on-invalid="ignore"/>
             </call>
         </service>
-
-        <!-- listener -->
-        <service id="leezy.pheanstalk.listener.log" class="Leezy\PheanstalkBundle\Listener\PheanstalkLogListener" public="true">
-            <call method="setLogger">
-                <argument type="service" id="logger" on-invalid="ignore"/>
-            </call>
-            <tag name="kernel.event_subscriber" />
-            <tag name="monolog.logger" channel="pheanstalk" />
-        </service>
     </services>
 </container>
