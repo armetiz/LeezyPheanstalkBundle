@@ -4,6 +4,7 @@ namespace Leezy\PheanstalkBundle\Tests\DependencyInjection;
 
 use Leezy\PheanstalkBundle\DependencyInjection\LeezyPheanstalkExtension;
 use Leezy\PheanstalkBundle\LeezyPheanstalkBundle;
+use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -228,7 +229,7 @@ class LeezyPheanstalkExtensionTest extends TestCase
             ],
         ];
 
-        $this->container->setDefinition('acme.pheanstalk.pheanstalk_proxy', new Definition(PheanstalkProxyInterface::class));
+        $this->container->setDefinition('acme.pheanstalk.pheanstalk_proxy', new Definition(PheanstalkProxy::class));
 
         $this->extension->load($config, $this->container);
         $this->container->compile();

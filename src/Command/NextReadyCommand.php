@@ -16,7 +16,7 @@ class NextReadyCommand extends AbstractPheanstalkCommand
     {
         $this
             ->setName('leezy:pheanstalk:next-ready')
-            ->addArgument('tube', InputArgument::REQUIRED, 'Tube to get next ready.', null)
+            ->addArgument('tube', InputArgument::REQUIRED, 'Tube to get next ready.')
             ->addOption(
                 'details',
                 null,

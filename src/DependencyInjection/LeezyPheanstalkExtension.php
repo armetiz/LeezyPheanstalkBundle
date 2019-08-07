@@ -39,8 +39,6 @@ class LeezyPheanstalkExtension extends Extension
     }
 
     /**
-     * Configures the Connections and Connection Locator.
-     *
      * @param ContainerBuilder $container
      * @param array            $config
      */

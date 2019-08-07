@@ -48,7 +48,7 @@ class ProxyCompilerPass implements CompilerPassInterface
 
         // For each connection in the configuration file
         foreach ($pheanstalks as $name => $pheanstalk) {
-            if (in_array($name, $this->reservedName())) {
+            if (in_array($name, $this->reservedName(), true)) {
                 throw new \RuntimeException('Reserved pheanstalk name: '.$name);
             }
 

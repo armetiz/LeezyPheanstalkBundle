@@ -4,6 +4,7 @@ namespace Leezy\PheanstalkBundle\Tests\Command;
 
 use Leezy\PheanstalkBundle\Command\PeekCommand;
 use Pheanstalk\Job;
+use Pheanstalk\JobId;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class PeekCommandTest extends AbstractPheanstalkCommandTest
@@ -13,7 +14,7 @@ class PeekCommandTest extends AbstractPheanstalkCommandTest
         $args = $this->getCommandArgs();
         $job  = new Job($args['job'], 'data');
 
-        $this->pheanstalk->expects($this->once())->method('peek')->with($job->getId())->will($this->returnValue($job));
+        $this->pheanstalk->expects($this->once())->method('peek')->with(new JobId($job->getId()))->will($this->returnValue($job));
 
         $command = $this->application->find('leezy:pheanstalk:peek');
         $commandTester = new CommandTester($command);

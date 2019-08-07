@@ -38,7 +38,6 @@ abstract class AbstractPheanstalkCommandTest extends TestCase
         $this->kernel  = $this->getMockForAbstractClass(KernelInterface::class);
 
         $connection = $this->createConnectionMock();
-//        $connection->expects($this->any())->method('isServiceListening')->will($this->returnValue(true));
 
         $this->pheanstalk = $this->createPheanstalkMock($connection);
         $this->locator    = $this->createLocatorMock($this->pheanstalk);

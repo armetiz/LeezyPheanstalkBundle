@@ -4,6 +4,7 @@ namespace Leezy\PheanstalkBundle\Tests\Listener;
 
 use Leezy\PheanstalkBundle\Event\CommandEvent;
 use Leezy\PheanstalkBundle\Listener\PheanstalkLogListener;
+use Leezy\PheanstalkBundle\PheanstalkLocator;
 use Pheanstalk\Connection;
 use Pheanstalk\Contract\PheanstalkInterface;
 use PHPUnit\Framework\TestCase;
@@ -12,19 +13,13 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class PheanstalkLogListenerTest extends TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|PheanstalkInterface
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|PheanstalkInterface */
     protected $pheanstalk;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Connection
-     */
-    protected $connection;
+    /** @var \PHPUnit_Framework_MockObject_MockObject|PheanstalkLocator */
+    protected $locator;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface */
     protected $logger;
 
     protected function setUp(): void
@@ -35,27 +30,24 @@ class PheanstalkLogListenerTest extends TestCase
             ->getMockForAbstractClass()
         ;
 
-        $this->connection = $this
-            ->getMockBuilder(Connection::class)
+        $this->locator = $this
+            ->getMockBuilder(PheanstalkLocator::class)
             ->disableOriginalConstructor()
-            ->setMethods(['isServiceListening'])
+            ->setMethods(['getPheanstalkName'])
             ->getMock()
         ;
 
         $this->pheanstalk = $this
             ->getMockBuilder(PheanstalkInterface::class)
-            ->setMethods(['getConnection'])
             ->getMockForAbstractClass()
         ;
-
-        $this->pheanstalk->expects($this->any())->method('getConnection')->will($this->returnValue($this->connection));
     }
 
     public function testNoLogger()
     {
         $this->logger->expects($this->never())->method('info');
 
-        $listener = new PheanstalkLogListener();
+        $listener = new PheanstalkLogListener($this->locator);
         $listener->onCommand(new CommandEvent($this->pheanstalk, []), CommandEvent::PEEK_READY);
     }
 
@@ -63,21 +55,7 @@ class PheanstalkLogListenerTest extends TestCase
     {
         $this->logger->expects($this->once())->method('info');
 
-        $this->connection->expects($this->any())->method('isServiceListening')->will($this->returnValue(true));
-
-        $listener = new PheanstalkLogListener();
-        $listener->setLogger($this->logger);
-        $listener->onCommand(new CommandEvent($this->pheanstalk, []), CommandEvent::PEEK_READY);
-    }
-
-    public function testServiceNotListening()
-    {
-        $this->logger->expects($this->once())->method('info');
-        $this->logger->expects($this->once())->method('warning');
-
-        $this->connection->expects($this->any())->method('isServiceListening')->will($this->returnValue(false));
-
-        $listener = new PheanstalkLogListener();
+        $listener = new PheanstalkLogListener($this->locator);
         $listener->setLogger($this->logger);
         $listener->onCommand(new CommandEvent($this->pheanstalk, []), CommandEvent::PEEK_READY);
     }
@@ -89,9 +67,7 @@ class PheanstalkLogListenerTest extends TestCase
     {
         $this->logger->expects($this->once())->method('info');
 
-        $this->connection->expects($this->any())->method('isServiceListening')->will($this->returnValue(true));
-
-        $listener = new PheanstalkLogListener();
+        $listener = new PheanstalkLogListener($this->locator);
         $listener->setLogger($this->logger);
 
         $eventDispatcher = new EventDispatcher();
