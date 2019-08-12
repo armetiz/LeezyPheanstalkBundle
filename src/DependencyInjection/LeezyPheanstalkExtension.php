@@ -61,7 +61,7 @@ class LeezyPheanstalkExtension extends Extension
         ]);
 
         $container->setDefinition('leezy.pheanstalk.listener.log', $definition)->setPublic(true);
-        $container->setAlias(PheanstalkLogListener::class, 'leezy.pheanstalk.listener.log')->setPublic(true);
+        $container->setAlias(PheanstalkLogListener::class, 'leezy.pheanstalk.listener.log');
     }
 
     /**
