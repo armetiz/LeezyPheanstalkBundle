@@ -3,7 +3,6 @@
 namespace Leezy\PheanstalkBundle\Tests\Command;
 
 use Leezy\PheanstalkBundle\Command\DeleteJobCommand;
-use Pheanstalk\Job;
 use Pheanstalk\JobId;
 use Symfony\Component\Console\Tester\CommandTester;
 
