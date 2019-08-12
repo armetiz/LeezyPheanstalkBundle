@@ -15,7 +15,7 @@ class PheanstalkDataCollectorTest extends TestCase
     public function testCollect()
     {
         $emptyStatistics = new ArrayResponse('STATS', [
-            'current-jobs-ready' => 0,
+            'current-jobs-ready' => 3,
         ]);
 
         $pheanstalkA = $this->getMockForAbstractClass(PheanstalkInterface::class);
@@ -36,12 +36,12 @@ class PheanstalkDataCollectorTest extends TestCase
         $this->assertArrayHasKey('default', $dataCollector->getPheanstalks());
         $this->assertArrayHasKey('foo', $dataCollector->getPheanstalks());
         $this->assertArrayNotHasKey('bar', $dataCollector->getPheanstalks());
+        $this->assertEquals(6, $dataCollector->getJobCount());
 
         $data = $dataCollector->getPheanstalks();
 
         $this->assertArrayHasKey('name', $data['default']);
         $this->assertArrayHasKey('default', $data['default']);
         $this->assertArrayHasKey('stats', $data['default']);
-        $this->assertEquals(0, $data['default']['jobCount']);
     }
 }
