@@ -35,18 +35,19 @@ class LeezyPheanstalkExtension extends Extension
 
         $this->configureLocator($container, $config);
         $this->configureLogListener($container, $config);
-
-        if ($config['profiler']['enabled']) {
-            $this->configureProfiler($container, $config);
-        }
+        $this->configureProfiler($container, $config);
     }
 
     /**
      * @param ContainerBuilder $container
      * @param array            $config
      */
-    public function configureLogListener(ContainerBuilder $container, array $config)
+    private function configureLogListener(ContainerBuilder $container, array $config): void
     {
+        if(false === $container->has('logger')) {
+            return;
+        }
+
         // Create a connection locator that will reference all existing connection
         $definition = new Definition(PheanstalkLogListener::class);
         $definition->addArgument(new Reference(PheanstalkLocator::class));
@@ -55,11 +56,9 @@ class LeezyPheanstalkExtension extends Extension
             'channel' => 'pheanstalk',
         ]);
 
-        if($container->has('logger')) {
-            $definition->addMethodCall('setLogger', [
-                new Reference('logger')
-            ]);
-        }
+        $definition->addMethodCall('setLogger', [
+            new Reference('logger')
+        ]);
 
         $container->setDefinition('leezy.pheanstalk.listener.log', $definition)->setPublic(true);
         $container->setAlias(PheanstalkLogListener::class, 'leezy.pheanstalk.listener.log')->setPublic(true);
@@ -69,7 +68,7 @@ class LeezyPheanstalkExtension extends Extension
      * @param ContainerBuilder $container
      * @param array            $config
      */
-    public function configureLocator(ContainerBuilder $container, array $config)
+    private function configureLocator(ContainerBuilder $container, array $config): void
     {
         // Create a connection locator that will reference all existing connection
         $connectionLocatorDef = new Definition(PheanstalkLocator::class);
@@ -84,8 +83,12 @@ class LeezyPheanstalkExtension extends Extension
      * @param ContainerBuilder $container Container
      * @param array            $config    Configuration
      */
-    public function configureProfiler(ContainerBuilder $container, array $config)
+    private function configureProfiler(ContainerBuilder $container, array $config): void
     {
+        if(false === $config['profiler']['enabled']) {
+            return;
+        }
+
         // Setup the data collector service for Symfony profiler
         $dataCollectorDef = new Definition(PheanstalkDataCollector::class);
         $dataCollectorDef->setPublic(false);

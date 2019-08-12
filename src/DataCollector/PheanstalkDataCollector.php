@@ -69,7 +69,8 @@ class PheanstalkDataCollector extends DataCollector
             try {
                 $pheanstalkStatistics = iterator_to_array($pheanstalk->stats());
             } catch (ConnectionException $exception) {
-                $pheanstalkStatistics = null;
+                // If stats() fails with a ConnectionException the following pheanstalk operations will (probably) fail as well.
+                continue;
             }
 
             // Get information about this connection

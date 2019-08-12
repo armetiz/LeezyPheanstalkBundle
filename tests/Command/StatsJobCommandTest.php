@@ -3,7 +3,6 @@
 namespace Leezy\PheanstalkBundle\Tests\Command;
 
 use Leezy\PheanstalkBundle\Command\StatsJobCommand;
-use Pheanstalk\Job;
 use Pheanstalk\JobId;
 use Pheanstalk\Response\ArrayResponse;
 use Symfony\Component\Console\Tester\CommandTester;
