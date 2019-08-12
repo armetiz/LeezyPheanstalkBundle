@@ -20,7 +20,7 @@ class PeekTubeCommand extends AbstractPheanstalkCommand
             ->addArgument('tube', InputArgument::REQUIRED, 'The tube to peek.')
             ->addOption('buried', 'b', InputOption::VALUE_NONE, 'Peek in buried instead of ready')
             ->addArgument('pheanstalk', InputArgument::OPTIONAL, 'Pheanstalk name.')
-            ->setDescription('Take a peek at the first job in a tube, ready or burried.');
+            ->setDescription('Take a peek at the first job in a tube, ready or buried.');
     }
 
     /**
@@ -36,9 +36,9 @@ class PeekTubeCommand extends AbstractPheanstalkCommand
 
         try {
             if ($buried) {
-                $job = $pheanstalk->peekBuried($tube);
+                $job = $pheanstalk->useTube($tube)->peekBuried();
             } else {
-                $job = $pheanstalk->peekReady($tube);
+                $job = $pheanstalk->useTube($tube)->peekReady();
             }
 
             if ($job) {

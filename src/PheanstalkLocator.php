@@ -2,23 +2,17 @@
 
 namespace Leezy\PheanstalkBundle;
 
-use Pheanstalk\PheanstalkInterface;
+use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
+use Pheanstalk\Contract\PheanstalkInterface;
 
 class PheanstalkLocator
 {
-    /**
-     * @var PheanstalkInterface[]
-     */
+    /** @var PheanstalkInterface[] */
     private $pheanstalks;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $default;
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->pheanstalks = [];
@@ -27,46 +21,40 @@ class PheanstalkLocator
     /**
      * @return PheanstalkInterface[]
      */
-    public function getPheanstalks()
+    public function getPheanstalks(): array
     {
         return $this->pheanstalks;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return PheanstalkInterface
-     */
-    public function getPheanstalk($name = null)
+    public function getPheanstalk(string $name = null): ?PheanstalkInterface
     {
-        $name = null !== $name ? $name : $this->default;
+        $name = $name ?? $this->default;
 
         if (array_key_exists($name, $this->pheanstalks)) {
             return $this->pheanstalks[$name];
         }
 
-        return;
+        return null;
     }
 
-    /**
-     * @return array
-     */
-    public function getDefaultPheanstalk()
+    public function getPheanstalkName(PheanstalkInterface $pheanstalk): ?string
+    {
+        $name = array_search($pheanstalk, $this->pheanstalks, true);
+
+        if(false === $name) {
+            return null;
+        }
+
+        return $name;
+    }
+
+    public function getDefaultPheanstalk(): ?PheanstalkInterface
     {
         return $this->getPheanstalk();
     }
 
-    /**
-     * @param string              $name
-     * @param PheanstalkInterface $pheanstalk
-     * @param bool                $default
-     */
-    public function addPheanstalk($name, PheanstalkInterface $pheanstalk, $default = false)
+    public function addPheanstalk(string $name, PheanstalkInterface $pheanstalk, bool $default = false): void
     {
-        if (!is_bool($default)) {
-            throw new \InvalidArgumentException('Default parameter have to be a boolean');
-        }
-
         $this->pheanstalks[$name] = $pheanstalk;
 
         // Set the default connection name

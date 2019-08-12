@@ -9,16 +9,14 @@
 namespace Leezy\PheanstalkBundle\DependencyInjection\Compiler;
 
 use Leezy\PheanstalkBundle\Exceptions\PheanstalkException;
+use Pheanstalk\Contract\PheanstalkInterface;
 use Pheanstalk\Pheanstalk;
-use Pheanstalk\PheanstalkInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * Description of ProxyCompilerPass.
- *
- * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 class ProxyCompilerPass implements CompilerPassInterface
 {
@@ -50,19 +48,24 @@ class ProxyCompilerPass implements CompilerPassInterface
 
         // For each connection in the configuration file
         foreach ($pheanstalks as $name => $pheanstalk) {
-            if (in_array($name, $this->reservedName())) {
+            if (in_array($name, $this->reservedName(), true)) {
                 throw new \RuntimeException('Reserved pheanstalk name: '.$name);
             }
 
-            $pheanstalkConfig = [$pheanstalk['server'], $pheanstalk['port'], $pheanstalk['timeout']];
             $isDefault        = $pheanstalk['default'];
 
             # @see https://github.com/armetiz/LeezyPheanstalkBundle/issues/61
             $pheanstalkDef = clone $container->getDefinition($pheanstalk['proxy']);
 
-            $pheanstalkDef->addMethodCall('setPheanstalk', [new Definition(Pheanstalk::class, $pheanstalkConfig)]);
-            $pheanstalkDef->addMethodCall('setName', [$name]);
             $pheanstalkDef->setPublic(true);
+            $pheanstalkDef->setArguments([
+                (new Definition(Pheanstalk::class))
+                    ->addArgument($pheanstalk['server'])
+                    ->addArgument($pheanstalk['port'])
+                    ->addArgument($pheanstalk['timeout'])
+                    ->setFactory([Pheanstalk::class, 'create']),
+                $name
+            ]);
 
             $container->setDefinition('leezy.pheanstalk.'.$name, $pheanstalkDef);
 

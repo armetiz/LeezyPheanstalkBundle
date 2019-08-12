@@ -14,6 +14,7 @@ class NextReadyCommandTest extends AbstractPheanstalkCommandTest
         $data = 'foobar';
         $job  = new Job(1234, $data);
 
+        $this->pheanstalk->expects($this->once())->method('useTube')->will($this->returnValue($this->pheanstalk));
         $this->pheanstalk->expects($this->once())->method('peekReady')->will($this->returnValue($job));
 
         $command = $this->application->find('leezy:pheanstalk:next-ready');

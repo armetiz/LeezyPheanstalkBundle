@@ -3,6 +3,7 @@
 namespace Leezy\PheanstalkBundle\Tests\Command;
 
 use Leezy\PheanstalkBundle\Command\StatsTubeCommand;
+use Pheanstalk\Response\ArrayResponse;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class StatsTubeCommandTest extends AbstractPheanstalkCommandTest
@@ -11,11 +12,11 @@ class StatsTubeCommandTest extends AbstractPheanstalkCommandTest
     {
         $args  = $this->getCommandArgs();
         $tube  = 'default';
-        $stats = [
+        $stats = new ArrayResponse('STATS', [
             'foo' => 'bar',
             'bar' => 'baz',
             'baz' => 'qux',
-        ];
+        ]);
 
         $this->pheanstalk->expects($this->once())->method('listTubes')->will($this->returnValue([$tube]));
         $this->pheanstalk->expects($this->once())->method('statsTube')->with($tube)->will($this->returnValue($stats));

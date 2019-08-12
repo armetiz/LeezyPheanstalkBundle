@@ -3,7 +3,7 @@
 namespace Leezy\PheanstalkBundle\Listener;
 
 use Leezy\PheanstalkBundle\Event\CommandEvent;
-use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
+use Leezy\PheanstalkBundle\PheanstalkLocator;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -11,59 +11,27 @@ class PheanstalkLogListener implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
 
+    /** @var PheanstalkLocator */
+    private $locator;
+
+    public function __construct(PheanstalkLocator $locator)
+    {
+        $this->locator = $locator;
+    }
+
+
     /**
      * @inheritdoc
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
-        return [
-            CommandEvent::BURY               => 'onCommand',
-            CommandEvent::DELETE             => 'onCommand',
-            CommandEvent::IGNORE             => 'onCommand',
-            CommandEvent::KICK               => 'onCommand',
-            CommandEvent::LIST_TUBE_USED     => 'onCommand',
-            CommandEvent::LIST_TUBES         => 'onCommand',
-            CommandEvent::LIST_TUBES_WATCHED => 'onCommand',
-            CommandEvent::PAUSE_TUBE         => 'onCommand',
-            CommandEvent::PEEK               => 'onCommand',
-            CommandEvent::PEEK_READY         => 'onCommand',
-            CommandEvent::PEEK_DELAYED       => 'onCommand',
-            CommandEvent::PEEK_BURIED        => 'onCommand',
-            CommandEvent::PUT                => 'onCommand',
-            CommandEvent::PUT_IN_TUBE        => 'onCommand',
-            CommandEvent::RELEASE            => 'onCommand',
-            CommandEvent::RESERVE            => 'onCommand',
-            CommandEvent::RESERVE_FROM_TUBE  => 'onCommand',
-            CommandEvent::STATS              => 'onCommand',
-            CommandEvent::STATS_TUBE         => 'onCommand',
-            CommandEvent::STATS_JOB          => 'onCommand',
-            CommandEvent::TOUCH              => 'onCommand',
-            CommandEvent::USE_TUBE           => 'onCommand',
-            CommandEvent::WATCH              => 'onCommand',
-            CommandEvent::WATCH_ONLY         => 'onCommand',
-        ];
+        return array_fill_keys(CommandEvent::availableEvents(), 'onCommand');
     }
 
-    /**
-     * @param CommandEvent $event
-     * @param string       $eventName
-     */
-    public function onCommand(CommandEvent $event, $eventName)
+    public function onCommand(CommandEvent $event, string $eventName): void
     {
         if (!$this->logger) {
             return;
-        }
-
-        $pheanstalk = $event->getPheanstalk();
-        $connection = $pheanstalk->getConnection();
-
-        if (!$connection->isServiceListening()) {
-            $this->logger->warning('Pheanstalk connection isn\'t listening');
-        }
-
-        $pheanstalkName = 'unknown';
-        if ($pheanstalk instanceof PheanstalkProxyInterface) {
-            $pheanstalkName = $pheanstalk->getName();
         }
 
         $nameExploded = explode('.', $eventName);
@@ -71,8 +39,8 @@ class PheanstalkLogListener implements EventSubscriberInterface
         $this->logger->info(
             'Pheanstalk command: '.$nameExploded[count($nameExploded) - 1],
             [
-                'payload'    => $event->getPayload(),
-                'pheanstalk' => $pheanstalkName,
+                'payload' => $event->getPayload(),
+                'name' => $this->locator->getPheanstalkName($event->getPheanstalk())
             ]
         );
     }

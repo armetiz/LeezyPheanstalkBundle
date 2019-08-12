@@ -2,7 +2,6 @@
 
 namespace Leezy\PheanstalkBundle\Command;
 
-use Pheanstalk\Exception\ServerException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,7 +16,7 @@ class NextReadyCommand extends AbstractPheanstalkCommand
     {
         $this
             ->setName('leezy:pheanstalk:next-ready')
-            ->addArgument('tube', InputArgument::REQUIRED, 'Tube to get next ready.', null)
+            ->addArgument('tube', InputArgument::REQUIRED, 'Tube to get next ready.')
             ->addOption(
                 'details',
                 null,
@@ -33,32 +32,32 @@ class NextReadyCommand extends AbstractPheanstalkCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $name     = $input->getArgument('pheanstalk');
+        $name = $input->getArgument('pheanstalk');
         $tubeName = $input->getArgument('tube');
 
         $pheanstalk = $this->getPheanstalk($name);
 
-        $output->writeln('Pheanstalk: <info>'.$name.'</info>');
+        $output->writeln('Pheanstalk: <info>' . $name . '</info>');
 
-        try {
-            $nextJobReady     = $pheanstalk->peekReady($tubeName);
-            $nextJobReadyId   = $nextJobReady->getId();
-            $nextJobReadyData = $nextJobReady->getData();
-
-            $output->writeln(
-                sprintf('Next ready job in tube <info>%s</info> is <info>%s</info>', $tubeName, $nextJobReadyId)
-            );
-
-            if ($input->getOption('details')) {
-                $output->writeln('Details:');
-                $output->writeln($nextJobReadyData);
-            }
-
-            return 0;
-        } catch (ServerException $e) {
-            $output->writeln('There is no next ready job in this tube: <info>'.$tubeName.'</info>');
+        $nextJobReady = $pheanstalk->useTube($tubeName)->peekReady();
+        if (null === $nextJobReady) {
+            $output->writeln('There is no next ready job in this tube: <info>' . $tubeName . '</info>');
 
             return 1;
         }
+
+        $nextJobReadyId = $nextJobReady->getId();
+        $nextJobReadyData = $nextJobReady->getData();
+
+        $output->writeln(
+            sprintf('Next ready job in tube <info>%s</info> is <info>%s</info>', $tubeName, $nextJobReadyId)
+        );
+
+        if ($input->getOption('details')) {
+            $output->writeln('Details:');
+            $output->writeln($nextJobReadyData);
+        }
+
+        return 0;
     }
 }

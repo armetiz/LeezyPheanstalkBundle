@@ -24,7 +24,7 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('profiler')
                 ->addDefaultsIfNotSet()
                 ->children()
-                    ->scalarNode('enabled')->defaultValue('%kernel.debug%')->end()
+                    ->booleanNode('enabled')->defaultValue('%kernel.debug%')->end()
                     ->scalarNode('template')->defaultValue('@LeezyPheanstalk/Profiler/pheanstalk.html.twig')->end()
                 ->end()
             ->end()

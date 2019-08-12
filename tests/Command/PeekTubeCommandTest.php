@@ -14,7 +14,8 @@ class PeekTubeCommandTest extends AbstractPheanstalkCommandTest
         $tube = $args['tube'];
         $job  = new Job(1234, 'data');
 
-        $this->pheanstalk->expects($this->once())->method('peekBuried')->with($tube)->will($this->returnValue($job));
+        $this->pheanstalk->expects($this->once())->method('useTube')->with($tube)->will($this->returnValue($this->pheanstalk));
+        $this->pheanstalk->expects($this->once())->method('peekBuried')->will($this->returnValue($job));
 
         $command = $this->application->find('leezy:pheanstalk:peek-tube');
         $commandTester = new CommandTester($command);

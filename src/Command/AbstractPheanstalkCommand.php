@@ -3,19 +3,14 @@
 namespace Leezy\PheanstalkBundle\Command;
 
 use Leezy\PheanstalkBundle\PheanstalkLocator;
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Contract\PheanstalkInterface;
 use Symfony\Component\Console\Command\Command;
 
 abstract class AbstractPheanstalkCommand extends Command
 {
-    /**
-     * @var PheanstalkLocator
-     */
+    /** @var PheanstalkLocator */
     protected $locator;
 
-    /**
-     * @param PheanstalkLocator $locator
-     */
     public function __construct(PheanstalkLocator $locator)
     {
         parent::__construct();
@@ -23,12 +18,7 @@ abstract class AbstractPheanstalkCommand extends Command
         $this->locator = $locator;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return PheanstalkInterface
-     */
-    protected function getPheanstalk(&$name = null)
+    protected function getPheanstalk(string &$name = null): PheanstalkInterface
     {
         $pheanstalk = $this->locator->getPheanstalk($name);
 
@@ -38,10 +28,6 @@ abstract class AbstractPheanstalkCommand extends Command
 
         if (null === $pheanstalk) {
             throw new \RuntimeException('Pheanstalk not found: '.$name);
-        }
-
-        if (!$pheanstalk->getConnection()->isServiceListening()) {
-            throw new \RuntimeException('Pheanstalk not connected: '.$name);
         }
 
         return $pheanstalk;

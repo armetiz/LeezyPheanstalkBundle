@@ -4,12 +4,14 @@ namespace Leezy\PheanstalkBundle\Tests\DependencyInjection;
 
 use Leezy\PheanstalkBundle\DependencyInjection\LeezyPheanstalkExtension;
 use Leezy\PheanstalkBundle\LeezyPheanstalkBundle;
+use Leezy\PheanstalkBundle\Proxy\PheanstalkProxy;
 use Leezy\PheanstalkBundle\Proxy\PheanstalkProxyInterface;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
+class LeezyPheanstalkExtensionTest extends TestCase
 {
     /**
      * @var ContainerBuilder
@@ -21,7 +23,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = new ContainerBuilder();
         $this->extension = new LeezyPheanstalkExtension();
@@ -30,7 +32,7 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
         $bundle->build($this->container); // Attach all default factories
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->container, $this->extension);
     }
@@ -227,10 +229,12 @@ class LeezyPheanstalkExtensionTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $this->container->setDefinition('acme.pheanstalk.pheanstalk_proxy', new Definition(PheanstalkProxyInterface::class));
+        $this->container->setDefinition('acme.pheanstalk.pheanstalk_proxy', new Definition(PheanstalkProxy::class));
 
         $this->extension->load($config, $this->container);
         $this->container->compile();
+
+        $this->assertNotNull($this->container->get('leezy.pheanstalk.primary'));
     }
 
     public function testLoggerConfiguration()

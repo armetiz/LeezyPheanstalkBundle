@@ -5,12 +5,13 @@ namespace Leezy\PheanstalkBundle\Tests\Command;
 use Leezy\PheanstalkBundle\Command\AbstractPheanstalkCommand;
 use Leezy\PheanstalkBundle\PheanstalkLocator;
 use Pheanstalk\Connection;
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Contract\PheanstalkInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class AbstractPheanstalkCommandTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractPheanstalkCommandTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|KernelInterface
@@ -32,12 +33,11 @@ abstract class AbstractPheanstalkCommandTest extends \PHPUnit_Framework_TestCase
      */
     protected $application;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->kernel  = $this->getMockForAbstractClass(KernelInterface::class);
 
         $connection = $this->createConnectionMock();
-        $connection->expects($this->any())->method('isServiceListening')->will($this->returnValue(true));
 
         $this->pheanstalk = $this->createPheanstalkMock($connection);
         $this->locator    = $this->createLocatorMock($this->pheanstalk);
@@ -53,27 +53,6 @@ abstract class AbstractPheanstalkCommandTest extends \PHPUnit_Framework_TestCase
     public function testPheanstalkNotFound()
     {
         $this->locator = $this->createLocatorMock();
-
-        $command = $this->getCommand();
-
-        $application = new Application();
-        $application->add($command);
-
-        $commandTester = new CommandTester($command);
-        $commandTester->execute($this->getCommandArgs());
-    }
-
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Pheanstalk not connected: default
-     */
-    public function testPheanstalkNotConnected()
-    {
-        $connection = $this->createConnectionMock();
-        $connection->expects($this->any())->method('isServiceListening')->will($this->returnValue(false));
-
-        $this->pheanstalk = $this->createPheanstalkMock($connection);
-        $this->locator    = $this->createLocatorMock($this->pheanstalk);
 
         $command = $this->getCommand();
 
@@ -129,7 +108,7 @@ abstract class AbstractPheanstalkCommandTest extends \PHPUnit_Framework_TestCase
             ->getMockForAbstractClass()
         ;
 
-        $pheanstalk->expects($this->any())->method('getConnection')->will($this->returnValue($connection));
+//        $pheanstalk->expects($this->any())->method('getConnection')->will($this->returnValue($connection));
 
         return $pheanstalk;
     }

@@ -3,9 +3,10 @@
 namespace Leezy\PheanstalkBundle\Tests;
 
 use Leezy\PheanstalkBundle\PheanstalkLocator;
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Contract\PheanstalkInterface;
+use PHPUnit\Framework\TestCase;
 
-class PheanstalkLocatorTest extends \PHPUnit_Framework_TestCase
+class PheanstalkLocatorTest extends TestCase
 {
     public function testDefaultPheanstalks()
     {

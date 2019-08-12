@@ -3,9 +3,10 @@
 namespace Leezy\PheanstalkBundle\Tests\Event;
 
 use Leezy\PheanstalkBundle\Event\CommandEvent;
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Contract\PheanstalkInterface;
+use PHPUnit\Framework\TestCase;
 
-class CommandEventTest extends \PHPUnit_Framework_TestCase
+class CommandEventTest extends TestCase
 {
     public function testCommandEvent()
     {

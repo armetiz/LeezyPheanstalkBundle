@@ -3,6 +3,7 @@
 namespace Leezy\PheanstalkBundle\Command;
 
 use Pheanstalk\Exception;
+use Pheanstalk\JobId;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,16 +27,15 @@ class DeleteJobCommand extends AbstractPheanstalkCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $jobId      = $input->getArgument('job');
+        $jobId      = new JobId($input->getArgument('job'));
         $name       = $input->getArgument('pheanstalk');
         $pheanstalk = $this->getPheanstalk($name);
 
         try {
-            $job = $pheanstalk->peek($jobId);
-            $pheanstalk->delete($job);
+            $pheanstalk->delete($jobId);
 
             $output->writeln('Pheanstalk: <info>'.$name.'</info>');
-            $output->writeln('Job <info>'.$jobId.'</info> deleted.');
+            $output->writeln('Job <info>'.$jobId->getId().'</info> deleted.');
 
             return 0;
         } catch (Exception $e) {

@@ -3,6 +3,7 @@
 namespace Leezy\PheanstalkBundle\Command;
 
 use Pheanstalk\Exception\ServerException;
+use Pheanstalk\JobId;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,7 +37,11 @@ class FlushTubeCommand extends AbstractPheanstalkCommand
             $pheanstalk->useTube($tube);
             while (true) {
                 $job = $pheanstalk->peekDelayed();
-                $pheanstalk->delete($job);
+                if(null === $job) {
+                    break;
+                }
+
+                $pheanstalk->delete(new JobId($job->getId()));
                 $numJobDelete++;
             }
         } catch (ServerException $ex) {
@@ -46,7 +51,11 @@ class FlushTubeCommand extends AbstractPheanstalkCommand
             $pheanstalk->useTube($tube);
             while (true) {
                 $job = $pheanstalk->peekBuried();
-                $pheanstalk->delete($job);
+                if(null === $job) {
+                    break;
+                }
+
+                $pheanstalk->delete(new JobId($job->getId()));
                 $numJobDelete++;
             }
         } catch (ServerException $ex) {
@@ -56,7 +65,11 @@ class FlushTubeCommand extends AbstractPheanstalkCommand
             $pheanstalk->useTube($tube);
             while (true) {
                 $job = $pheanstalk->peekReady();
-                $pheanstalk->delete($job);
+                if(null === $job) {
+                    break;
+                }
+
+                $pheanstalk->delete(new JobId($job->getId()));
                 $numJobDelete++;
             }
         } catch (ServerException $ex) {

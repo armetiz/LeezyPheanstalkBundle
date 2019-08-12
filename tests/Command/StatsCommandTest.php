@@ -3,6 +3,7 @@
 namespace Leezy\PheanstalkBundle\Tests\Command;
 
 use Leezy\PheanstalkBundle\Command\StatsCommand;
+use Pheanstalk\Response\ArrayResponse;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class StatsCommandTest extends AbstractPheanstalkCommandTest
@@ -10,11 +11,11 @@ class StatsCommandTest extends AbstractPheanstalkCommandTest
     public function testExecute()
     {
         $args  = $this->getCommandArgs();
-        $stats = [
+        $stats = new ArrayResponse('STATS', [
             'foo' => 'bar',
             'bar' => 'baz',
             'baz' => 'qux',
-        ];
+        ]);
 
         $this->pheanstalk->expects($this->once())->method('stats')->will($this->returnValue($stats));
 

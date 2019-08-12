@@ -4,44 +4,24 @@ namespace Leezy\PheanstalkBundle\Tests;
 
 use Leezy\PheanstalkBundle\DataCollector\PheanstalkDataCollector;
 use Leezy\PheanstalkBundle\PheanstalkLocator;
-use Pheanstalk\Connection;
-use Pheanstalk\PheanstalkInterface;
+use Pheanstalk\Contract\PheanstalkInterface;
+use Pheanstalk\Response\ArrayResponse;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PheanstalkDataCollectorTest extends \PHPUnit_Framework_TestCase
+class PheanstalkDataCollectorTest extends TestCase
 {
     public function testCollect()
     {
-        $pheanstalkConnection = $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $pheanstalkConnection
-            ->expects($this->any())
-            ->method('getHost')
-            ->will($this->returnValue('127.0.0.1'));
-
-        $pheanstalkConnection
-            ->expects($this->any())
-            ->method('getPort')
-            ->will($this->returnValue('11130'));
-
-        $pheanstalkConnection
-            ->expects($this->any())
-            ->method('getConnectTimeout')
-            ->will($this->returnValue(60));
-
-        $pheanstalkConnection
-            ->expects($this->any())
-            ->method('isServiceListening')
-            ->will($this->returnValue(false));
+        $emptyStatistics = new ArrayResponse('STATS', [
+            'current-jobs-ready' => 3,
+        ]);
 
         $pheanstalkA = $this->getMockForAbstractClass(PheanstalkInterface::class);
         $pheanstalkB = $this->getMockForAbstractClass(PheanstalkInterface::class);
-
-        $pheanstalkA->expects($this->any())->method('getConnection')->will($this->returnValue($pheanstalkConnection));
-        $pheanstalkB->expects($this->any())->method('getConnection')->will($this->returnValue($pheanstalkConnection));
+        $pheanstalkA->expects($this->once())->method('stats')->willReturn($emptyStatistics);
+        $pheanstalkB->expects($this->once())->method('stats')->willReturn($emptyStatistics);
 
         $pheanstalkLocator = new PheanstalkLocator();
         $pheanstalkLocator->addPheanstalk('default', $pheanstalkA, true);
@@ -56,15 +36,12 @@ class PheanstalkDataCollectorTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('default', $dataCollector->getPheanstalks());
         $this->assertArrayHasKey('foo', $dataCollector->getPheanstalks());
         $this->assertArrayNotHasKey('bar', $dataCollector->getPheanstalks());
+        $this->assertEquals(6, $dataCollector->getJobCount());
 
         $data = $dataCollector->getPheanstalks();
 
         $this->assertArrayHasKey('name', $data['default']);
-        $this->assertArrayHasKey('host', $data['default']);
-        $this->assertArrayHasKey('port', $data['default']);
-        $this->assertArrayHasKey('timeout', $data['default']);
         $this->assertArrayHasKey('default', $data['default']);
         $this->assertArrayHasKey('stats', $data['default']);
-        $this->assertArrayHasKey('listening', $data['default']);
     }
 }
