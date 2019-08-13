@@ -7,19 +7,20 @@ See events name above :
 * CommandEvent::DELETE 
 * CommandEvent::IGNORE 
 * CommandEvent::KICK 
-* CommandEvent::LIST_TUBE_USED 
+* CommandEvent::KICK_JOB
+* CommandEvent::LIST_TUBE_USED
 * CommandEvent::LIST_TUBES 
 * CommandEvent::LIST_TUBES_WATCHED 
 * CommandEvent::PAUSE_TUBE 
-* CommandEvent::PEEK 
+* CommandEvent::RESUME_TUBE
+* CommandEvent::PEEK
 * CommandEvent::PEEK_READY 
 * CommandEvent::PEEK_DELAYED 
 * CommandEvent::PEEK_BURIED 
 * CommandEvent::PUT 
-* CommandEvent::PUT_IN_TUBE 
-* CommandEvent::RELEASE 
+* CommandEvent::RELEASE
 * CommandEvent::RESERVE 
-* CommandEvent::RESERVE_FROM_TUBE 
+* CommandEvent::RESERVE_WITH_TIMEOUT
 * CommandEvent::STATS 
 * CommandEvent::STATS_TUBE 
 * CommandEvent::STATS_JOB 
@@ -28,7 +29,7 @@ See events name above :
 * CommandEvent::WATCH 
 * CommandEvent::WATCH_ONLY 
 
-**Note** FQDN is \Leezy\PheanstalkBundle\Event\CommandEvent  
+**Note** FQDN is `\Leezy\PheanstalkBundle\Event\CommandEvent`
 **Note** If you need more documentation about those events; you should read the [beanstalkd protocol](https://raw.githubusercontent.com/kr/beanstalkd/master/doc/protocol.txt).
 
 ## Usage example

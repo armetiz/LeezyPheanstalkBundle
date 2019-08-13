@@ -14,7 +14,7 @@ Tell composer to require this bundle by running:
 $ composer require leezy/pheanstalk-bundle
 ```
 
-### Step 2: Enable the bundle
+### Step 2: Enable the bundle - Symfony versions prior to 4.0
 
 Enable the bundle in the kernel:
 

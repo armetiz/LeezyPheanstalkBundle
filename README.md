@@ -4,15 +4,17 @@
 [![Packagist](https://poser.pugx.org/leezy/pheanstalk-bundle/downloads.png)](https://packagist.org/packages/leezy/pheanstalk-bundle)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/armetiz/LeezyPheanstalkBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/armetiz/LeezyPheanstalkBundle/)
 
-[Beanstalkd workqueue](http://kr.github.com/beanstalkd/) clients for Symfony2.
+[Beanstalkd workqueue](http://kr.github.com/beanstalkd/) clients for Symfony.
 
-The LeezyPheanstalkBundle is a Symfony2 Bundle that provides a [pheanstalk](https://github.com/pda/pheanstalk) integration with the following features:
+The LeezyPheanstalkBundle is a Symfony Bundle that provides a [pheanstalk](https://github.com/pda/pheanstalk) integration with the following features:
 * Command Line Interface for manage the queues.
-* An integration to the Symfony2 event system.
-* An integration to the Symfony2 profiler system to monitor your beanstalk server.
-* An integration to the Symfony2 logger system.
+* An integration to the Symfony event system.
+* An integration to the Symfony profiler system to monitor your beanstalk server.
+* An integration to the Symfony logger system.
 * A proxy system to customize the command features.
 * Auto-wiring: `PheanstalkInterface`
+
+Support Symfony 2, 3 and 4.
 
 
 Documentation :

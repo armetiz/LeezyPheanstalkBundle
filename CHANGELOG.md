@@ -1,6 +1,11 @@
+## 4.0.0
+
+* Support `pda/pheanstalk` ~4.0
+* Support `php` >=7.1.0
+
 ## 3.3.0
 
-* Support Symfony 4
+* Support `symfony/symfony` ~4.0
 
 ## 3.1.0
 
