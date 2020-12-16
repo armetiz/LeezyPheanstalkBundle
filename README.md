@@ -14,7 +14,7 @@ The LeezyPheanstalkBundle is a Symfony Bundle that provides a [pheanstalk](https
 * A proxy system to customize the command features.
 * Auto-wiring: `PheanstalkInterface`
 
-Support Symfony 2, 3 and 4.
+Support Symfony 2, 3, 4 and 5.
 
 
 Documentation :

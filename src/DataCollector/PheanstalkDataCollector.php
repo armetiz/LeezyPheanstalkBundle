@@ -2,7 +2,6 @@
 
 namespace Leezy\PheanstalkBundle\DataCollector;
 
-use Exception;
 use Leezy\PheanstalkBundle\PheanstalkLocator;
 use Pheanstalk\Contract\PheanstalkInterface;
 use Pheanstalk\Exception\ConnectionException;
@@ -10,6 +9,7 @@ use Pheanstalk\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 /**
  * This is the data collector for LeezyPheanstalkBundle.
@@ -52,7 +52,7 @@ class PheanstalkDataCollector extends DataCollector
     /**
      * @inheritdoc
      */
-    public function collect(Request $request, Response $response, Exception $exception = null)
+    public function collect(Request $request, Response $response, ?Throwable $exception = null)
     {
         $defaultPheanstalk = $this->pheanstalkLocator->getDefaultPheanstalk();
 
