@@ -3,7 +3,7 @@
 namespace Leezy\PheanstalkBundle\Event;
 
 use Pheanstalk\Contract\PheanstalkInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class CommandEvent extends Event
 {
