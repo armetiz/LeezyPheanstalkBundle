@@ -6,11 +6,13 @@ php:
   - "7.1"
   - "7.2"
   - "7.3"
+  - "7.4"
+  - "8.0"
 
 env:
-  - SYMFONY_VERSION=2.*
   - SYMFONY_VERSION=3.*
   - SYMFONY_VERSION=4.*
+  - SYMFONY_VERSION=5.*
 
 #matrix:
 #  exclude:
@@ -29,11 +31,11 @@ install:
   - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer self-update
 
 before_script:
-  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
+  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer require symfony/console:${SYMFONY_VERSION} symfony/framework-bundle:${SYMFONY_VERSION} symfony/http-kernel:${SYMFONY_VERSION} --prefer-source
   - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer install --prefer-source
 
 script:
-  - ./bin/phpunit --coverage-text
+  - XDEBUG_MODE=coverage ./bin/phpunit --coverage-text
 
 notifications:
   email:

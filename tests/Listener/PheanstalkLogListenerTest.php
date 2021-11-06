@@ -73,8 +73,8 @@ class PheanstalkLogListenerTest extends TestCase
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber($listener);
         $eventDispatcher->dispatch(
-            CommandEvent::PEEK_READY,
-            new CommandEvent($this->pheanstalk, [])
+            new CommandEvent($this->pheanstalk, []),
+            CommandEvent::PEEK_READY
         );
     }
 }
