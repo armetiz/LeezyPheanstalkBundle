@@ -2,7 +2,7 @@
 
 namespace Leezy\PheanstalkBundle\DataCollector;
 
-use Exception;
+use Throwable;
 use Leezy\PheanstalkBundle\PheanstalkLocator;
 use Pheanstalk\Contract\PheanstalkInterface;
 use Pheanstalk\Exception\ConnectionException;
@@ -20,6 +20,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class PheanstalkDataCollector extends DataCollector
 {
+    use DataCollectorBCTrait;
+
     /**
      * @var PheanstalkLocator
      */
@@ -50,9 +52,46 @@ class PheanstalkDataCollector extends DataCollector
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function collect(Request $request, Response $response, Exception $exception = null)
+    public function getPheanstalks()
+    {
+        return $this->data['pheanstalks'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getTubes()
+    {
+        return $this->data['tubes'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getJobCount()
+    {
+        return $this->data['jobCount'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getJobs()
+    {
+        return $this->data['jobs'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'pheanstalk';
+    }
+
+    protected function doCollect(Request $request, Response $response, Throwable $exception = null)
     {
         $defaultPheanstalk = $this->pheanstalkLocator->getDefaultPheanstalk();
 
@@ -98,46 +137,6 @@ class PheanstalkDataCollector extends DataCollector
                 ];
             }
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getPheanstalks()
-    {
-        return $this->data['pheanstalks'];
-    }
-
-    /**
-     * @return array
-     */
-    public function getTubes()
-    {
-        return $this->data['tubes'];
-    }
-
-    /**
-     * @return int
-     */
-    public function getJobCount()
-    {
-        return $this->data['jobCount'];
-    }
-
-    /**
-     * @return array
-     */
-    public function getJobs()
-    {
-        return $this->data['jobs'];
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'pheanstalk';
     }
 
     /**
