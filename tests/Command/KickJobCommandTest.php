@@ -20,7 +20,7 @@ class KickJobCommandTest extends AbstractPheanstalkCommandTest
         $commandTester = new CommandTester($command);
         $commandTester->execute($args);
 
-        $this->assertContains(sprintf('Job #%d has been kicked', $jobId->getId()), $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('Job #%d has been kicked', $jobId->getId()), $commandTester->getDisplay());
     }
 
     /**

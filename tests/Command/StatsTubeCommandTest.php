@@ -26,7 +26,7 @@ class StatsTubeCommandTest extends AbstractPheanstalkCommandTest
         $commandTester->execute($args);
 
         foreach ($stats as $key => $value) {
-            $this->assertContains(sprintf('- %s: %s', $key, $value), $commandTester->getDisplay());
+            $this->assertStringContainsString(sprintf('- %s: %s', $key, $value), $commandTester->getDisplay());
         }
     }
 

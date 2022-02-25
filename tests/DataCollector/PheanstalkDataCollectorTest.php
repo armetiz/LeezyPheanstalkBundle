@@ -26,12 +26,9 @@ class PheanstalkDataCollectorTest extends TestCase
         $pheanstalkLocator = new PheanstalkLocator();
         $pheanstalkLocator->addPheanstalk('default', $pheanstalkA, true);
         $pheanstalkLocator->addPheanstalk('foo', $pheanstalkB);
-
-        $request  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->getMock();
-        $response = $this->getMockBuilder(Response::class)->disableOriginalConstructor()->getMock();
-
+        
         $dataCollector = new PheanstalkDataCollector($pheanstalkLocator);
-        $dataCollector->collect($request, $response);
+        $dataCollector->collect(new Request(), new Response());
 
         $this->assertArrayHasKey('default', $dataCollector->getPheanstalks());
         $this->assertArrayHasKey('foo', $dataCollector->getPheanstalks());

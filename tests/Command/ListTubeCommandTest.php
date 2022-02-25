@@ -19,7 +19,7 @@ class ListTubeCommandTest extends AbstractPheanstalkCommandTest
         $commandTester->execute($args);
 
         foreach ($tubes as $tube) {
-            $this->assertContains('- '.$tube, $commandTester->getDisplay());
+            $this->assertStringContainsString('- '.$tube, $commandTester->getDisplay());
         }
     }
 

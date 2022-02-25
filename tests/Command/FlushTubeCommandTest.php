@@ -33,7 +33,7 @@ class FlushTubeCommandTest extends AbstractPheanstalkCommandTest
         $commandTester = new CommandTester($command);
         $commandTester->execute($this->getCommandArgs());
 
-        $this->assertContains('Jobs deleted: 3', $commandTester->getDisplay());
+        $this->assertStringContainsString('Jobs deleted: 3', $commandTester->getDisplay());
     }
 
     /**

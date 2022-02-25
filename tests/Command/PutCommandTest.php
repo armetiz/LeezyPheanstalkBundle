@@ -27,7 +27,7 @@ class PutCommandTest extends AbstractPheanstalkCommandTest
         $commandTester = new CommandTester($command);
         $commandTester->execute($args);
 
-        $this->assertContains(sprintf('New job on tube %s with id %d', $tube, $job->getId()), $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('New job on tube %s with id %d', $tube, $job->getId()), $commandTester->getDisplay());
     }
 
     /**
