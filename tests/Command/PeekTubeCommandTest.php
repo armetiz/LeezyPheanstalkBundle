@@ -21,9 +21,9 @@ class PeekTubeCommandTest extends AbstractPheanstalkCommandTest
         $commandTester = new CommandTester($command);
         $commandTester->execute($args);
 
-        $this->assertContains(sprintf('Tube: %s', $tube), $commandTester->getDisplay());
-        $this->assertContains(sprintf('Job id: %s', $job->getId()), $commandTester->getDisplay());
-        $this->assertContains(sprintf('Data: %s', $job->getData()), $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('Tube: %s', $tube), $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('Job id: %s', $job->getId()), $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('Data: %s', $job->getData()), $commandTester->getDisplay());
     }
 
     /**

@@ -99,11 +99,9 @@ class LeezyPheanstalkExtensionTest extends TestCase
         $this->assertFalse($this->container->hasAlias('leezy.pheanstalk'));
     }
 
-    /**
-     * @expectedException \Leezy\PheanstalkBundle\Exceptions\PheanstalkException
-     */
     public function testTwoDefaultPheanstalks()
     {
+        $this->expectException(\Leezy\PheanstalkBundle\Exceptions\PheanstalkException::class);
         $config = [
             'leezy_pheanstalk' => [
                 'pheanstalks' => [
@@ -172,11 +170,9 @@ class LeezyPheanstalkExtensionTest extends TestCase
         $this->assertTrue($this->container->hasDefinition('leezy.pheanstalk.pheanstalk_locator'));
     }
 
-    /**
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
-     */
     public function testPheanstalkProxyCustomTypeNotDefined()
     {
+        $this->expectException(\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException::class);
         $config = [
             'leezy_pheanstalk' => [
                 'pheanstalks' => [
@@ -193,11 +189,9 @@ class LeezyPheanstalkExtensionTest extends TestCase
         $this->container->compile();
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testPheanstalkReservedName()
     {
+        $this->expectException(\RuntimeException::class);
         $config = [
             'leezy_pheanstalk' => [
                 'pheanstalks' => [

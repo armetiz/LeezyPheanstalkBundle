@@ -21,8 +21,8 @@ class NextReadyCommandTest extends AbstractPheanstalkCommandTest
         $commandTester = new CommandTester($command);
         $commandTester->execute($args);
 
-        $this->assertContains(sprintf('Next ready job in tube default is %d', $job->getId()), $commandTester->getDisplay());
-        $this->assertContains($data, $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('Next ready job in tube default is %d', $job->getId()), $commandTester->getDisplay());
+        $this->assertStringContainsString($data, $commandTester->getDisplay());
     }
 
     /**

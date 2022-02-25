@@ -20,8 +20,8 @@ class PeekCommandTest extends AbstractPheanstalkCommandTest
         $commandTester = new CommandTester($command);
         $commandTester->execute($args);
 
-        $this->assertContains(sprintf('Job id: %d', $job->getId()), $commandTester->getDisplay());
-        $this->assertContains(sprintf('Data: %s', $job->getData()), $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('Job id: %d', $job->getId()), $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('Data: %s', $job->getData()), $commandTester->getDisplay());
     }
 
     /**

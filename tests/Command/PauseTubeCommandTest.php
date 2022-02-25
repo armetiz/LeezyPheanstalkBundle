@@ -19,7 +19,7 @@ class PauseTubeCommandTest extends AbstractPheanstalkCommandTest
         $commandTester = new CommandTester($command);
         $commandTester->execute($args);
 
-        $this->assertContains(sprintf('Tube %s has been paused for %d seconds', $tube, $delay), $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('Tube %s has been paused for %d seconds', $tube, $delay), $commandTester->getDisplay());
     }
 
     /**

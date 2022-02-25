@@ -46,12 +46,9 @@ abstract class AbstractPheanstalkCommandTest extends TestCase
         $this->application->add($this->getCommand());
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Pheanstalk not found: default
-     */
     public function testPheanstalkNotFound()
     {
+        $this->expectException(\RuntimeException::class);
         $this->locator = $this->createLocatorMock();
 
         $command = $this->getCommand();

@@ -18,8 +18,7 @@ class DeleteJobCommandTest extends AbstractPheanstalkCommandTest
         $command = $this->application->find('leezy:pheanstalk:delete-job');
         $commandTester = new CommandTester($command);
         $commandTester->execute($args);
-
-        $this->assertContains(sprintf('Job %d deleted', $jobId->getId()), $commandTester->getDisplay());
+        $this->assertStringContainsString(sprintf('Job %d deleted', $jobId->getId()), $commandTester->getDisplay());
     }
 
     /**
